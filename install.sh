@@ -1,128 +1,73 @@
 #!/bin/bash
-# install.sh — One-command installer for opencode-minimax-agents
-# Usage: bash <(curl -fsSL https://raw.githubusercontent.com/YOUR_USER/opencode-minimax-agents/main/install.sh)
+# AORA - Project-level installer
+# Instala AORA en el directorio actual del proyecto
 
 set -e
 
-REPO="YOUR_USER/opencode-minimax-agents"
-BRANCH="main"
-RAW="https://raw.githubusercontent.com/$REPO/$BRANCH"
-TARGET=".opencode"
+AORA_REPO="https://github.com/danteGiuliano/opencode-AORA.git"
+AORA_DIR=".opencode"
+AGENTS_DIR="$AORA_DIR/agents"
 
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m'
+echo "🪨 AORA - Project-level installer"
 
-echo ""
-echo "  OpenCode Agents for MiniMax M2.7"
-echo "  =================================="
-echo ""
-
-# ── Verificar dependencias ────────────────────────────────────────────────────
-check_dep() {
-  if ! command -v "$1" &>/dev/null; then
-    echo -e "${RED}✗ $1 not found. Install it first.${NC}"
+# Verificar que estamos en un proyecto
+if [ ! -d ".git" ]; then
+    echo "⚠️  No detected .git directory. Initialize git first: git init"
     exit 1
-  fi
-}
-
-check_dep curl
-check_dep opencode
-
-echo -e "${GREEN}✓ opencode found${NC}"
-
-# ── Crear estructura ──────────────────────────────────────────────────────────
-mkdir -p "$TARGET/agents"
-
-download() {
-  local path="$1"
-  local dest="$TARGET/$2"
-  echo -e "  Downloading $2..."
-  curl -fsSL "$RAW/$path" -o "$dest"
-}
-
-echo ""
-echo "📥 Downloading agents..."
-download ".opencode/agents/planner.md"      "agents/planner.md"
-download ".opencode/agents/builder.md"      "agents/builder.md"
-download ".opencode/agents/reviewer.md"     "agents/reviewer.md"
-download ".opencode/agents/debug.md"        "agents/debug.md"
-download ".opencode/agents/docs.md"         "agents/docs.md"
-download ".opencode/agents/ultraworker.md"  "agents/ultraworker.md"
-
-echo ""
-echo "📥 Downloading config..."
-download ".opencode/oh-my-openagent.jsonc"  "oh-my-openagent.jsonc"
-
-echo ""
-echo "📥 Downloading knowledge base..."
-
-# KNOWLEDGE.md y DECISIONS.md: no sobreescribir si ya existen
-if [ ! -f "$TARGET/KNOWLEDGE.md" ]; then
-  download ".opencode/KNOWLEDGE.md" "KNOWLEDGE.md"
-  echo -e "  ${GREEN}Created KNOWLEDGE.md${NC}"
-else
-  echo -e "  ${YELLOW}Skipped KNOWLEDGE.md (already exists)${NC}"
 fi
 
-if [ ! -f "$TARGET/DECISIONS.md" ]; then
-  download ".opencode/DECISIONS.md" "DECISIONS.md"
-  echo -e "  ${GREEN}Created DECISIONS.md${NC}"
+# Crear estructura .opencode si no existe
+mkdir -p "$AGENTS_DIR"
+
+echo "📦 Descargando agentes AORA..."
+
+# Descargar agentes directamente del repo
+if command -v curl &> /dev/null; then
+    AGENTS_BASE="https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/agents"
 else
-  echo -e "  ${YELLOW}Skipped DECISIONS.md (already exists)${NC}"
+    echo "❌ curl requerido para descargar agentes"
+    exit 1
 fi
 
-# ── Verificar proveedor MiniMax ───────────────────────────────────────────────
-echo ""
-echo "🔑 Checking MiniMax provider..."
+# Lista de agentes a descargar
+AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "init-cruise")
 
-OPENCODE_CONFIG="$HOME/.config/opencode/opencode.json"
-
-if [ -f "$OPENCODE_CONFIG" ] && grep -q "minimax" "$OPENCODE_CONFIG" 2>/dev/null; then
-  echo -e "  ${GREEN}✓ MiniMax provider found in opencode.json${NC}"
-else
-  echo -e "  ${YELLOW}⚠ MiniMax provider not configured.${NC}"
-  echo ""
-  echo "  Add this to ~/.config/opencode/opencode.json:"
-  echo ""
-  cat << 'JSON'
-  {
-    "$schema": "https://opencode.ai/config.json",
-    "model": "minimax/MiniMax-M2.7",
-    "provider": {
-      "minimax": {
-        "npm": "@ai-sdk/anthropic",
-        "options": {
-          "baseURL": "https://api.minimax.io/anthropic/v1",
-          "apiKey": "YOUR_MINIMAX_API_KEY"
-        },
-        "models": {
-          "MiniMax-M2.7": { "name": "MiniMax-M2.7" },
-          "MiniMax-M2.7-highspeed": { "name": "MiniMax-M2.7-highspeed" }
-        }
-      }
+for agent in "${AGENTS[@]}"; do
+    echo "  ⬇️  $agent.md"
+    curl -sf "$AGENTS_BASE/$agent.md" -o "$AGENTS_DIR/$agent.md" || {
+        echo "  ❌ Fallo al descargar $agent.md"
+        exit 1
     }
-  }
-JSON
+done
+
+# Crear AORA.json si no existe
+if [ ! -f "AORA.json" ]; then
+    echo "📄 Creando AORA.json..."
+    curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json" -o "AORA.json"
+else
+    echo "ℹ️  AORA.json ya existe, no se sobreescribe"
 fi
 
-# ── Done ──────────────────────────────────────────────────────────────────────
+# Crear archivos de conocimiento si no existen
+[ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base" > "$AORA_DIR/KNOWLEDGE.md"
+[ ! -f "$AORA_DIR/DECISIONS.md" ] && echo "# Decision Registry" > "$AORA_DIR/DECISIONS.md"
+
 echo ""
-echo -e "${GREEN}✅ Installed successfully!${NC}"
+echo "✅ AORA instalado correctamente!"
 echo ""
-echo "  Agents installed in .opencode/agents/:"
-echo "    @planner      — strategic planning + Decision Gates"
-echo "    @builder      — full stack implementation"
-echo "    @reviewer     — read-only code review"
-echo "    @debug        — root cause diagnosis"
-echo "    @docs         — knowledge base manager"
-echo "    @ultraworker  — full cycle orchestrator"
+echo "Estructura creada:"
+echo "  $AORA_DIR/"
+echo "  ├── agents/"
+echo "  │   ├── ultraworker.md"
+echo "  │   ├── planner.md"
+echo "  │   ├── builder.md"
+echo "  │   ├── reviewer.md"
+echo "  │   ├── debug.md"
+echo "  │   ├── docs.md"
+echo "  │   ├── decider.md"
+echo "  │   └── init-cruise.md"
+echo "  ├── KNOWLEDGE.md"
+echo "  └── DECISIONS.md"
+echo "  AORA.json"
 echo ""
-echo "  Usage in OpenCode TUI:"
-echo "    Tab             → cycle through agents"
-echo "    ultrawork [task] → full cycle with parallelism"
-echo ""
-echo "  Verify installation:"
-echo "    bunx oh-my-opencode doctor --verbose"
-echo ""
+echo "Usa: @Estratega, @Constructor, @Auditor, etc. en OpenCode"

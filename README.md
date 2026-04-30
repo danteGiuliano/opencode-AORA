@@ -4,6 +4,45 @@ Sistema multi-agente para [OpenCode](https://opencode.ai) con configuración cen
 
 Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) y el concepto [caveman](https://github.com/JuliusBrussee/caveman) para compresión de output.
 
+## ⚠️ Instalación a Nivel de Proyecto
+
+**AORA se recomienda instalar a nivel de proyecto**, no a nivel de sistema operativo.
+
+### Por qué a nivel de proyecto?
+
+- **Limpieza del SO**: No modifica archivos globales de OpenCode
+- **Portabilidad**: El proyecto tiene sus agentes y configuración incluidos
+- **Control de versiones**: Agentes y KNOWLEDGE.md se commitear junto al código
+- **Consistencia**: Todo el equipo usa la misma versión de agentes
+- **Aislamiento**: Cambios en un proyecto no afectan otros
+
+```
+ proyecto/
+ ├── .opencode/           ← agentes, conocimiento local
+ ├── AORA.json             ← configuración del proyecto
+ └── tu-código/            ← tu aplicación
+```
+
+### Instalación
+
+```bash
+# En la raíz de tu proyecto
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
+```
+
+O descarga manualmente:
+
+```bash
+mkdir -p .opencode/agents
+
+# Descargar agentes desde GitHub
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/agents/ultraworker.md -o .opencode/agents/ultraworker.md
+# ... repetir para cada agente
+
+# Descargar AORA.json
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json -o AORA.json
+```
+
 ## Concepto
 
 AORA define una configuración centralizada en `AORA.json` que especifica:
