@@ -2,6 +2,8 @@
 
 Sistema multi-agente para [OpenCode](https://opencode.ai) con configuración centralizada, nombres semánticos y modelos arbitrarios.
 
+Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) y el concepto [caveman](https://github.com/JuliusBrussee/caveman) para compresión de output.
+
 ## Concepto
 
 AORA define una configuración centralizada en `AORA.json` que especifica:
@@ -15,22 +17,25 @@ AORA define una configuración centralizada en `AORA.json` que especifica:
 AORA.json (config global)
 ├── global.baseModel: modelo base para todos
 ├── models: modelos específicos disponibles
-└── agents: configuración individual
-    ├── semantic: nombre semántico
-    ├── model: qué modelo usar
-    └── temperature: configuración específica
+├── agents: configuración individual
+│   ├── semantic: nombre semántico
+│   ├── model: qué modelo usar
+│   └── temperature: configuración específica
+└── caveman: modo ahorro con niveles lite/full/ultra
 ```
 
 ## Agentes y Nombres Semánticos
 
-| Agent | Nombre Semántico | Modelo | Rol |
-|-------|------------------|--------|-----|
-| `@ultrawork` | OrquestadorPrincipal | base | Orquestador de ciclo completo |
-| `@planner` | Estratega | base | Planificación estratégica |
-| `@builder` | Constructor | coder | Implementación full-stack |
-| `@reviewer` | Auditor | review | Revisión de código |
-| `@debug` | Detective | coder | Diagnóstico de errores |
-| `@docs` | Bibliotecario | fast | Gestión de conocimiento |
+| Agent | Nombre Semántico | Rol |
+|-------|------------------|-----|
+| `@ultrawork` | OrquestadorPrincipal | Orquestador de ciclo completo |
+| `@planner` | Estratega | Planificación estratégica |
+| `@builder` | Constructor | Implementación full-stack |
+| `@reviewer` | Auditor | Revisión de código |
+| `@debug` | Detective | Diagnóstico de errores |
+| `@docs` | Bibliotecario | Gestión de conocimiento |
+| `@decider` | Arbitro | Mediador de conflictos dominio vs implementación |
+| `@init-cruise` | Configurador | Replica permisos en proyectos |
 
 ## Archivos del Sistema
 
@@ -42,7 +47,9 @@ AORA.json (config global)
 │   ├── builder.md        ← Constructor
 │   ├── reviewer.md       ← Auditor
 │   ├── debug.md           ← Detective
-│   └── docs.md           ← Bibliotecario
+│   ├── docs.md           ← Bibliotecario
+│   ├── decider.md        ← Arbitro
+│   └── init-cruise.md    ← Configurador
 ├── KNOWLEDGE.md          ← Base de conocimiento
 └── DECISIONS.md          ← Registro de decisiones
 
@@ -50,27 +57,40 @@ AORA.json                  ← Configuración global
 docs/WORKFLOW_ES.md        ← Flujo de trabajo detallado
 ```
 
-## Modelos Configurables
+## Modo Compact (Caveman)
 
-| Modelo | ID | Uso |
-|--------|-----|-----|
-| `base` | minimax/MiniMax-M2.7 | Razonamiento complejo |
-| `fast` | minimax/MiniMax-M2.7-highspeed | Baja latencia |
-| `coder` | minimax/MiniMax-M2.7 | Implementación/debug |
-| `review` | minimax/MiniMax-M2.7 | Análisis y revisión |
+Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
+
+### Niveles
+
+| Nivel | Descripción |
+|-------|-------------|
+| `lite` | Sin filler, gramática intacta |
+| `full` | Sin artículos, fragmentos OK |
+| `ultra` | Máxima compresión, telegráfico |
+
+### Activación
+
+```
+compact [tarea]
+caveman [tarea]
+modoahorro [tarea]
+```
 
 ## Uso
 
 ```bash
-# Ciclo completo con ultrawork
+# Ciclo completo
 ultrawork crear módulo de pagos con Stripe
 
-# Flujo manual con nombres semánticos
+# Flujo manual
 @Estratega analizar: agregar sistema de notificaciones
 @Constructor implementar T1.1 y T1.2
 @Auditor revisar src/notifications/
 @Detective diagnosticar TypeError en webhook
 @Bibliotecario registrar decisión de Stripe
+@Arbitro conflicto: dominio dice X, implementación hace Y
+init-cruise --apply  # replicar permisos en proyecto
 ```
 
 ## Ciclo de Trabajo
@@ -80,10 +100,10 @@ ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
     ↓              ↓               ↓            ↓         ↓
 Orquestador  Estratega       Constructor    Auditor   Bibliotecario
    Principal
-                ↓
-        ¿Puerta de Decisión?
-                ↓
-           PAUSAR → esperar decisión → continuar
+                 ↓
+         ¿Puerta de Decisión?
+                 ↓
+            PAUSAR → esperar decisión → continuar
 ```
 
 ## Auto-recuperación
@@ -98,39 +118,3 @@ Errores se reintentan automáticamente (max 3 intentos):
 Los agentes actualizan automáticamente:
 - `KNOWLEDGE.md`: patrones, bugs resueltos, integraciones
 - `DECISIONS.md`: decisiones de producto/arquitectura
-
-## Requisitos
-
-- [OpenCode](https://opencode.ai) `>= 1.14`
-- [oh-my-opencode](https://github.com/code-yeongyu/oh-my-openagent)
-- API key de MiniMax — [platform.minimax.io](https://platform.minimax.io)
-
-## Configuración del Provider
-
-En `~/.config/opencode/opencode.json`:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "minimax/MiniMax-M2.7",
-  "provider": {
-    "minimax": {
-      "npm": "@ai-sdk/anthropic",
-      "options": {
-        "baseURL": "https://api.minimax.io/anthropic/v1",
-        "apiKey": "YOUR_MINIMAX_API_KEY"
-      },
-      "models": {
-        "MiniMax-M2.7": { "name": "MiniMax-M2.7" },
-        "MiniMax-M2.7-highspeed": { "name": "MiniMax-M2.7-highspeed" }
-      }
-    }
-  }
-}
-```
-
-## Verificar Instalación
-
-```bash
-bunx oh-my-opencode doctor --verbose
-```

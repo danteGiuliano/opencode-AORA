@@ -62,8 +62,8 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 ```
 ┌─────────────────────────────────────────┐
 │           AORA.json (global)            │
-│  baseModel: minimax/MiniMax-M2.7        │
-│  temperature: 0.3                       │
+│  baseModel: [provider/model]             │
+│  temperature: 0.3                        │
 └────────────────────┬────────────────────┘
                      │
         ┌────────────┴────────────┐
@@ -76,12 +76,14 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 
 ### Modelos disponibles en AORA.json
 
-| Modelo | ID | Uso |
-|--------|-----|-----|
-| `base` | minimax/MiniMax-M2.7 | Tareas de razonamiento complejo |
-| `fast` | minimax/MiniMax-M2.7-highspeed | Documentación, tareas rápidas |
-| `coder` | minimax/MiniMax-M2.7 | Implementación y debugging |
-| `review` | minimax/MiniMax-M2.7 | Análisis y revisión |
+AORA es agnóstico del provider. Los modelos se configuran según el provider utilizado.
+
+| Modelo | Uso |
+|--------|-----|
+| `base` | Tareas de razonamiento complejo |
+| `fast` | Documentación, tareas rápidas |
+| `coder` | Implementación y debugging |
+| `review` | Análisis y revisión |
 
 ## Nombres Semánticos de Agentes
 
@@ -93,6 +95,8 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 | `@reviewer` | Auditor | Revisión de código |
 | `@debug` | Detective | Diagnóstico de errores |
 | `@docs` | Bibliotecario | Gestión de conocimiento |
+| `@decider` | Arbitro | Conflictos dominio vs implementación |
+| `@init-cruise` | Configurador | Replica configuración en proyectos |
 
 ## Ciclo de Ejecución
 
