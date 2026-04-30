@@ -1,0 +1,266 @@
+{
+  "$schema": "https://aora.schema.json",
+  "name": "AORA - OpenCode Agents Runtime",
+  "version": "1.0.0",
+  "language": "es",
+
+  "global": {
+    "description": "Configuración global para todos los agentes",
+    "baseModel": "minimax/MiniMax-M2.7",
+    "temperature": 0.3,
+    "mode": "primary",
+    "compact": false
+  },
+
+  "caveman": {
+    "enabled": true,
+    "defaultLevel": "full",
+    "levels": {
+      "lite": {
+        "description": "Sin filler, gramática intacta, profesional sin fluff",
+        "rules": ["drop_filler", "keep_grammar", "no_pleasantries"]
+      },
+      "full": {
+        "description": "Caveman por defecto. Sin artículos, fragmentos, grunt completo",
+        "rules": ["no_articles", "fragments_ok", "drop_hedging", "short_synonyms"]
+      },
+      "ultra": {
+        "description": "Máxima compresión. Telegráfico. Abreviar todo.",
+        "rules": ["maximum_compression", "telegraphic", "abbreviate", "single_words"]
+      }
+    },
+    "activation": ["caveman", "compact", "modoahorro", "ahorrar"]
+  },
+
+  "models": {
+    "base": {
+      "id": "minimax/MiniMax-M2.7",
+      "name": "MiniMax-M2.7",
+      "description": "Modelo base para tareas complejas de razonamiento",
+      "contextWindow": 100000,
+      "strengths": ["codificación", "razonamiento complejo", "multi-step"]
+    },
+    "fast": {
+      "id": "minimax/MiniMax-M2.7-highspeed",
+      "name": "MiniMax-M2.7 Fast",
+      "description": "Variante optimizada para tareas de baja latencia",
+      "contextWindow": 100000,
+      "strengths": ["documentación", "búsqueda", "tareas rápidas"]
+    },
+    "coder": {
+      "id": "minimax/MiniMax-M2.7",
+      "name": "MiniMax-M2.7 Coder",
+      "description": "Especializado para implementación y debugging",
+      "contextWindow": 100000,
+      "strengths": ["implementación", "debug", "caveman-debug"]
+    },
+    "review": {
+      "id": "minimax/MiniMax-M2.7",
+      "name": "MiniMax-M2.7 Review",
+      "description": "Optimizado para análisis y revisión de código",
+      "contextWindow": 100000,
+      "strengths": ["análisis", "seguridad", "patrones"]
+    }
+  },
+
+  "agents": {
+    "ultraworker": {
+      "description": "Orquestador de ciclo completo",
+      "model": "base",
+      "temperature": 0.2,
+      "compact": false,
+      "cavemanLevel": "full",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "task": "allow"
+      },
+      "activation": ["ultrawork", "ulw"],
+      "semantic": "OrquestadorPrincipal"
+    },
+    "planner": {
+      "description": "Arquitecto estratégico - planificación y descomposición",
+      "model": "base",
+      "temperature": 0.3,
+      "compact": false,
+      "cavemanLevel": "lite",
+      "permissions": {
+        "read": "allow",
+        "edit": "deny",
+        "bash": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "semantic": "Estratega"
+    },
+    "builder": {
+      "description": "Implementador full-stack - código y ejecución",
+      "model": "coder",
+      "temperature": 0.2,
+      "compact": false,
+      "cavemanLevel": "full",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "semantic": "Constructor"
+    },
+    "reviewer": {
+      "description": "Auditor de código - análisis y calidad",
+      "model": "review",
+      "temperature": 0.1,
+      "compact": false,
+      "cavemanLevel": "lite",
+      "permissions": {
+        "read": "allow",
+        "edit": "deny",
+        "bash": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "semantic": "Auditor"
+    },
+    "debug": {
+      "description": "Detective de errores - diagnóstico raíz",
+      "model": "coder",
+      "temperature": 0.1,
+      "compact": false,
+      "cavemanLevel": "full",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "semantic": "Detective"
+    },
+    "docs": {
+      "description": "Gestor de conocimiento - documentación",
+      "model": "fast",
+      "temperature": 0.4,
+      "compact": true,
+      "cavemanLevel": "ultra",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "semantic": "Bibliotecario"
+    },
+    "decider": {
+      "description": "Mediador de conflictos dominio vs implementación",
+      "model": "base",
+      "temperature": 0.4,
+      "compact": false,
+      "cavemanLevel": "none",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "activation": ["decidir", "conflicto", "arbitro"],
+      "semantic": "Arbitro"
+    },
+    "init-cruise": {
+      "description": "Configurador AORA - replica settings de opencode.json",
+      "model": "fast",
+      "temperature": 0.1,
+      "compact": false,
+      "cavemanLevel": "none",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "activation": ["init-cruise", "apply-aora", "setup-aora"],
+      "semantic": "Configurador"
+    }
+  },
+
+  "workflow": {
+    "compactMode": false,
+    "phases": [
+      {
+        "phase": 0,
+        "name": "ANALISIS",
+        "agents": ["ultraworker"],
+        "description": "Análisis rápido del contexto"
+      },
+      {
+        "phase": 1,
+        "name": "PLANIFICACION",
+        "agents": ["planner"],
+        "description": "Descomposición en tareas atómicas"
+      },
+      {
+        "phase": 2,
+        "name": "IMPLEMENTACION",
+        "agents": ["builder"],
+        "description": "Ejecución paralela de tareas",
+        "parallelism": true
+      },
+      {
+        "phase": 3,
+        "name": "REVISION",
+        "agents": ["reviewer"],
+        "description": "Validación estructurada"
+      },
+      {
+        "phase": 4,
+        "name": "DOCUMENTACION",
+        "agents": ["docs"],
+        "description": "Registro en base de conocimiento"
+      }
+    ],
+    "decisionGate": {
+      "enabled": true,
+      "pausePhase": "PLANIFICACION",
+      "registerIn": "DECISIONS.md"
+    },
+    "selfHealing": {
+      "enabled": true,
+      "maxAttempts": 3,
+      "fallbackAgent": "debug"
+    }
+  },
+
+  "knowledge": {
+    "files": {
+      "knowledge": ".opencode/KNOWLEDGE.md",
+      "decisions": ".opencode/DECISIONS.md"
+    },
+    "autoUpdate": true
+  },
+
+  "opencodeTemplate": {
+    "description": "Template para replicar permisos en opencode.json",
+    "mergeStrategy": "smart",
+    "permission": {
+      "*": "allow",
+      "bash": { "*": "allow", "rm -rf /*": "allow", "sudo rm *": "allow" },
+      "external_directory": { "*": "allow" },
+      "doom_loop": "ask"
+    }
+  }
+}
