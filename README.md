@@ -10,127 +10,52 @@ Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) 
 
 ## Visión
 
-AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto**. A diferencia de los sistemas basados en plugins — que requieren modelos específicos y múltiples suscripciones — los agentes de AORA son archivos markdown nativos de OpenCode, portables y sin lock-in de proveedor.
-
-### Principios Core
-
-- **Portable**: Archivos markdown, no requiere npm ni plugins
-- **Agnóstico del proveedor**: Los modelos se configuran en AORA.json, los prompts son genéricos
-- **A nivel de proyecto**: Instalar por proyecto, commitear a git, consistencia del equipo
-- **Incremental**: Un único modelo de suscripción, sin cobros por agente
+AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto**. Los agentes son archivos markdown nativos de OpenCode, portables y sin lock-in.
 
 ## Instalación
 
 ```bash
-# 1. En la raíz de tu proyecto, ejecutar:
+# 1. En la raíz del proyecto
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
 
-# 2. Abrir OpenCode en el proyecto
+# 2. Abrir OpenCode
 opencode .
 
-# 3. Configurar provider y modelo base:
-node .opencode/setmodel.js
+# 3. Configurar desde OpenCode
+/config-aora
 ```
 
-O descarga manualmente:
+## Configuración Rápida
 
-```bash
-mkdir -p .opencode/agents
-
-# Descargar agentes desde GitHub
-curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/agents/ultraworker.md -o .opencode/agents/ultraworker.md
-# ... repetir para cada agente
-
-# Descargar AORA.json
-curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json -o AORA.json
-```
-
-### Configuración del Modelo
-
-```bash
-# Ver proveedores disponibles y configurar
-node .opencode/setmodel.js
-```
-
-El script te pide elegir provider (minimax, anthropic, openai, gemini, ollama) y modelo específico.
-
-## ⚠️ Instalación a Nivel de Proyecto
-
-**AORA se recomienda instalar a nivel de proyecto**, no a nivel de sistema operativo.
-
-### Por qué a nivel de proyecto?
-
-- **Limpieza del SO**: No modifica archivos globales de OpenCode
-- **Portabilidad**: El proyecto tiene sus agentes y configuración incluidos
-- **Control de versiones**: Agentes y KNOWLEDGE.md se commitear junto al código
-- **Consistencia**: Todo el equipo usa la misma versión de agentes
-- **Aislamiento**: Cambios en un proyecto no afectan otros
+En OpenCode, escribir:
 
 ```
- proyecto/
- ├── .opencode/           ← agentes, conocimiento local
- ├── AORA.json             ← configuración del proyecto
- └── tu-código/            ← tu aplicación
+/config-aora
 ```
+
+El asistente te guía para:
+- **Configurar modelo** (minimax, anthropic, openai, gemini, ollama)
+- **Actualizar agentes** (desde GitHub)
+- **Verificar instalación**
 
 ## Agentes
 
 | Agent | Nombre Semántico | Rol |
 |-------|------------------|-----|
-| `@ultrawork` | OrquestadorPrincipal | Orquestador de ciclo completo |
-| `@planner` | Estratega | Planificación estratégica |
-| `@builder` | Constructor | Implementación full-stack |
-| `@reviewer` | Auditor | Revisión de código |
-| `@debug` | Detective | Diagnóstico de errores |
-| `@docs` | Bibliotecario | Gestión de conocimiento |
-| `@decider` | Arbitro | Conflictos dominio vs implementación |
-| `@init-cruise` | Configurador | Replica permisos en proyectos |
-
-## Documentación
-
-| Doc | Descripción |
-|-----|-------------|
-| [WORKFLOW](docs/WORKFLOW_ES.md) | Diagrama de flujo completo |
-| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Configuración del modo compresión |
-
-## Actualización
-
-Para actualizar agentes y estructura desde GitHub:
-
-```bash
-node .opencode/update.js --check      # verificar estado
-node .opencode/update.js --agents      # actualizar agentes
-node .opencode/update.js --all         # actualizar todo
-node .opencode/update.js --all --force # sobrescribir existentes
-```
-
-**No se toca:** `KB.json`, `KNOWLEDGE.md`, `DECISIONS.md`
-
-## Configuración del Modelo
-
-Para configurar el provider y modelo base:
-
-```bash
-node .opencode/setmodel.js
-```
-
-Esto te permite elegir provider (minimax, anthropic, openai, etc) y modelo específico. Se actualiza `AORA.json` con `global.baseModel`.
-
-```bash
-node .opencode/setmodel.js --help     # ver ayuda
-```
-
-**Flujo:**
-1. Muestra providers disponibles
-2. Pide provider (minimax, anthropic, openai, ollama, gemini)
-3. Pide modelo específico
-4. Actualiza `AORA.json` y `models.base`
+| `@ultrawork` | OrquestadorPrincipal | Ciclo completo |
+| `@planner` | Estratega | Planificación |
+| `@builder` | Constructor | Implementación |
+| `@reviewer` | Auditor | Revisión |
+| `@debug` | Detective | Debug |
+| `@docs` | Bibliotecario | Conocimiento |
+| `@decider` | Arbitro | Conflictos |
+| `/config-aora` | ConfigAORA | Configuración |
 
 ## Modo Compact (Caveman)
 
-Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
+Sistema de compresión de output. Reduce ~65-75% tokens sin perder precisión técnica.
 
-### Configuración en AORA.json
+Configuración en AORA.json:
 
 ```json
 "caveman": {
@@ -142,24 +67,27 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 }
 ```
 
-Por agente:
-
-```json
-"agents": {
-  "miAgente": {
-    "cavemanLevel": "ultra"
-  }
-}
-```
-
-### Niveles
-
 | Nivel | Descripción |
 |-------|-------------|
 | `lite` | Sin filler, gramática intacta |
 | `full` | Sin artículos, fragmentos OK |
 | `ultra` | Máxima compresión, telegráfico |
 | `none` | Sin compresión (default) |
+
+## Base de Conocimiento
+
+Los agentes indexan conocimiento en `.opencode/knowledge/KB.json` con schema estructurado:
+
+```json
+{
+  "id": "unique-id",
+  "type": "pattern|bug|decision|integration|concept|gotcha",
+  "title": "...",
+  "summary": "...",
+  "tags": ["tech", "layer", "action"],
+  "keywords": ["exact", "terms"]
+}
+```
 
 ## Arquitectura
 
@@ -177,14 +105,6 @@ AORA.json
 ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
 ```
 
-## Base de Conocimiento
-
-Los agentes actualizan automáticamente:
-- `KNOWLEDGE.md`: patrones, bugs resueltos, integraciones
-- `DECISIONS.md`: decisiones de producto/arquitectura
-
 ## Licencia
 
 **Opensource** — MIT License
-
-Ver [LICENSE](LICENSE) para más detalles.

@@ -229,6 +229,23 @@
       },
       "activation": ["setmodel", "configurar-modelo", "modelo"],
       "semantic": "ConfiguradorModelo"
+    },
+    "config-aora": {
+      "description": "Asistente de configuración AORA - modelo y actualizaciones",
+      "model": "base",
+      "temperature": 0.3,
+      "compact": false,
+      "cavemanLevel": "lite",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "activation": ["config-aora", "/config-aora", "setup-aora"],
+      "semantic": "ConfigAORA"
     }
   },
 
