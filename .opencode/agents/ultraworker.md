@@ -66,10 +66,11 @@ ulw [descripcion]
 Antes de llamar a cualquier agente:
 
 1. Lee README.md si existe
-2. Ejecuta `ls` y `glob **/*` para entender estructura
-3. Verifica stack: package.json, requirements.txt, go.mod, etc.
-4. Identifica patrones existentes
-5. **CONSULTAR base de conocimiento**:
+2. Lee .gitignore si existe para saber que excluir
+3. Ejecuta `ls` y `glob **/*` para entender estructura (excluye lo de .gitignore)
+4. Verifica stack: package.json, requirements.txt, go.mod, etc.
+5. Identifica patrones existentes
+6. **CONSULTAR base de conocimiento**:
 
    ```
    📚 CONSULTAR KB.json:
@@ -82,6 +83,13 @@ Antes de llamar a cualquier agente:
 
    Si encontras algo relevante, incluiyelo en tu analisis para @planner
    ```
+
+**IMPORTANTE: Cuando uses glob, grep o ls, EXCLUYE patrones de .gitignore:**
+- node_modules/
+- .git/
+- dist/, build/, out/
+- *.log, .env, .env.*
+- archivos temporales
 
 ## FASE 1 — @Estratega
 

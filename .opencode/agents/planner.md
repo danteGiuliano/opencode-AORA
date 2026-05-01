@@ -56,7 +56,8 @@ NO continuar sin al menos intentar aclarar.
 - Si hay ambiguedad → PREGUNTA
 
 ### 2. ANALISIS DE IMPACTO
-- Explora codebase: grep, glob, ls
+- Lee .gitignore si existe para saber que excluir
+- Explora codebase: grep, glob, ls (excluye: node_modules/, .git/, dist/, build/, *.log, .env)
 - Identifica archivos y modulos afectados
 - Detecta dependencias externas
 - Marca riesgos y supuestos
