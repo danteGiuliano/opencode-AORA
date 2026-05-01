@@ -38,6 +38,31 @@ El asistente te guía para:
 - **Actualizar agentes** (desde GitHub)
 - **Verificar instalación**
 
+## Tips
+
+### Configurar todos los modelos de una vez
+
+Si querés configurar todos los modelos sin pasar por el menú interactivo:
+
+```
+@config-aora configura todos los modelos para big-pickle de OpenCodeZed
+```
+
+El agente @config-aora interpreta la solicitud y configura todos los modelos en AORA.json directamente.
+
+### Configuración específica
+
+```
+@config-aora usa minimax/MiniMax-M2.7 para todos los modelos
+@config-aora configura modelo base como anthropic/claude-3.5-sonnet
+```
+
+### Ver estado actual
+
+```
+@config-aora ver estado de instalación
+```
+
 ## Agentes
 
 | Agent | Nombre Semántico | Rol |
