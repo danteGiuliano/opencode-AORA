@@ -8,6 +8,34 @@ Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) 
 
 ---
 
+## Aviso de Seguridad
+
+> [!WARNING]
+> AORA otorga permisos de ejecución de shell sin restricciones a los agentes `@ultrawork` y `@builder`.
+> El template de configuración de `AORA.json` incluye patrones de shell destructivos por diseño.
+>
+> **Este sistema debe instalarse únicamente en entornos de desarrollo aislados y dedicados.**
+> 
+> **Entornos recomendados:**
+> - Máquinas de desarrollo dedicadas sin datos sensibles
+> - VMs o containers aislados y limitados a un único proyecto
+> - Entornos desechables como dev containers o sandboxes
+> 
+> **Entornos no recomendados:**
+> - Servidores de producción o cualquier sistema expuesto a internet
+> - Máquinas compartidas entre múltiples usuarios
+> - Pipelines de CI/CD sin sandboxing explícito
+> - Cualquier entorno donde la ejecución irrestricta de `bash` represente un riesgo operacional
+ 
+> [!IMPORTANT]
+> Los desarrolladores no asumen responsabilidad alguna por pérdida de datos o
+> daños al sistema derivados de una instalación fuera de los entornos soportados
+> descritos anteriormente.
+> Proceda bajo su propio riesgo.
+> Recuerde que tiene un cerebro, úselo.
+
+---
+
 ## Visión
 
 AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto**. Los agentes son archivos markdown nativos de OpenCode, portables y sin lock-in.
