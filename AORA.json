@@ -188,6 +188,42 @@
       "escalationThreshold": "Solo si el conflicto bloquea más de una tarea O involucra decisión irreversible",
       "semantic": "Arbitro"
     },
+    "queue": {
+      "description": "Gestor de pool de tareas - administra ejecución paralela con dependencias",
+      "model": "base",
+      "temperature": 0.2,
+      "compact": false,
+      "cavemanLevel": "lite",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "task": "allow"
+      },
+      "activation": ["queue", "pool", "gestionar"],
+      "semantic": "QueueManager"
+    },
+    "launcher": {
+      "description": "Lanzador de tareas en background - ejecuta @builder en paralelo real",
+      "model": "coder",
+      "temperature": 0.2,
+      "compact": false,
+      "cavemanLevel": "full",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "task": "allow"
+      },
+      "activation": ["launcher", "background", "parallel"],
+      "semantic": "Launcher"
+    },
     "init-cruise": {
       "description": "Configurador AORA - replica settings de opencode.json",
       "model": "fast",
@@ -227,26 +263,30 @@
 
   "workflow": {
     "compactMode": false,
-    "parallelismNote": "Las tareas paralelas se ejecutan en secuencia independiente dentro de OpenCode. No hay paralelismo real de agentes en una sola sesión.",
+    "parallelism": {
+      "note": "Tareas independientes se ejecutan en paralelo real via @launcher",
+      "maxParallel": 3,
+      "mechanism": "@launcher lanza sesiones opencode en background"
+    },
     "phases": [
       {
         "phase": 0,
         "name": "ANALISIS",
         "agents": ["ultraworker"],
-        "description": "Análisis rápido del contexto"
+        "description": "Análisis rápido del contexto + consulta KB"
       },
       {
         "phase": 1,
         "name": "PLANIFICACION",
         "agents": ["planner"],
-        "description": "Descomposición en tareas atómicas"
+        "description": "Descomposición en tareas atómicas + consulta conocimiento previo"
       },
       {
         "phase": 2,
         "name": "IMPLEMENTACION",
-        "agents": ["builder"],
-        "description": "Ejecución de tareas independientes (secuencial sin bloqueo entre ellas)",
-        "parallelism": false
+        "agents": ["queue", "launcher", "builder"],
+        "description": "@queue gestiona pool → @launcher lanza independientes en paralelo → @builder ejecuta dependientes",
+        "parallelism": true
       },
       {
         "phase": 3,

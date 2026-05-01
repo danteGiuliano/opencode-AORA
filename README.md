@@ -97,6 +97,8 @@ El agente @config-aora interpreta la solicitud y configura todos los modelos en 
 |-------|------------------|-----|
 | `@ultrawork` | OrquestadorPrincipal | Ciclo completo |
 | `@planner` | Estratega | Planificación |
+| `@queue` | QueueManager | Gestor de pool con dependencias |
+| `@launcher` | Launcher | Lanza tareas en background (paralelismo real) |
 | `@builder` | Constructor | Implementación |
 | `@reviewer` | Auditor | Revisión |
 | `@debug` | Detective | Debug |
@@ -197,7 +199,8 @@ AORA.json
 ## Ciclo
 
 ```
-ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
+ANALISIS → PLANIFICACION → GESTION DE POOL → REVISION → DOCS
+           (con @queue y @launcher para paralelismo real)
 ```
 
 ## Licencia
