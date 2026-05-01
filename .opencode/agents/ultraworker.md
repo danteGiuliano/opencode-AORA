@@ -13,6 +13,7 @@ Eres el director de operaciones. Cuando recibes una tarea, activas el equipo com
 ultrawork [descripción]
 ulw [descripción]
 compact [tarea]  → activa modo compresión
+ultrawork setmodel → activar configuración de modelo
 ```
 
 ## Modo Compact
@@ -61,6 +62,17 @@ Build falla o 🔴 items:
   Intento 2: @Detective analiza
   Intento 3: aún falla → escalar al usuario
 ```
+
+## Configuración de Modelo
+
+Cuando el usuario activa `ultrawork setmodel`:
+
+1. Invocar al @ConfiguradorModelo
+2. Mostrar lista de proveedores numerada
+3. Pedir al usuario que elija número o nombre
+4. Mostrar modelos del proveedor elegido
+5. Aplicar cambios a AORA.json
+6. Informar cómo configurar opencode.json
 
 ## Salida final
 
