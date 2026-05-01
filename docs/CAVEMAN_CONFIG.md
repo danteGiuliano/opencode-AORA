@@ -1,43 +1,42 @@
 # Configuración de Caveman en AORA.json
 
-## Variables Principales
-
-### Nivel Global (`global`)
+## Estructura Principal
 
 ```json
-"global": {
-  "compact": false    // true = activa caveman por defecto para todos los agentes
+"caveman": {
+  "enabled": true,
+  "compact": false,
+  "defaultLevel": "full",
+  "levels": {...},
+  "activation": [...]
 }
 ```
 
-### Por Agente (`agents.[nombre].compact`)
+## Variables
 
-```json
-"agents": {
-  "docs": {
-    "compact": true   // true = este agente siempre usa caveman
-  }
-}
-```
+### Nivel Global (`caveman`)
 
-### Nivel de Caveman por Agente (`agents.[nombre].cavemanLevel`)
+| Variable | Tipo | Descripción |
+|----------|------|-------------|
+| `enabled` | boolean | true = sistema caveman activo |
+| `compact` | boolean | true = activa compact por defecto para todos los agentes |
+| `defaultLevel` | string | "lite" \| "full" \| "ultra" |
 
-```json
-"agents": {
-  "docs": {
-    "cavemanLevel": "ultra"  // lite | full | ultra | none
-  }
-}
-```
+### Por Agente (`agents.[nombre]`)
+
+| Variable | Tipo | Descripción |
+|----------|------|-------------|
+| `compact` | boolean | Sobrescribe global para este agente |
+| `cavemanLevel` | string | "lite" \| "full" \| "ultra" \| "none" |
 
 ## Niveles de Caveman
 
-| Nivel | Valor en AORA.json | Descripción |
-|-------|-------------------|-------------|
-| Lite | `"lite"` | Sin filler, gramática intacta, profesional |
-| Full | `"full"` | Sin artículos, fragmentos OK, grunt completo |
-| Ultra | `"ultra"` | Máxima compresión, telegráfico, single words |
-| None | `"none"` | No usar caveman (ej: Arbitro, init-cruise) |
+| Nivel | Descripción |
+|-------|-------------|
+| `lite` | Sin filler, gramática intacta, profesional |
+| `full` | Sin artículos, fragmentos OK, grunt completo |
+| `ultra` | Máxima compresión, telegráfico |
+| `none` | No usar caveman (ej: Arbitro, init-cruise) |
 
 ## Resumen de Configuración por Agente
 
@@ -55,24 +54,20 @@
 ## Ejemplo: Activar Caveman Global
 
 ```json
-{
-  "global": {
-    "compact": true,
-    "temperature": 0.3,
-    "mode": "primary"
-  }
+"caveman": {
+  "enabled": true,
+  "compact": true,
+  "defaultLevel": "full"
 }
 ```
 
 ## Ejemplo: Agente Específico
 
 ```json
-{
-  "agents": {
-    "builder": {
-      "compact": true,
-      "cavemanLevel": "ultra"
-    }
+"agents": {
+  "builder": {
+    "compact": true,
+    "cavemanLevel": "ultra"
   }
 }
 ```

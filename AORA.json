@@ -8,12 +8,12 @@
     "description": "Configuración global para todos los agentes",
     "baseModel": "minimax/MiniMax-M2.7",
     "temperature": 0.3,
-    "mode": "primary",
-    "compact": false
+    "mode": "primary"
   },
 
   "caveman": {
     "enabled": true,
+    "compact": false,
     "defaultLevel": "full",
     "levels": {
       "lite": {

@@ -105,16 +105,14 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 ### Configuración en AORA.json
 
 ```json
-"global": {
-  "compact": false    // true = activar por defecto para todos
-},
 "caveman": {
   "enabled": true,
+  "compact": false,        // true = activar por defecto para todos
   "defaultLevel": "full"  // lite | full | ultra
 }
 ```
 
-Por agente:
+Por agente (sobrescribe el global):
 
 ```json
 "agents": {
