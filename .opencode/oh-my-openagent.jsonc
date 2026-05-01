@@ -6,6 +6,12 @@
     "OpenCode-Builder": {
       "model": "minimax/MiniMax-M2.7"
     },
+    "queue": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "launcher": {
+      "model": "minimax/MiniMax-M2.7"
+    },
     "Prometheus (Planner)": {
       "model": "minimax/MiniMax-M2.7"
     },
