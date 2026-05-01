@@ -58,6 +58,9 @@ fi
 echo ""
 echo "✅ AORA instalado correctamente!"
 echo ""
+
+# Conectar con OpenCode global config
+"$AORA_DIR/setup-opencode.sh"
 echo "Estructura creada:"
 echo "  $AORA_DIR/"
 echo "  ├── agents/"
