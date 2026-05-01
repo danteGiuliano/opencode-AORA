@@ -305,8 +305,7 @@
       "decisions": ".opencode/DECISIONS.md",
       "kb": ".opencode/knowledge/KB.json"
     },
-    "kbSchema": "array-root",
-    "autoUpdate": false
+    "kbSchema": "array-root"
   },
 
   "opencodeTemplate": {
