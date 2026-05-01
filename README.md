@@ -1,5 +1,7 @@
 # AORA — Agents Runtime Architecture
 
+> **AORA** = Agente OpenCode Río Negro Argentina
+
 Sistema multi-agente para [OpenCode](https://opencode.ai) con configuración centralizada, nombres semánticos y modelos arbitrarios.
 
 Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) y el concepto [caveman](https://github.com/JuliusBrussee/caveman) para compresión de output.
