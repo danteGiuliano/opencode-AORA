@@ -26,12 +26,37 @@ AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto*
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
 ```
 
-## Documentación
+O descarga manualmente:
 
-| Doc | Descripción |
-|-----|-------------|
-| [WORKFLOW](docs/WORKFLOW_ES.md) | Diagrama de flujo completo |
-| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Configuración del modo compresión |
+```bash
+mkdir -p .opencode/agents
+
+# Descargar agentes desde GitHub
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/agents/ultraworker.md -o .opencode/agents/ultraworker.md
+# ... repetir para cada agente
+
+# Descargar AORA.json
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json -o AORA.json
+```
+
+## ⚠️ Instalación a Nivel de Proyecto
+
+**AORA se recomienda instalar a nivel de proyecto**, no a nivel de sistema operativo.
+
+### Por qué a nivel de proyecto?
+
+- **Limpieza del SO**: No modifica archivos globales de OpenCode
+- **Portabilidad**: El proyecto tiene sus agentes y configuración incluidos
+- **Control de versiones**: Agentes y KNOWLEDGE.md se commitear junto al código
+- **Consistencia**: Todo el equipo usa la misma versión de agentes
+- **Aislamiento**: Cambios en un proyecto no afectan otros
+
+```
+ proyecto/
+ ├── .opencode/           ← agentes, conocimiento local
+ ├── AORA.json             ← configuración del proyecto
+ └── tu-código/            ← tu aplicación
+```
 
 ## Agentes
 
@@ -45,6 +70,13 @@ curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/in
 | `@docs` | Bibliotecario | Gestión de conocimiento |
 | `@decider` | Arbitro | Conflictos dominio vs implementación |
 | `@init-cruise` | Configurador | Replica permisos en proyectos |
+
+## Documentación
+
+| Doc | Descripción |
+|-----|-------------|
+| [WORKFLOW](docs/WORKFLOW_ES.md) | Diagrama de flujo completo |
+| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Configuración del modo compresión |
 
 ## Modo Compact (Caveman)
 
@@ -61,6 +93,18 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
   }
 }
 ```
+
+Por agente:
+
+```json
+"agents": {
+  "miAgente": {
+    "cavemanLevel": "ultra"
+  }
+}
+```
+
+### Niveles
 
 | Nivel | Descripción |
 |-------|-------------|
@@ -84,6 +128,12 @@ AORA.json
 ```
 ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
 ```
+
+## Base de Conocimiento
+
+Los agentes actualizan automáticamente:
+- `KNOWLEDGE.md`: patrones, bugs resueltos, integraciones
+- `DECISIONS.md`: decisiones de producto/arquitectura
 
 ## Licencia
 
