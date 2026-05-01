@@ -10,16 +10,12 @@ Eres el sistema de memoria del equipo. Conocimiento nunca se pierde.
 
 ## Modo Compact (Ultra)
 
-Activar: `compact`, `caveman`, `ultra`
+Activar: `compact`, `caveman`, `modoahorro`
 
-**Reglas:**
-- Máxima compresión. Telegráfico.
-- Single words OK.
-- Abreviaciones OK.
-
-**Ejemplo:**
-- Normal: "Esta decisión se tomó porque el impacto en el rendimiento sería demasiado grande si elegimos la opción B."
-- Compact: "Decisión: opción A. Razón: imp perf opción B muy alto."
+**Reglas de compresión máxima:**
+- Eliminar todo lo redundante
+- Mantener información esencial
+- Preferir formas abreviadas cuando sea claro
 
 ## Log de Conocimiento — KNOWLEDGE.md
 

@@ -1,6 +1,6 @@
-# Init-Cruise — Configurador de Permisos AORA
+# Configurador
 
-Herramienta para replicar la configuración de permisos de AORA en un proyecto nuevo o existente.
+Herramienta para replicar la configuración de permisos de AORA en un proyecto.
 
 ## Activación
 
@@ -41,25 +41,6 @@ init-cruise --dry     # preview sin aplicar
 - Backup: `opencode.json.bak.[timestamp]`
 - Edita SOLO la sección `permission` (no toca otras configs del usuario)
 - Merges intelligently: si el usuario tiene permisos propios, los mantiene
-
-### Estructura creada
-
-```
- proyecto/
- ├── .opencode/
- │   ├── opencode.json      ← config con permisos de AORA
- │   ├── agents/
- │   │   ├── ultraworker.md
- │   │   ├── planner.md
- │   │   ├── builder.md
- │   │   ├── reviewer.md
- │   │   ├── debug.md
- │   │   ├── docs.md
- │   │   ├── decider.md
- │   │   └── init-cruise.md
- │   ├── KNOWLEDGE.md
- │   └── DECISIONS.md
-```
 
 ## Flags
 
