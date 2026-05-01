@@ -23,42 +23,86 @@ Cada entrada en la base de conocimiento sigue este formato:
   "meta": {
     "created": "ISO date",
     "source": "@agent or 'manual'",
-    "confidence": "high | medium | low"
+    "confidence": "high | medium | low",
+    "weight": 0.5,
+    "hits": 0,
+    "lastUsed": null,
+    "successUses": 0,
+    "failedUses": 0
   }
 }
 ```
 
+## Campos Meta — Tracking de Uso
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `weight` | number | 0.5 | Peso base de la entrada (0.0 - 1.0) |
+| `hits` | number | 0 | Veces que fue consultada |
+| `lastUsed` | string | null | ISO date de ultima consulta |
+| `successUses` | number | 0 | Consultas marcadas como utiles |
+| `failedUses` | number | 0 | Consultas marcadas como no utiles |
+
+## Sistema de Scoring
+
+El scoring combina multiple factores:
+
+```
+score = relevanceScore * usageBoost * baseWeight
+
+usageBoost = 1 + log(hits + 1) * successRate
+successRate = successUses / (successUses + failedUses + 1)
+relevanceScore = match en keywords/tags/content (0-100)
+```
+
+## Recalibracion Automatica
+
+El agente @calibrator recalibra periodicamente:
+
+```
+Si hits > 10 AND successRate > 0.8:
+  confidence = "high"
+  weight = 0.9
+
+Si hits > 5 AND successRate < 0.5:
+  confidence = "low"
+  weight = 0.3
+
+Si failedUses > 3:
+  Marcar para revision manual
+```
+
 ## Campos
 
-| Campo | Tipo | Obligatorio | Descripción |
+| Campo | Tipo | Obligatorio | Descripcion |
 |-------|------|-------------|-------------|
-| `id` | string | ✅ | ID único en kebab-case |
-| `type` | enum | ✅ | Categoría principal |
-| `title` | string | ✅ | Título descriptivo corto |
-| `summary` | string | ✅ | Una frase: qué es y por qué importa |
-| `content` | string | ✅ | Explicación completa, multilínea |
+| `id` | string | ✅ | ID unico en kebab-case |
+| `type` | enum | ✅ | Categoria principal |
+| `title` | string | ✅ | Titulo descriptivo corto |
+| `summary` | string | ✅ | Una frase: que es y por que importa |
+| `content` | string | ✅ | Explicacion completa, multilinea |
 | `example` | string | ❌ | Code snippet o ejemplo concreto |
-| `tags` | string[] | ✅ | Tecnología + capa + acción |
+| `tags` | string[] | ✅ | Tecnologia + capa + accion |
 | `concepts` | string[] | ❌ | Conceptos abstractos |
-| `keywords` | string[] | ❌ | Términos buscables exactos |
+| `keywords` | string[] | ❌ | Terminos buscables exactos |
 | `related` | string[] | ❌ | IDs de entradas relacionadas |
 | `context` | object | ❌ | Archivos y proyecto |
-| `meta` | object | ✅ | Metadata de creación |
+| `meta` | object | ✅ | Metadata de creacion y tracking |
 
 ## Tipos de Entrada
 
-| Type | Descripción | Ejemplo |
+| Type | Descripcion | Ejemplo |
 |------|-------------|---------|
-| `pattern` | Patrón de código/arquitectura | "n+1-query-pattern" |
-| `bug` | Bug conocido y su solución | "jwt-token-expiry-bug" |
-| `decision` | Decisión de arquitectura/producto | "base64-storage-decision" |
-| `integration` | Integración con servicio externo | "jwt-shared-auth-ts-superior" |
-| `concept` | Concepto técnico importante | "base64-file-upload-flow" |
+| `pattern` | Patron de codigo/arquitectura | "n+1-query-pattern" |
+| `bug` | Bug conocido y su solucion | "jwt-token-expiry-bug" |
+| `decision` | Decision de arquitectura/producto | "base64-storage-decision" |
+| `integration` | Integracion con servicio externo | "jwt-shared-auth-ts-superior" |
+| `concept` | Concepto tecnico importante | "base64-file-upload-flow" |
 | `gotcha` | Algo no obvio que funcionar | "tipo-doc-mensual-match-opt-interno" |
 
 ## Tags Recomendados
 
-### Tecnología
+### Tecnologia
 ```
 nestjs, typescript, typeorm, mysql, jwt, passport, filesystem, base64
 ```
@@ -68,17 +112,17 @@ nestjs, typescript, typeorm, mysql, jwt, passport, filesystem, base64
 api, service, repository, entity, dto, guard, middleware, controller
 ```
 
-### Acción
+### Accion
 ```
 auth, crud, upload, validation, query, transaction, error-handling
 ```
 
-## Búsqueda
+## Busqueda
 
 El archivo `search.js` permite buscar en la base de conocimiento.
 
 ```bash
-# Buscar por keyword
+# Buscar por keyword (con ranking)
 node search.js --keyword "jwt"
 
 # Buscar por tipo
@@ -92,6 +136,9 @@ node search.js --concept "n+1"
 
 # Combinar
 node search.js --tag "nestjs" --type "pattern"
+
+# Mostrar todas las entradas
+node search.js --all
 ```
 
 ## Archivo

@@ -227,7 +227,7 @@ node evals/judge.js --case eval-001 --output "output del agente"
 
 ## Base de Conocimiento
 
-Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`.
+Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`. El sistema es **escalable con el uso** — las entradas mas consultadas y utiles rankean primero.
 
 ### Schema de Entrada
 
@@ -235,20 +235,61 @@ Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`.
 {
   "id": "D-001",
   "type": "decision",
-  "title": "Titulo descriptivo",
-  "summary": "Una frase: que es y por que importa",
+  "title": "JWT sobre Sessions",
+  "summary": "Para APIs stateless, JWT es mejor que sesiones server-side",
   "content": "Explicacion completa...",
-  "tags": ["tecnologia", "capa", "accion"],
-  "keywords": ["termino exacto", "nombre funcion"],
+  "tags": ["auth", "api", "security"],
+  "keywords": ["jwt", "token", "sessions"],
   "context": {
-    "files": ["src/path/file.js"]
+    "files": ["src/auth/"]
   },
   "meta": {
     "created": "2026-05-01",
     "source": "@Bibliotecario",
-    "confidence": "high"
+    "confidence": "high",
+    "weight": 0.8,
+    "hits": 42,
+    "lastUsed": "2026-05-01T10:00:00Z",
+    "successUses": 38,
+    "failedUses": 2
   }
 }
+```
+
+### Sistema de Scoring
+
+El ranking combina relevancia y uso:
+
+```
+score = relevanceScore * usageBoost * baseWeight
+
+usageBoost = 1 + log(hits + 1) * successRate
+successRate = successUses / (successUses + failedUses + 1)
+```
+
+### Recalibracion Automatica
+
+El agente @calibrator recalibra periodicamente:
+
+| Condicion | Accion |
+|-----------|--------|
+| hits > 10 AND successRate > 0.8 | confidence: high, weight: 0.9 |
+| hits > 5 AND successRate < 0.5 | confidence: low, weight: 0.3 |
+| failedUses > 3 | Marcar para revision |
+
+### Busqueda
+
+```bash
+# Buscar con ranking
+node .opencode/knowledge/search.js --keyword "jwt"
+
+# Registro de uso
+node .opencode/knowledge/search.js --hit "D-001"      # Registra consulta
+node .opencode/knowledge/search.js --success "D-001" # Registra uso util
+node .opencode/knowledge/search.js --failed "D-001"  # Registra uso no util
+
+# Estadisticas
+node .opencode/knowledge/search.js --stats
 ```
 
 ### Tipos de Conocimiento
@@ -265,13 +306,15 @@ Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`.
 ### Flujo de Conocimiento
 
 ```
-@ultraworker FASE 0 → consulta KB.json
+@ultraworker FASE 0 → consulta KB (--hit)
         ↓
-@planner Paso 0    → consulta KB.json
+@planner Paso 0    → consulta KB (--hit)
         ↓
 ...implementacion...
         ↓
-@docs FASE 5      → escribe nueva decision en KB.json
+@calibrator        → recalibra KB periodicamente
+        ↓
+@docs FASE 5      → escribe nueva decision en KB
 ```
 
 ---
@@ -332,7 +375,8 @@ Sistema de compresion de output. Reduce ~65-75% tokens.
 ├── calibrator/
 │   └── metrics.json    # Metricas de agentes
 ├── knowledge/
-│   └── KB.json         # Base de conocimiento
+│   ├── KB.json         # Base de conocimiento
+│   └── search.js       # Buscador con ranking
 ├── logs/               # Logs para CI
 ├── aora-agents.json    # Registro de agentes
 ├── DECISIONS.md        # Log de decisiones

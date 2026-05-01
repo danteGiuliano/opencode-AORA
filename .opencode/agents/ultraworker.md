@@ -70,18 +70,24 @@ Antes de llamar a cualquier agente:
 3. Ejecuta `ls` y `glob **/*` para entender estructura (excluye lo de .gitignore)
 4. Verifica stack: package.json, requirements.txt, go.mod, etc.
 5. Identifica patrones existentes
-6. **CONSULTAR base de conocimiento**:
+6. **CONSULTAR base de conocimiento con ranking**:
 
    ```
-   📚 CONSULTAR KB.json:
+   📚 CONSULTAR KB.json (con scoring):
 
-   Busca en .opencode/knowledge/KB.json:
-   - Decisiones previas relevantes al requerimiento
-   - Patrones de codigo existentes en el proyecto
-   - Bugs o hotfixes conocidos
-   - Integraciones ya resueltas
+   Ejecuta: node .opencode/knowledge/search.js --keyword "[terminos de busqueda]" --top 5
 
-   Si encontras algo relevante, incluiyelo en tu analisis para @planner
+   El sistema rankea resultados por:
+   - Relevancia (keywords, tags, title match)
+   - Uso previo (hits, successUses, failedUses)
+   - Peso base (weight)
+
+   Busca decisiones relacionadas con la tarea.
+   Si encontras entradas relevantes, registra el hit:
+
+   node .opencode/knowledge/search.js --hit "[entry-id]"
+
+   Incluiyelas en tu analisis para @planner.
    ```
 
 **IMPORTANTE: Cuando uses glob, grep o ls, EXCLUYE patrones de .gitignore:**

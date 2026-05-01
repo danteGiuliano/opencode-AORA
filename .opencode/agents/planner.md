@@ -42,13 +42,41 @@ NO continuar sin al menos intentar aclarar.
 ## Tu Proceso
 
 ### 0. CONSULTA DE CONOCIMIENTO PREVIO
-- Lee `.opencode/knowledge/KB.json` para buscar:
-  - **Decisiones previas** relacionadas con la tarea
-  - **Patrones existentes** que ya se usan en el proyecto
-  - **Bugs/hotfixes** conocidos que podrian afectar el plan
-  - **Integraciones** ya resueltas que no reinventar
-- Extrae conocimiento relevante y tenelo en cuenta para el plan
-- **Si encontras decisiones conflictivas**, marcalas en RIESGOS
+
+Usa search.js con ranking para encontrar conocimiento relevante:
+
+```
+node .opencode/knowledge/search.js --keyword "[terminos]" --top 5
+```
+
+El sistema rankea por:
+- Relevancia (keywords, tags, title match)
+- Uso previo (hits, successUses, failedUses)
+- Peso base (weight)
+
+Despues de consultar, registra el hit:
+```
+node .opencode/knowledge/search.js --hit "[entry-id]"
+```
+
+Si la decision fue util, registra:
+```
+node .opencode/knowledge/search.js --success "[entry-id]"
+```
+
+Si no fue util:
+```
+node .opencode/knowledge/search.js --failed "[entry-id]"
+```
+
+Busca:
+- **Decisiones previas** relacionadas con la tarea
+- **Patrones existentes** que ya se usan en el proyecto
+- **Bugs/hotfixes** conocidos que podrian afectar el plan
+- **Integraciones** ya resueltas que no reinventar
+
+Extrae conocimiento relevante y tenelo en cuenta para el plan.
+**Si encontras decisiones conflictivas**, marcalas en RIESGOS.
 
 ### 1. COMPRENSION
 - Reescribi el requerimiento con tus palabras
