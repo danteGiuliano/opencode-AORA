@@ -91,6 +91,26 @@ node .opencode/update.js --all --force # sobrescribir existentes
 
 **No se toca:** `KB.json`, `KNOWLEDGE.md`, `DECISIONS.md`
 
+## Configuración del Modelo
+
+Para configurar el provider y modelo base:
+
+```bash
+node .opencode/setmodel.js
+```
+
+Esto te permite elegir provider (minimax, anthropic, openai, etc) y modelo específico. Se actualiza `AORA.json` con `global.baseModel`.
+
+```bash
+node .opencode/setmodel.js --help     # ver ayuda
+```
+
+**Flujo:**
+1. Muestra providers disponibles
+2. Pide provider (minimax, anthropic, openai, ollama, gemini)
+3. Pide modelo específico
+4. Actualiza `AORA.json` y `models.base`
+
 ## Modo Compact (Caveman)
 
 Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
