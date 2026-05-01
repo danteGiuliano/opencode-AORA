@@ -47,7 +47,7 @@
       "strengths": ["codificación", "razonamiento complejo", "multi-step"]
     },
     "fast": {
-      "id": "minimax/MiniMax-M2.7-highspeed",
+      "id": "minimax/MiniMax-M2.7",
       "name": "MiniMax-M2.7 Fast",
       "description": "Variante optimizada para tareas de baja latencia",
       "contextWindow": 100000,
@@ -224,23 +224,6 @@
       "activation": ["launcher", "background", "parallel"],
       "semantic": "Launcher"
     },
-    "init-cruise": {
-      "description": "Configurador AORA - replica settings de opencode.json",
-      "model": "fast",
-      "temperature": 0.1,
-      "compact": false,
-      "cavemanLevel": "none",
-      "permissions": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow"
-      },
-      "activation": ["init-cruise", "apply-aora", "setup-aora"],
-      "semantic": "Configurador"
-    },
     "config-aora": {
       "description": "Asistente de configuración AORA - modelo, actualizaciones y estado",
       "model": "base",
@@ -323,7 +306,7 @@
       "kb": ".opencode/knowledge/KB.json"
     },
     "kbSchema": "array-root",
-    "autoUpdate": true
+    "autoUpdate": false
   },
 
   "opencodeTemplate": {
