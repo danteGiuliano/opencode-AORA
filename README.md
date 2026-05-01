@@ -78,6 +78,19 @@ curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AO
 | [WORKFLOW](docs/WORKFLOW_ES.md) | Diagrama de flujo completo |
 | [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Configuración del modo compresión |
 
+## Actualización
+
+Para actualizar agentes y estructura desde GitHub:
+
+```bash
+node .opencode/update.js --check      # verificar estado
+node .opencode/update.js --agents      # actualizar agentes
+node .opencode/update.js --all         # actualizar todo
+node .opencode/update.js --all --force # sobrescribir existentes
+```
+
+**No se toca:** `KB.json`, `KNOWLEDGE.md`, `DECISIONS.md`
+
 ## Modo Compact (Caveman)
 
 Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
