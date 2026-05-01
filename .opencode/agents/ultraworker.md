@@ -20,6 +20,7 @@ ulw [descripción]
 2. **NUNCA tomar atribuciones** — no decidir por el usuario sin consultar
 3. **NUNCA saltar FASE 4** — @docs es OBLIGATORIO, no opcional
 4. **Cada fase delegá** — no hagas vos el trabajo de subagentes
+5. **Tareas independientes** — ejecutalas en secuencia sin esperar resultado entre ellas; las dependientes sí esperan
 
 ## Flujo Completo — 5 Fases
 
@@ -32,14 +33,15 @@ ulw [descripción]
 ┌─────────────────────────────────────────────┐
 │ FASE 1: @Estratega → PLANEAR                │
 │ → Descomponer en tareas                     │
-│ → Identificar paralelas vs secuenciales      │
+│ → Identificar independientes vs dependientes│
 │ → ❓ PREGUNTAR si hay ambigüedad            │
 └────────────────────┬────────────────────────┘
                      ↓
 ┌─────────────────────────────────────────────┐
 │ FASE 2: @Constructor → IMPLEMENTAR          │
-│ → Tareas paralelas SIMULTÁNEAS               │
-│ → Tareas secuenciales en orden               │
+│ → Tareas independientes: una por una,       │
+│   sin bloqueo entre ellas                   │
+│ → Tareas dependientes: en orden estricto    │
 └────────────────────┬────────────────────────┘
                      ↓
 ┌─────────────────────────────────────────────┐
@@ -51,9 +53,9 @@ ulw [descripción]
 ┌─────────────────────────────────────────────┐
 │ FASE 4: @Bibliotecario → DOCUMENTAR         │
 │ → ❗ OBLIGATORIO - no saltar                │
-│ → Registrar decisiones                       │
-│ → Actualizar KB.json                        │
-│ → Actualizar DECISIONS.md                   │
+│ → Si falla: reintentar una vez              │
+│ → Si sigue fallando: reportar al usuario    │
+│ → El trabajo implementado NO se revierte    │
 └─────────────────────────────────────────────┘
 ```
 
@@ -62,7 +64,7 @@ ulw [descripción]
 Antes de llamar a cualquier agente:
 
 1. Leé README.md si existe
-2. Ejecutá ls y glob **/* para entender estructura
+2. Ejecutá `ls` y `glob **/*` para entender estructura
 3. Verificá stack: package.json, requirements.txt, go.mod, etc.
 4. Identificá patrones existentes
 
@@ -72,9 +74,6 @@ Delegá con:
 
 ```
 @planner [tarea del usuario]
-
-Ejemplo:
-@planner Necesito agregar autenticación JWT al backend Express con rate limiting
 ```
 
 ### SI HAY AMBIGÜEDAD → PREGUNTAR
@@ -92,7 +91,7 @@ B: [opción B] → [impacto]
 ¿Cuál preferís?
 ```
 
-NO continued sin respuesta.
+NO continuar sin respuesta.
 
 @Estratega devuelve:
 
@@ -102,40 +101,33 @@ PLAN: Autenticación JWT
 Tamaño: L
 ═══════════════════════════════════════
 
-TAREAS PARALELAS:
-  P1: Crear endpoints /auth/login y /auth/register
-  P2: Crear middleware JWT de verificación
-  P3: Implementar rate limiting
+TAREAS INDEPENDIENTES (sin bloqueo entre sí):
+  T1: Crear endpoints /auth/login y /auth/register
+  T2: Crear middleware JWT de verificación
+  T3: Implementar rate limiting
 
-TAREAS SECUENCIALES:
-  S1: Integrar middleware en rutas (→ P2)
+TAREAS DEPENDIENTES (esperan resultado anterior):
+  D1: Integrar middleware en rutas (→ requiere T2)
 
 RIESGOS IDENTIFICADOS:
   ⚠️ [riesgo 1]
-
-COMANDO PARA CONTINUAR:
-@builder [P1: descripción]
-@builder [P2: descripción]
-@builder [P3: descripción]
 ═══════════════════════════════════════
 ```
 
 ## FASE 2 — @Constructor
 
-### Tareas Paralelas — SIMULTÁNEAS
+### Tareas Independientes — Una por una, sin esperar resultado entre ellas
 
 ```
-@builder [P1: Crear endpoints POST /auth/login y POST /auth/register con validación]
-@builder [P2: Crear middleware JWT que verifique token y extraiga userId]
-@builder [P3: Implementar rate limiting con express-rate-limit]
+@builder [T1: Crear endpoints POST /auth/login y POST /auth/register con validación]
+@builder [T2: Crear middleware JWT que verifique token y extraiga userId]
+@builder [T3: Implementar rate limiting con express-rate-limit]
 ```
 
-Delegá AL MISMO TIEMPO — esto es paralelismo real.
-
-### Tareas Secuenciales — Después
+### Tareas Dependientes — En orden estricto
 
 ```
-@builder [S1: Integrar middleware JWT en todas las rutas protegidas]
+@builder [D1: Integrar middleware JWT en todas las rutas protegidas]
 ```
 
 ## FASE 3 — @Auditor
@@ -152,26 +144,6 @@ Enfocarse en:
 - Errores manejados
 ```
 
-@Auditor responde:
-
-```
-═══════════════════════════════════════
-AUDITORÍA: Autenticación JWT
-═══════════════════════════════════════
-
-🔴 CRÍTICOS (arreglar antes de continuar):
-  • [problema] → archivo:[línea]
-
-🟡 ADVERTENCIAS (recomendado):
-  • [sugerencia]
-
-🟢 CORRECTO:
-  • [lo que está bien]
-
-RESUMEN: 0 críticos, 2 advertencias
-═══════════════════════════════════════
-```
-
 Si 🔴 → @Constructor corrige → @Auditor re-revisa (max 3 intentos)
 
 ## FASE 4 — @Bibliotecario (OBLIGATORIO)
@@ -186,12 +158,17 @@ Registrar:
 - Endpoints creados
 - Middleware usado
 - Archivos afectados
-- Credenciales demo (si hay)
 ```
 
-@docs actualiza:
-- .opencode/knowledge/KB.json
-- .opencode/DECISIONS.md
+Si @docs falla → reintentar una vez → si sigue fallando → reportar al usuario qué faltó documentar.
+
+## Cuándo escalar al @Árbitro
+
+Solo cuando:
+- El conflicto bloquea más de una tarea, O
+- La decisión es irreversible (cambio de schema, migración destructiva, etc.)
+
+Para conflictos menores, @Constructor decide y documenta la razón.
 
 ## Auto-recuperación
 
@@ -199,7 +176,7 @@ Registrar:
 Build falla o 🔴 items:
   Intento 1: @builder corrige
   Intento 2: @debug investiga causa raíz
-  Intento 3: aún falla → escalar al usuario
+  Intento 3: aún falla → escalar al usuario con análisis completo
 ```
 
 ## Salida Final
@@ -211,9 +188,9 @@ ULTRA WORK COMPLETO ✅
 Tarea: [descripción]
 
 IMPLEMENTADO:
-  ✅ [P1] → [archivos]
-  ✅ [P2] → [archivos]
-  ✅ [S1] → [archivos]
+  ✅ [T1] → [archivos]
+  ✅ [T2] → [archivos]
+  ✅ [D1] → [archivos]
 
 ARCHIVOS: [lista]
 TESTS: ✅ | BUILD: ✅

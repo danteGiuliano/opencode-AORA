@@ -1,7 +1,7 @@
 {
   "$schema": "https://aora.schema.json",
   "name": "AORA - OpenCode Agents Runtime",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "language": "es",
 
   "global": {
@@ -11,7 +11,7 @@
     "mode": "primary"
   },
 
-"caveman": {
+  "caveman": {
     "enabled": true,
     "global": {
       "enabled": false,
@@ -33,17 +33,6 @@
       "none": {
         "description": "No usar caveman",
         "rules": []
-      }
-    },
-    "activation": ["caveman", "compact", "modoahorro", "ahorrar"]
-  },
-      "full": {
-        "description": "Caveman por defecto. Sin artículos, fragmentos, grunt completo",
-        "rules": ["no_articles", "fragments_ok", "drop_hedging", "short_synonyms"]
-      },
-      "ultra": {
-        "description": "Máxima compresión. Telegráfico. Abreviar todo.",
-        "rules": ["maximum_compression", "telegraphic", "abbreviate", "single_words"]
       }
     },
     "activation": ["caveman", "compact", "modoahorro", "ahorrar"]
@@ -140,12 +129,13 @@
       "permissions": {
         "read": "allow",
         "edit": "deny",
-        "bash": "deny",
+        "bash": "allow",
         "glob": "allow",
         "grep": "allow",
         "list": "allow"
       },
-      "semantic": "Auditor"
+      "semantic": "Auditor",
+      "bashRestriction": "read-only: cat, grep, ls, find, node --check, python -m py_compile"
     },
     "debug": {
       "description": "Detective de errores - diagnóstico raíz",
@@ -164,7 +154,7 @@
       "semantic": "Detective"
     },
     "docs": {
-      "description": "Gestor de conocimiento - documentación",
+      "description": "Gestor de conocimiento - documentación y escritura en KB",
       "model": "fast",
       "temperature": 0.4,
       "compact": true,
@@ -172,11 +162,12 @@
       "permissions": {
         "read": "allow",
         "edit": "allow",
-        "bash": "deny",
+        "bash": "allow",
         "glob": "allow",
         "grep": "allow",
         "list": "allow"
       },
+      "bashRestriction": "solo: mkdir -p, cat, echo, node search.js",
       "semantic": "Bibliotecario"
     },
     "decider": {
@@ -194,6 +185,7 @@
         "list": "allow"
       },
       "activation": ["decidir", "conflicto", "arbitro"],
+      "escalationThreshold": "Solo si el conflicto bloquea más de una tarea O involucra decisión irreversible",
       "semantic": "Arbitro"
     },
     "init-cruise": {
@@ -213,25 +205,8 @@
       "activation": ["init-cruise", "apply-aora", "setup-aora"],
       "semantic": "Configurador"
     },
-    "setmodel": {
-      "description": "Guía de configuración de provider y modelo AORA",
-      "model": "base",
-      "temperature": 0.3,
-      "compact": false,
-      "cavemanLevel": "none",
-      "permissions": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow"
-      },
-      "activation": ["setmodel", "configurar-modelo", "modelo"],
-      "semantic": "ConfiguradorModelo"
-    },
     "config-aora": {
-      "description": "Asistente de configuración AORA - modelo y actualizaciones",
+      "description": "Asistente de configuración AORA - modelo, actualizaciones y estado",
       "model": "base",
       "temperature": 0.3,
       "compact": false,
@@ -244,13 +219,15 @@
         "grep": "allow",
         "list": "allow"
       },
-      "activation": ["config-aora", "/config-aora", "setup-aora"],
-      "semantic": "ConfigAORA"
+      "activation": ["config-aora", "/config-aora", "setmodel", "configurar-modelo", "modelo"],
+      "semantic": "ConfigAORA",
+      "note": "Agente unificado: reemplaza setmodel.md. Maneja configuración de modelo Y actualizaciones."
     }
   },
 
   "workflow": {
     "compactMode": false,
+    "parallelismNote": "Las tareas paralelas se ejecutan en secuencia independiente dentro de OpenCode. No hay paralelismo real de agentes en una sola sesión.",
     "phases": [
       {
         "phase": 0,
@@ -268,8 +245,8 @@
         "phase": 2,
         "name": "IMPLEMENTACION",
         "agents": ["builder"],
-        "description": "Ejecución paralela de tareas",
-        "parallelism": true
+        "description": "Ejecución de tareas independientes (secuencial sin bloqueo entre ellas)",
+        "parallelism": false
       },
       {
         "phase": 3,
@@ -281,13 +258,16 @@
         "phase": 4,
         "name": "DOCUMENTACION",
         "agents": ["docs"],
-        "description": "Registro en base de conocimiento"
+        "description": "Registro en base de conocimiento — OBLIGATORIO, no saltar",
+        "mandatory": true,
+        "failurePolicy": "Si docs falla, ultraworker reintenta una vez antes de reportar al usuario. El trabajo implementado NO se revierte."
       }
     ],
     "decisionGate": {
       "enabled": true,
       "pausePhase": "PLANIFICACION",
-      "registerIn": "DECISIONS.md"
+      "registerIn": "DECISIONS.md",
+      "escalateThreshold": "Conflicto bloquea >1 tarea o decisión irreversible"
     },
     "selfHealing": {
       "enabled": true,
@@ -299,8 +279,10 @@
   "knowledge": {
     "files": {
       "knowledge": ".opencode/KNOWLEDGE.md",
-      "decisions": ".opencode/DECISIONS.md"
+      "decisions": ".opencode/DECISIONS.md",
+      "kb": ".opencode/knowledge/KB.json"
     },
+    "kbSchema": "array-root",
     "autoUpdate": true
   },
 
