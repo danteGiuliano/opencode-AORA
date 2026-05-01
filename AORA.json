@@ -11,15 +11,32 @@
     "mode": "primary"
   },
 
-  "caveman": {
+"caveman": {
     "enabled": true,
-    "compact": false,
-    "defaultLevel": "full",
+    "global": {
+      "enabled": false,
+      "model": "full"
+    },
     "levels": {
       "lite": {
         "description": "Sin filler, gramática intacta, profesional sin fluff",
         "rules": ["drop_filler", "keep_grammar", "no_pleasantries"]
       },
+      "full": {
+        "description": "Sin artículos, fragmentos OK, grunt completo",
+        "rules": ["no_articles", "fragments_ok", "drop_hedging", "short_synonyms"]
+      },
+      "ultra": {
+        "description": "Máxima compresión. Telegráfico. Abreviar todo.",
+        "rules": ["maximum_compression", "telegraphic", "abbreviate", "single_words"]
+      },
+      "none": {
+        "description": "No usar caveman",
+        "rules": []
+      }
+    },
+    "activation": ["caveman", "compact", "modoahorro", "ahorrar"]
+  },
       "full": {
         "description": "Caveman por defecto. Sin artículos, fragmentos, grunt completo",
         "rules": ["no_articles", "fragments_ok", "drop_hedging", "short_synonyms"]

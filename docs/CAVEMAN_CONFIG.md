@@ -5,8 +5,10 @@
 ```json
 "caveman": {
   "enabled": true,
-  "compact": false,
-  "defaultLevel": "full",
+  "global": {
+    "enabled": false,
+    "model": "full"
+  },
   "levels": {...},
   "activation": [...]
 }
@@ -14,63 +16,74 @@
 
 ## Variables
 
-### Nivel Global (`caveman`)
+### Nivel Global (`caveman.global`)
 
 | Variable | Tipo | Descripción |
 |----------|------|-------------|
-| `enabled` | boolean | true = sistema caveman activo |
-| `compact` | boolean | true = activa compact por defecto para todos los agentes |
-| `defaultLevel` | string | "lite" \| "full" \| "ultra" |
+| `enabled` | boolean | true = activa caveman para todos los agentes por defecto |
+| `model` | string | "lite" \| "full" \| "ultra" \| "none" (default: "none") |
 
-### Por Agente (`agents.[nombre]`)
+### Por Agente (`agents.[nombre].cavemanLevel`)
 
 | Variable | Tipo | Descripción |
 |----------|------|-------------|
-| `compact` | boolean | Sobrescribe global para este agente |
-| `cavemanLevel` | string | "lite" \| "full" \| "ultra" \| "none" |
+| `cavemanLevel` | string | "lite" \| "full" \| "ultra" \| "none" (default: "none") |
 
 ## Niveles de Caveman
 
-| Nivel | Descripción |
-|-------|-------------|
-| `lite` | Sin filler, gramática intacta, profesional |
-| `full` | Sin artículos, fragmentos OK, grunt completo |
-| `ultra` | Máxima compresión, telegráfico |
-| `none` | No usar caveman (ej: Arbitro, init-cruise) |
+| Nivel | Valor | Descripción |
+|-------|-------|-------------|
+| `lite` | `"lite"` | Sin filler, gramática intacta, profesional |
+| `full` | `"full"` | Sin artículos, fragmentos OK |
+| `ultra` | `"ultra"` | Máxima compresión, telegráfico |
+| `none` | `"none"` | No usar caveman (default) |
+
+## Lógica de Aplicación
+
+1. Si `caveman.global.enabled: true` → todos los agentes usan `caveman.global.model` por defecto
+2. Si `caveman.global.enabled: false` → cada agente usa su propio `cavemanLevel` (default: "none")
+3. El setting del agente sobrescribe el global
 
 ## Resumen de Configuración por Agente
 
-| Agente | compact | cavemanLevel |
-|--------|---------|--------------|
-| OrquestadorPrincipal | `false` | `"full"` |
-| Estratega | `false` | `"lite"` |
-| Constructor | `false` | `"full"` |
-| Auditor | `false` | `"lite"` |
-| Detective | `false` | `"full"` |
-| Bibliotecario | `true` | `"ultra"` |
-| Arbitro | `false` | `"none"` |
-| Configurador | `false` | `"none"` |
+| Agente | cavemanLevel |
+|--------|--------------|
+| OrquestadorPrincipal | `"full"` |
+| Estratega | `"lite"` |
+| Constructor | `"full"` |
+| Auditor | `"lite"` |
+| Detective | `"full"` |
+| Bibliotecario | `"ultra"` |
+| Arbitro | `"none"` |
+| Configurador | `"none"` |
 
 ## Ejemplo: Activar Caveman Global
 
 ```json
 "caveman": {
   "enabled": true,
-  "compact": true,
-  "defaultLevel": "full"
-}
-```
-
-## Ejemplo: Agente Específico
-
-```json
-"agents": {
-  "builder": {
-    "compact": true,
-    "cavemanLevel": "ultra"
+  "global": {
+    "enabled": true,
+    "model": "full"
   }
 }
 ```
+
+Todos los agentes usan `full` por defecto.
+
+## Ejemplo: Per-Agente (default)
+
+```json
+"caveman": {
+  "enabled": true,
+  "global": {
+    "enabled": false,
+    "model": "full"
+  }
+}
+```
+
+Cada agente configura su propio nivel. Default: `"none"` si no se especifica.
 
 ## Palabras para Activar Caveman
 

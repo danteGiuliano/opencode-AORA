@@ -107,8 +107,10 @@ Sistema de compresión de output inspirado en [caveman](https://github.com/Juliu
 ```json
 "caveman": {
   "enabled": true,
-  "compact": false,        // true = activar por defecto para todos
-  "defaultLevel": "full"  // lite | full | ultra
+  "global": {
+    "enabled": false,    // true = activa para todos por defecto
+    "model": "full"       // lite | full | ultra | none
+  }
 }
 ```
 
@@ -117,7 +119,6 @@ Por agente (sobrescribe el global):
 ```json
 "agents": {
   "miAgente": {
-    "compact": true,
     "cavemanLevel": "ultra"  // lite | full | ultra | none
   }
 }
