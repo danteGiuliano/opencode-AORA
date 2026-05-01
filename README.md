@@ -96,15 +96,16 @@ El agente @config-aora interpreta la solicitud y configura todos los modelos en 
 | Agent | Nombre Semántico | Rol |
 |-------|------------------|-----|
 | `@ultrawork` | OrquestadorPrincipal | Ciclo completo |
-| `@planner` | Estratega | Planificación |
+| `@planner` | Estratega | Planificacion |
 | `@queue` | QueueManager | Gestor de pool con dependencias |
 | `@launcher` | Launcher | Lanza tareas en background (paralelismo real) |
-| `@builder` | Constructor | Implementación |
-| `@reviewer` | Auditor | Revisión |
+| `@builder` | Constructor | Implementacion |
+| `@reviewer` | Auditor | Revision |
 | `@debug` | Detective | Debug |
 | `@docs` | Bibliotecario | Conocimiento |
 | `@decider` | Arbitro | Conflictos |
-| `@config-aora` | ConfigAORA | Configuración |
+| `@calibrator` | Calibrator | Metricas y evaluacion de agentes |
+| `@config-aora` | ConfigAORA | Configuracion |
 
 ## Modo Compact (Caveman)
 
@@ -168,10 +169,19 @@ Los agentes indexan conocimiento en `.opencode/knowledge/KB.json` con schema est
 
 ```
 .opencode/
+├── agents/           # Agentes AORA
+├── calibrator/
+│   └── metrics.json # Metricas de agentes
 ├── knowledge/
-│   └── KB.json         ← Base de conocimiento estructurada
-├── DECISIONS.md        ← Log de decisiones con PENDIENTES
-└── KNOWLEDGE.md       ← Redirect a KB.json
+│   └── KB.json      # Base de conocimiento estructurada
+├── logs/            # Logs para CI
+├── DECISIONS.md     # Log de decisiones con PENDIENTES
+└── KNOWLEDGE.md     # Redirect a KB.json
+
+evals/                # Modulo de evaluacion
+├── dataset.json      # Casos de prueba
+├── judge.js         # Script evaluador
+└── ci-gate.sh       # Script de CI
 ```
 
 ### Pendientes
@@ -199,8 +209,61 @@ AORA.json
 ## Ciclo
 
 ```
-ANALISIS → PLANIFICACION → GESTION DE POOL → REVISION → DOCS
-           (con @queue y @launcher para paralelismo real)
+ANALISIS → PLANIFICACION → GESTION DE POOL → REVISION → CALIBRACION → DOCS
+            (con @queue y @launcher para paralelismo real)
+```
+
+## Calibracion y Metricas
+
+AORA incluye un sistema de evaluacion continua para medir el rendimiento de agentes.
+
+### Agente @calibrator
+
+Evalua el rendimiento de los agentes y detecta regresiones:
+
+```
+@calibrator evaluar: @builder
+@calibrator verificar: T1 completada, resultado: exito
+@calibrator analizar: ultimas 10 tareas
+@calibrator CI-gate
+```
+
+### Metricas Registradas
+
+```json
+{
+  "agents": {
+    "builder": {
+      "tasksCompleted": 15,
+      "tasksFailed": 2,
+      "avgCorrections": 1.3
+    }
+  }
+}
+```
+
+### CI Gate
+
+Para validacion automatica en CI/CD:
+
+```bash
+./evals/ci-gate.sh
+```
+
+**Criterios de aprobacion:**
+- Success rate >= 80%
+- Maximo 2 fallos recientes
+- Tareas con <= 3 correcciones
+
+### Dataset de Evaluacion
+
+El modulo `evals/` contiene casos de prueba para validar agentes:
+
+```
+evals/
+├── dataset.json      # 15 casos de prueba
+├── judge.js          # Script evaluador
+└── ci-gate.sh       # Script de CI
 ```
 
 ## Licencia

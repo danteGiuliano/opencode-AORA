@@ -1,9 +1,24 @@
 {
   "agents": {
-    "sisyphus": {
+    "ultraworker": {
       "model": "minimax/MiniMax-M2.7"
     },
-    "OpenCode-Builder": {
+    "planner": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "builder": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "reviewer": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "debug": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "docs": {
+      "model": "minimax/MiniMax-M2.7"
+    },
+    "decider": {
       "model": "minimax/MiniMax-M2.7"
     },
     "queue": {
@@ -12,63 +27,10 @@
     "launcher": {
       "model": "minimax/MiniMax-M2.7"
     },
-    "Prometheus (Planner)": {
+    "calibrator": {
       "model": "minimax/MiniMax-M2.7"
     },
-    "metis": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "oracle": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "explore": {
-      "model": "minimax/MiniMax-M2.7-highspeed"
-    },
-    "librarian": {
-      "model": "minimax/MiniMax-M2.7-highspeed"
-    },
-    "multimodal-looker": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "atlas": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "sisyphus-junior": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "momus": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "hephaestus": {
-      "disable": true
-    }
-  },
-  "categories": {
-    "ultrabrain": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "deep": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "business-logic": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "visual-engineering": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "artistry": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "writing": {
-      "model": "minimax/MiniMax-M2.7-highspeed"
-    },
-    "quick": {
-      "model": "minimax/MiniMax-M2.7-highspeed"
-    },
-    "unspecified-low": {
-      "model": "minimax/MiniMax-M2.7-highspeed"
-    },
-    "unspecified-high": {
+    "config-aora": {
       "model": "minimax/MiniMax-M2.7"
     }
   }

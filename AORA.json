@@ -224,6 +224,23 @@
       "activation": ["launcher", "background", "parallel"],
       "semantic": "Launcher"
     },
+    "calibrator": {
+      "description": "Agente de calibracion - evalua rendimiento y detecta regresiones",
+      "model": "review",
+      "temperature": 0.1,
+      "compact": false,
+      "cavemanLevel": "lite",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "activation": ["calibrator", "eval", "metrics", "calibrar"],
+      "semantic": "Calibrator"
+    },
     "config-aora": {
       "description": "Asistente de configuración AORA - modelo, actualizaciones y estado",
       "model": "base",
@@ -271,11 +288,18 @@
         "description": "@queue gestiona pool → @launcher lanza independientes en paralelo → @builder ejecuta dependientes",
         "parallelism": true
       },
-      {
+{
         "phase": 3,
         "name": "REVISION",
         "agents": ["reviewer"],
-        "description": "Validación estructurada"
+        "description": "Validacion estructurada"
+      },
+      {
+        "phase": 3.5,
+        "name": "CALIBRACION",
+        "agents": ["calibrator"],
+        "description": "Registro de metricas post-tarea - actualiza metrics.json",
+        "automatic": true
       },
       {
         "phase": 4,
@@ -295,7 +319,17 @@
     "selfHealing": {
       "enabled": true,
       "maxAttempts": 3,
-      "fallbackAgent": "debug"
+      "fallbackAgent": "debug",
+      "metricsAgent": "calibrator"
+    },
+    "ci": {
+      "enabled": true,
+      "gateScript": "evals/ci-gate.sh",
+      "thresholds": {
+        "successRateMin": 0.8,
+        "maxCorrections": 3,
+        "maxRecentFailures": 2
+      }
     }
   },
 

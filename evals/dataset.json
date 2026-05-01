@@ -1,0 +1,218 @@
+{
+  "name": "AORA Evals Dataset",
+  "version": "1.0.0",
+  "description": "Test cases for evaluating AORA agents",
+  "cases": [
+    {
+      "id": "eval-001",
+      "agent": "planner",
+      "task": "Crear endpoint GET /users/:id que retorne user por id",
+      "expected": {
+        "hasTareasIndependientes": true,
+        "hasTareasDependientes": false,
+        "tareasCount": 1
+      },
+      "criteria": {
+        "plannerOutput": "Verifica que el plan tenga tareas bien estructuradas"
+      }
+    },
+    {
+      "id": "eval-002",
+      "agent": "planner",
+      "task": "Agregar autenticacion JWT a backend Express con rate limiting",
+      "expected": {
+        "hasTareasIndependientes": true,
+        "hasTareasDependientes": true,
+        "hasRiesgosIdentificados": true,
+        "tareasCount": 4
+      },
+      "criteria": {
+        "includesJWT": true,
+        "includesRateLimiting": true
+      }
+    },
+    {
+      "id": "eval-003",
+      "agent": "builder",
+      "task": "Crear archivo src/utils/helper.js con funcion getTimestamp()",
+      "expected": {
+        "fileCreated": "src/utils/helper.js",
+        "functionExports": ["getTimestamp"]
+      },
+      "criteria": {
+        "fileExists": true,
+        "functionWorks": true
+      }
+    },
+    {
+      "id": "eval-004",
+      "agent": "builder",
+      "task": "Modificar package.json para agregar script 'test': 'jest'",
+      "expected": {
+        "packageJsonModified": true,
+        "hasTestScript": true
+      },
+      "criteria": {
+        "jsonValid": true,
+        "scriptAdded": true
+      }
+    },
+    {
+      "id": "eval-005",
+      "agent": "reviewer",
+      "task": "Revisar archivo src/auth/middleware.js por vulnerabilidades",
+      "expected": {
+        "findings": {
+          "critical": 0,
+          "warnings": 0
+        }
+      },
+      "criteria": {
+        "noHardcodedSecrets": true,
+        "noSQLInjection": true,
+        "noXSS": true
+      }
+    },
+    {
+      "id": "eval-006",
+      "agent": "reviewer",
+      "task": "Revisar codigo con validation de inputs deficiente",
+      "expected": {
+        "findings": {
+          "critical": 1,
+          "warnings": 2
+        }
+      },
+      "criteria": {
+        "detectaValidationFalta": true
+      }
+    },
+    {
+      "id": "eval-007",
+      "agent": "planner",
+      "task": "Implementar sistema de caching con Redis",
+      "expected": {
+        "hasTareasIndependientes": true,
+        "hasTareasDependientes": true,
+        "includesRedis": true
+      },
+      "criteria": {
+        "planCompleto": true,
+        "noRedundancia": true
+      }
+    },
+    {
+      "id": "eval-008",
+      "agent": "docs",
+      "task": "Documentar decision de usar JWT vs Sessions",
+      "expected": {
+        "decisionId": true,
+        "hasProsCons": true,
+        "hasContexto": true
+      },
+      "criteria": {
+        "kbJsonUpdated": true,
+        "decisionsMdUpdated": true
+      }
+    },
+    {
+      "id": "eval-009",
+      "agent": "queue",
+      "task": "Procesar 3 tareas independientes simultaneamente",
+      "expected": {
+        "parallelismUsed": 3,
+        "allCompleted": true,
+        "executionOrder": "concurrent"
+      },
+      "criteria": {
+        "launcherWasCalled": true,
+        "noBlockingBetweenIndependent": true
+      }
+    },
+    {
+      "id": "eval-010",
+      "agent": "queue",
+      "task": "Procesar 2 tareas dependientes en secuencia correcta",
+      "expected": {
+        "D1StartedAfterT2": true,
+        "D2StartedAfterD1": true
+      },
+      "criteria": {
+        "dependenciesRespected": true,
+        "correctOrder": true
+      }
+    },
+    {
+      "id": "eval-011",
+      "agent": "decider",
+      "task": "Conflicto: dominio pide normalizeo, implementacion dice denormalize",
+      "expected": {
+        "decision": "string",
+        "prioridad": "dominio|implementacion|hibrido",
+        "justificacion": "string"
+      },
+      "criteria": {
+        "resolutionProvided": true,
+        "notAmbiguous": true
+      }
+    },
+    {
+      "id": "eval-012",
+      "agent": "debug",
+      "task": "Diagnosticar: API retorna 500 en /users pero no hay logs",
+      "expected": {
+        "rootCause": "string",
+        "hasSteps": true,
+        "hasVerification": true
+      },
+      "criteria": {
+        "investigationComplete": true,
+        "fixProvided": true
+      }
+    },
+    {
+      "id": "eval-013",
+      "agent": "ultraworker",
+      "task": "Tarea compleja: migrar Express a Fastify",
+      "expected": {
+        "planEjecutado": true,
+        "fase0Complete": true,
+        "fase1Complete": true,
+        "fase2Complete": true,
+        "fase3Complete": true,
+        "fase4Complete": true
+      },
+      "criteria": {
+        "noFaseSkipped": true,
+        "kbConsultada": true,
+        "docsActualizada": true
+      }
+    },
+    {
+      "id": "eval-014",
+      "agent": "calibrator",
+      "task": "Evaluar: ultimas 10 tareas, successRate debe ser > 0.8",
+      "expected": {
+        "successRate": 0.8,
+        "avgCorrections": 1.5
+      },
+      "criteria": {
+        "metricsUpdated": true,
+        "reportGenerated": true
+      }
+    },
+    {
+      "id": "eval-015",
+      "agent": "launcher",
+      "task": "Lanzar 5 tareas en paralelo con max 3 simultaneas",
+      "expected": {
+        "maxConcurrent": 3,
+        "allLaunched": true
+      },
+      "criteria": {
+        "noMoreThan3AtOnce": true,
+        "allCompletedOrRunning": true
+      }
+    }
+  ]
+}

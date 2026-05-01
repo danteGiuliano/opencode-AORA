@@ -1,0 +1,65 @@
+{
+  "agents": {
+    "ultraworker": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "planner": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "builder": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "reviewer": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "debug": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "docs": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "decider": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "queue": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "launcher": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    },
+    "calibrator": {
+      "tasksCompleted": 0,
+      "tasksFailed": 0,
+      "avgCorrections": 0,
+      "lastUpdated": null
+    }
+  },
+  "recentTasks": []
+}
