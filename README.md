@@ -137,4 +137,6 @@ Los agentes actualizan automáticamente:
 
 ## Licencia
 
-MIT
+**Opensource** — MIT License
+
+Ver [LICENSE](LICENSE) para más detalles.
