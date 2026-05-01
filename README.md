@@ -186,7 +186,7 @@ La recalibracion ocurre automaticamente despues de cada ciclo de trabajo:
 
 ### CI Gate — Validacion Automatica
 
-Script para集成 en pipelines de CI/CD.
+Script para integracion en pipelines de CI/CD.
 
 ```bash
 # Ejecutar validacion
@@ -349,17 +349,23 @@ evals/
 ## Seguridad
 
 > [!WARNING]
-> AORA otorga permisos de ejecucion de shell sin restricciones a `@ultrawork` y `@builder`.
+> AORA otorga permisos de ejecucion de shell sin restricciones a los agentes `@ultrawork` y `@builder`. El template de configuracion de `AORA.json` incluye patrones de shell destructivos por diseño.
+>
+> **Este sistema debe instalarse unicamente en entornos de desarrollo aislados y dedicados.**
 
-**Entornos soportados:**
-- Maquinas de desarrollo dedicadas
-- VMs o containers aislados
-- Dev containers o sandboxes
+**Entornos recomendados:**
+- Maquinas de desarrollo dedicadas sin datos sensibles
+- VMs o containers aislados y limitados a un unico proyecto
+- Entornos desechables como dev containers o sandboxes
 
-**No usar en:**
-- Servidores de produccion
-- Maquinas compartidas
-- Pipelines CI/CD sin sandboxing
+**Entornos no recomendados:**
+- Servidores de produccion o cualquier sistema expuesto a internet
+- Maquinas compartidas entre multiples usuarios
+- Pipelines de CI/CD sin sandboxing explicito
+- Cualquier entorno donde la ejecucion irrestricta de `bash` represente un riesgo operacional
+
+> [!IMPORTANT]
+> Los desarrolladores no asumen responsabilidad alguna por perdida de datos o danos al sistema derivados de una instalacion fuera de los entornos soportados descritos anteriormente. Proceda bajo su propio riesgo. Recuerde que tiene un cerebro, uselo.
 
 ---
 
