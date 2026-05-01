@@ -22,8 +22,14 @@ AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto*
 ## Instalación
 
 ```bash
-# En la raíz de tu proyecto
+# 1. En la raíz de tu proyecto, ejecutar:
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
+
+# 2. Abrir OpenCode en el proyecto
+opencode .
+
+# 3. Configurar provider y modelo base:
+node .opencode/setmodel.js
 ```
 
 O descarga manualmente:
@@ -38,6 +44,15 @@ curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.o
 # Descargar AORA.json
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json -o AORA.json
 ```
+
+### Configuración del Modelo
+
+```bash
+# Ver proveedores disponibles y configurar
+node .opencode/setmodel.js
+```
+
+El script te pide elegir provider (minimax, anthropic, openai, gemini, ollama) y modelo específico.
 
 ## ⚠️ Instalación a Nivel de Proyecto
 
