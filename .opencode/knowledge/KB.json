@@ -1,0 +1,101 @@
+{
+  "id": "jwt-shared-auth-ts-superior",
+  "type": "integration",
+  "title": "Autenticación JWT compartida con ts-superior_back",
+  "summary": "Este backend comparte JWT_SECRET con ts-superior_back, permite tokens cross-service",
+  "content": "El sistema usa el mismo JWT_SECRET que ts-superior_back. Esto permite que tokens emitidos por cualquier servicio del ecosistema sean aceptados aquí. Validación usa payload.sub para user ID y payload.tipo_usuario para distinguir interno vs externo.",
+  "tags": ["jwt", "auth", "nestjs", "passport"],
+  "concepts": ["shared-secret", "cross-service-auth", "token-validation"],
+  "keywords": ["JWT_SECRET", "PassportStrategy", "AuthGuard", "jwt-issuer"],
+  "related": ["jwt-token-payload-structure"],
+  "context": {
+    "files": ["src/auth/jwt.strategy.ts", "src/auth/jwt-auth.guard.ts"],
+    "project": "ts-proveedores_back"
+  },
+  "meta": {
+    "created": "2026-04-30T00:00:00Z",
+    "source": "manual",
+    "confidence": "high"
+  }
+}
+{
+  "id": "base64-file-upload-flow",
+  "type": "concept",
+  "title": "Upload de archivos en base64",
+  "summary": "El frontend envía archivos codificados en base64, el backend decodifica y guarda en disco",
+  "content": "Flujo: 1) Frontend convierte archivo a base64, 2) Envía en campo 'adjunto' con {base64, filename}, 3) Backend decodifica Buffer, 4) Guarda en uploads/ con nombre generado o original. Gestión de archivos: actualizar reemplaza archivo anterior, eliminar borra archivo físico.",
+  "example": "POST /documentacion/persona\n{\n  \"idSubcontratista\": 1,\n  \"adjunto\": {\n    \"base64\": \"JVBERi0xLjQK...\",\n    \"filename\": \"documento.pdf\"\n  }\n}",
+  "tags": ["filesystem", "base64", "upload", "nestjs"],
+  "concepts": ["file-storage", "binary-to-text-encoding"],
+  "keywords": ["base64", "buffer", "fs.writeFileSync", "path.join"],
+  "related": [],
+  "context": {
+    "files": ["src/documentacion/service/doc-mensual.service.ts"],
+    "project": "ts-proveedores_back"
+  },
+  "meta": {
+    "created": "2026-04-30T00:00:00Z",
+    "source": "manual",
+    "confidence": "high"
+  }
+}
+{
+  "id": "doc-mensual-block-complete-submission",
+  "type": "gotcha",
+  "title": "Bloque de doc mensual requiere todos sus tipos",
+  "summary": "Un bloque solo puede enviarse si incluye TODOS los tipos de documento requeridos, no permite parcial",
+  "content": "Regla de negocio: el frontend debe obtener los tipos requeridos para un bloque con GET /doc-mensual/bloques-tipo/:id/tipos-doc y el usuario debe cargar exactamente esos archivos. El backend valida que la cantidad de documentos coincida con los tipos requeridos del bloque. No se permiten faltantes ni extras.",
+  "tags": ["nestjs", "validation", "business-rule", "doc-mensual"],
+  "concepts": ["complete-submission", "mandatory-document-set"],
+  "keywords": ["idBloqueTipo", "idTiposDocumento", "validation"],
+  "related": [],
+  "context": {
+    "files": ["src/documentacion-mensual/service/doc-mensual.service.ts"],
+    "project": "ts-proveedores_back"
+  },
+  "meta": {
+    "created": "2026-04-30T00:00:00Z",
+    "source": "manual",
+    "confidence": "high"
+  }
+}
+{
+  "id": "doc-mensual-edit-delete-states",
+  "type": "gotcha",
+  "title": "Edición/eliminación solo en estado rechazado u observado",
+  "summary": "Una presentación mensual solo puede modificarse si todos sus documentos están en estado 3 (Rechazado) o 4 (Observado)",
+  "content": "Regla de negocio para doc-mensual: no se puede editar ni eliminar si algún documento tiene estado Pendiente (1) o Aprobado (2). El usuario debe esperar a que el auditor rechace/observe para poder corregir. Validación en servicio antes de update/delete.",
+  "tags": ["nestjs", "business-rule", "doc-mensual", "state-machine"],
+  "concepts": ["state-based-permission", "auditor-workflow"],
+  "keywords": ["id_estado", "Rechazado", "Observado", "Pendiente", "Aprobado"],
+  "related": [],
+  "context": {
+    "files": ["src/documentacion-mensual/service/doc-mensual.service.ts"],
+    "project": "ts-proveedores_back"
+  },
+  "meta": {
+    "created": "2026-04-30T00:00:00Z",
+    "source": "manual",
+    "confidence": "high"
+  }
+}
+{
+  "id": "opt-interno-vehicle-doc-sync",
+  "type": "integration",
+  "title": "Vehículo actualiza fechas en opt_interno según tipo",
+  "summary": "Al subir ciertos tipos de documentos vehiculares, se actualizan campos de vencimiento en opt_interno",
+  "content": "Lógica especial en documentacion/vehiculo: si el 'tipo' del documento coincide con campos definidos en opt_interno (como vtv_nacional, seguro, revisión técnica), además de guardar el documento, se actualiza el campo correspondiente en la entidad opt_interno. Esto sincroniza vencimiento de documentación patrimonial.",
+  "tags": ["typeorm", "vehicle", "foreign-key-sync", "nestjs"],
+  "concepts": ["cross-entity-update", "document-vehicle-relation"],
+  "keywords": ["opt_interno", "vtv_nacional", "id_estado_vehiculo"],
+  "related": [],
+  "context": {
+    "files": ["src/documentacion/service/vehiculo-doc.service.ts"],
+    "project": "ts-proveedores_back"
+  },
+  "meta": {
+    "created": "2026-04-30T00:00:00Z",
+    "source": "manual",
+    "confidence": "high"
+  }
+}
