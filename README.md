@@ -102,15 +102,38 @@ docs/WORKFLOW_ES.md        ← Flujo de trabajo detallado
 
 Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
 
+### Configuración en AORA.json
+
+```json
+"global": {
+  "compact": false    // true = activar por defecto para todos
+},
+"caveman": {
+  "enabled": true,
+  "defaultLevel": "full"  // lite | full | ultra
+}
+```
+
+Por agente:
+
+```json
+"agents": {
+  "miAgente": {
+    "compact": true,
+    "cavemanLevel": "ultra"  // lite | full | ultra | none
+  }
+}
+```
+
 ### Niveles
 
-| Nivel | Descripción |
-|-------|-------------|
-| `lite` | Sin filler, gramática intacta |
-| `full` | Sin artículos, fragmentos OK |
-| `ultra` | Máxima compresión, telegráfico |
+| Nivel | Configuración | Descripción |
+|-------|--------------|-------------|
+| `lite` | `"cavemanLevel": "lite"` | Sin filler, gramática intacta |
+| `full` | `"cavemanLevel": "full"` | Sin artículos, fragmentos OK |
+| `ultra` | `"cavemanLevel": "ultra"` | Máxima compresión, telegráfico |
 
-### Activación
+### Activación por palabra clave
 
 ```
 compact [tarea]
