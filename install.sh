@@ -55,11 +55,10 @@ fi
 [ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base" > "$AORA_DIR/KNOWLEDGE.md"
 [ ! -f "$AORA_DIR/DECISIONS.md" ] && echo "# Decision Registry" > "$AORA_DIR/DECISIONS.md"
 
-# Crear config local para agentes
+# Crear config local vacío (OpenCode auto-detecta .opencode/agents/)
 cat > "$AORA_DIR/opencode.json" << CONFIG
 {
-  "\$schema": "https://opencode.ai/config.json",
-  "agentDirectories": ["$AORA_DIR/agents"]
+  "\$schema": "https://opencode.ai/config.json"
 }
 CONFIG
 
