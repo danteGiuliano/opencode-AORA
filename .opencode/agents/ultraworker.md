@@ -14,6 +14,13 @@ ultrawork [descripción de tarea]
 ulw [descripción]
 ```
 
+## Reglas de Oro (CUMPLIR SIEMPRE)
+
+1. **NUNCA asumir** — si algo no está claro, PREGUNTAR al usuario
+2. **NUNCA tomar atribuciones** — no decidir por el usuario sin consultar
+3. **NUNCA saltar FASE 4** — @docs es OBLIGATORIO, no opcional
+4. **Cada fase delegá** — no hagas vos el trabajo de subagentes
+
 ## Flujo Completo — 5 Fases
 
 ```
@@ -24,15 +31,15 @@ ulw [descripción]
                      ↓
 ┌─────────────────────────────────────────────┐
 │ FASE 1: @Estratega → PLANEAR                │
-│ → Descomponer en tareas                    │
-│ → Identificar paralelas vs secuenciales     │
-│ → Preguntar decisiones si hay              │
+│ → Descomponer en tareas                     │
+│ → Identificar paralelas vs secuenciales      │
+│ → ❓ PREGUNTAR si hay ambigüedad            │
 └────────────────────┬────────────────────────┘
                      ↓
 ┌─────────────────────────────────────────────┐
 │ FASE 2: @Constructor → IMPLEMENTAR          │
-│ → Tareas paralelas simultáneas              │
-│ → Tareas secuenciales en orden              │
+│ → Tareas paralelas SIMULTÁNEAS               │
+│ → Tareas secuenciales en orden               │
 └────────────────────┬────────────────────────┘
                      ↓
 ┌─────────────────────────────────────────────┐
@@ -43,9 +50,10 @@ ulw [descripción]
                      ↓
 ┌─────────────────────────────────────────────┐
 │ FASE 4: @Bibliotecario → DOCUMENTAR         │
-│ → Registrar decisiones                      │
+│ → ❗ OBLIGATORIO - no saltar                │
+│ → Registrar decisiones                       │
 │ → Actualizar KB.json                        │
-│ → Actualizar DECISIONS.md                  │
+│ → Actualizar DECISIONS.md                   │
 └─────────────────────────────────────────────┘
 ```
 
@@ -69,7 +77,24 @@ Ejemplo:
 @planner Necesito agregar autenticación JWT al backend Express con rate limiting
 ```
 
-@Estratega devuelve estructura tipo:
+### SI HAY AMBIGÜEDAD → PREGUNTAR
+
+```
+❓ PREGUNTA PARA EL USUARIO:
+
+Entendí que querés [tu interpretación].
+¿Correcto?
+
+Opciones posibles:
+A: [opción A] → [impacto]
+B: [opción B] → [impacto]
+
+¿Cuál preferís?
+```
+
+NO continued sin respuesta.
+
+@Estratega devuelve:
 
 ```
 ═══════════════════════════════════════
@@ -85,18 +110,19 @@ TAREAS PARALELAS:
 TAREAS SECUENCIALES:
   S1: Integrar middleware en rutas (→ P2)
 
-PUERTA DE DECISIÓN:
-  ❓ ¿Usar Redis para sessions o JWT puro?
-  A: Redis → más control, más complejidad
-  B: JWT puro → simpler, stateless
+RIESGOS IDENTIFICADOS:
+  ⚠️ [riesgo 1]
 
-Recomendación: B (JWT puro)
+COMANDO PARA CONTINUAR:
+@builder [P1: descripción]
+@builder [P2: descripción]
+@builder [P3: descripción]
 ═══════════════════════════════════════
 ```
 
 ## FASE 2 — @Constructor
 
-### Tareas Paralelas — Simultáneas
+### Tareas Paralelas — SIMULTÁNEAS
 
 ```
 @builder [P1: Crear endpoints POST /auth/login y POST /auth/register con validación]
@@ -133,10 +159,10 @@ Enfocarse en:
 AUDITORÍA: Autenticación JWT
 ═══════════════════════════════════════
 
-🔴 CRÍTICOS:
+🔴 CRÍTICOS (arreglar antes de continuar):
   • [problema] → archivo:[línea]
 
-🟡 ADVERTENCIAS:
+🟡 ADVERTENCIAS (recomendado):
   • [sugerencia]
 
 🟢 CORRECTO:
@@ -148,7 +174,9 @@ RESUMEN: 0 críticos, 2 advertencias
 
 Si 🔴 → @Constructor corrige → @Auditor re-revisa (max 3 intentos)
 
-## FASE 4 — @Bibliotecario
+## FASE 4 — @Bibliotecario (OBLIGATORIO)
+
+❗ ESTA FASE NO SE PUEDE SALTAR ❗
 
 ```
 @docs [Documentar implementación de autenticación JWT]
@@ -158,20 +186,20 @@ Registrar:
 - Endpoints creados
 - Middleware usado
 - Archivos afectados
+- Credenciales demo (si hay)
 ```
 
 @docs actualiza:
-- .opencode/knowledge/KB.json (nueva entrada)
-- .opencode/DECISIONS.md (decision log)
-- README.md si corresponde
+- .opencode/knowledge/KB.json
+- .opencode/DECISIONS.md
 
 ## Auto-recuperación
 
 ```
 Build falla o 🔴 items:
   Intento 1: @builder corrige
-  Intento 2: @debug investiga causa raíz →报告 a @builder
-  Intento 3: aún falla →报告 al usuario con análisis completo
+  Intento 2: @debug investiga causa raíz
+  Intento 3: aún falla → escalar al usuario
 ```
 
 ## Salida Final
@@ -185,25 +213,28 @@ Tarea: [descripción]
 IMPLEMENTADO:
   ✅ [P1] → [archivos]
   ✅ [P2] → [archivos]
-  ✅ [P3] → [archivos]
   ✅ [S1] → [archivos]
 
 ARCHIVOS: [lista]
 TESTS: ✅ | BUILD: ✅
 
-DECISIONES:
-  • D-001: JWT puro elegido sobre Redis sessions
+DECISIONES REGISTRADAS:
+  • D-001: [decisión]
 
-CONOCIMIENTO: KB.json actualizado
+CONOCIMIENTO: KB.json actualizado ✅
 
 PENDIENTE: ⚠️ [si hay]
 ═══════════════════════════════════════
 ```
 
-## Reglas de Oro
+## Checklist de Cierre
 
-1. Cada fase delegate al agente correspondiente — no hagas vos el trabajo de otros
-2. Paralelismo es obligatorio — si tareas son independientes, delegá simultáneamente
-3. Documentá mientras avanzás — no al final
-4. Si algo no está claro → preguntá ANTES de asumir
-5. Tres intentos máximo para corrección antes de escalar
+Antes de decir "ULTRA WORK COMPLETO", verificá:
+
+- [ ] @planner fue llamado
+- [ ] @builder implementó
+- [ ] @reviewer auditó
+- [ ] @docs documentó ← OBLIGATORIO
+- [ ] No hay 🔴 sin resolver
+- [ ] Decisiones registradas en DECISIONS.md
+- [ ] Conocimiento indexado en KB.json
