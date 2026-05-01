@@ -12,8 +12,15 @@ echo "🪨 AORA - Project-level installer"
 
 # Verificar que estamos en un proyecto
 if [ ! -d ".git" ]; then
-    echo "⚠️  No detected .git directory. Initialize git first: git init"
-    exit 1
+    echo "⚠️  No detected .git directory"
+    read -p "  ¿Inicializar git? [Y/n]: " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+        git init
+        echo "  ✅ git inicializado"
+    else
+        echo "  ℹ️  Continuando sin git (actualizaciones no disponibles)"
+    fi
 fi
 
 # Crear estructura .opencode si no existe
@@ -30,7 +37,7 @@ else
 fi
 
 # Lista de agentes a descargar
-AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "init-cruise")
+AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "init-cruise" "config-aora")
 
 for agent in "${AGENTS[@]}"; do
     echo "  ⬇️  $agent.md"
