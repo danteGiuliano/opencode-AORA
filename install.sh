@@ -13,14 +13,10 @@ echo "🪨 AORA - Project-level installer"
 # Verificar que estamos en un proyecto
 if [ ! -d ".git" ]; then
     echo "⚠️  No detected .git directory"
-    read -p "  ¿Inicializar git? [Y/n]: " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        git init
-        echo "  ✅ git inicializado"
-    else
-        echo "  ℹ️  Continuando sin git (actualizaciones no disponibles)"
-    fi
+    echo "  Press Enter to init git, or Ctrl+C to cancel"
+    echo ""
+    git init
+    echo "  ✅ git inicializado"
 fi
 
 # Crear estructura .opencode si no existe
@@ -72,7 +68,7 @@ echo "  │   ├── reviewer.md"
 echo "  │   ├── debug.md"
 echo "  │   ├── docs.md"
 echo "  │   ├── decider.md"
-echo "  │   └── init-cruise.md"
+echo "  │   └── config-aora.md"
 echo "  ├── KNOWLEDGE.md"
 echo "  └── DECISIONS.md"
 echo "  AORA.json"
