@@ -212,6 +212,23 @@
       },
       "activation": ["init-cruise", "apply-aora", "setup-aora"],
       "semantic": "Configurador"
+    },
+    "setmodel": {
+      "description": "Guía de configuración de provider y modelo AORA",
+      "model": "base",
+      "temperature": 0.3,
+      "compact": false,
+      "cavemanLevel": "none",
+      "permissions": {
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow"
+      },
+      "activation": ["setmodel", "configurar-modelo", "modelo"],
+      "semantic": "ConfiguradorModelo"
     }
   },
 
