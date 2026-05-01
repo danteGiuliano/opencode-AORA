@@ -2,57 +2,55 @@
 
 > **AORA** = Agente OpenCode Río Negro Argentina
 
-Multi-agent system for [OpenCode](https://opencode.ai) with centralized configuration, semantic names, and arbitrary models.
+Sistema multi-agente para [OpenCode](https://opencode.ai) con configuración centralizada, nombres semánticos y modelos arbitrarios.
 
-**Language:** [English](README-en.md) | [Español](README-es.md)
+Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) y el concepto [caveman](https://github.com/JuliusBrussee/caveman) para compresión de output.
 
 ---
 
-## Vision
+## Visión
 
-AORA is a **provider-agnostic, project-level** multi-agent system. Unlike plugin-based systems that require specific models and multiple subscriptions, AORA agents are native OpenCode markdown files — portable and without vendor lock-in.
+AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto**. A diferencia de los sistemas basados en plugins — que requieren modelos específicos y múltiples suscripciones — los agentes de AORA son archivos markdown nativos de OpenCode, portables y sin lock-in de proveedor.
 
-### Core Principles
+### Principios Core
 
-- **Portable**: Markdown files, no npm packages or plugins required
-- **Provider-agnostic**: Configure models in AORA.json, prompts stay generic
-- **Project-level**: Install per-project, commit to git, team consistency
-- **Incremental**: Single subscription model, not per-agent billing
+- **Portable**: Archivos markdown, no requiere npm ni plugins
+- **Agnóstico del proveedor**: Los modelos se configuran en AORA.json, los prompts son genéricos
+- **A nivel de proyecto**: Instalar por proyecto, commitear a git, consistencia del equipo
+- **Incremental**: Un único modelo de suscripción, sin cobros por agente
 
-## Quick Start
+## Instalación
 
 ```bash
-# Install in your project root
+# En la raíz de tu proyecto
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
 ```
 
-## Documentation
+## Documentación
 
-| Doc | Description |
+| Doc | Descripción |
 |-----|-------------|
-| [WORKFLOW](docs/WORKFLOW_ES.md) | Complete workflow diagram |
-| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Compression mode setup |
-| [README-en](README-en.md) | Full English documentation |
-| [README-es](README-es.md) | Documentación completa en español |
+| [WORKFLOW](docs/WORKFLOW_ES.md) | Diagrama de flujo completo |
+| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Configuración del modo compresión |
 
-## Agents
+## Agentes
 
-| Agent | Semantic Name | Role |
-|-------|---------------|------|
-| `@ultrawork` | OrquestadorPrincipal | Full cycle orchestrator |
-| `@planner` | Estratega | Strategic planning |
-| `@builder` | Constructor | Full-stack implementation |
-| `@reviewer` | Auditor | Code review |
-| `@debug` | Detective | Error diagnosis |
-| `@docs` | Bibliotecario | Knowledge management |
-| `@decider` | Arbitro | Domain vs implementation conflicts |
-| `@init-cruise` | Configurador | Replicate permissions to projects |
+| Agent | Nombre Semántico | Rol |
+|-------|------------------|-----|
+| `@ultrawork` | OrquestadorPrincipal | Orquestador de ciclo completo |
+| `@planner` | Estratega | Planificación estratégica |
+| `@builder` | Constructor | Implementación full-stack |
+| `@reviewer` | Auditor | Revisión de código |
+| `@debug` | Detective | Diagnóstico de errores |
+| `@docs` | Bibliotecario | Gestión de conocimiento |
+| `@decider` | Arbitro | Conflictos dominio vs implementación |
+| `@init-cruise` | Configurador | Replica permisos en proyectos |
 
-## Mode Compact (Caveman)
+## Modo Compact (Caveman)
 
-Output compression inspired by [caveman](https://github.com/JuliusBrussee/caveman). Reduces ~65-75% tokens without losing technical accuracy.
+Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
 
-### Configuration in AORA.json
+### Configuración en AORA.json
 
 ```json
 "caveman": {
@@ -64,32 +62,29 @@ Output compression inspired by [caveman](https://github.com/JuliusBrussee/cavema
 }
 ```
 
-**Levels:** `lite` | `full` | `ultra` | `none`
+| Nivel | Descripción |
+|-------|-------------|
+| `lite` | Sin filler, gramática intacta |
+| `full` | Sin artículos, fragmentos OK |
+| `ultra` | Máxima compresión, telegráfico |
+| `none` | Sin compresión (default) |
 
-### Activation
-
-```
-compact [task]
-caveman [task]
-modoahorro [task]
-```
-
-## Architecture
+## Arquitectura
 
 ```
 AORA.json
 ├── global.baseModel
 ├── models: [base, fast, coder, review]
 ├── agents: [semantic, model, temperature, cavemanLevel]
-└── caveman: [enabled, global, levels, activation]
+└── caveman: [enabled, global, levels]
 ```
 
-## Cycle
+## Ciclo
 
 ```
-ANALYSIS → PLANNING → IMPLEMENTATION → REVIEW → DOCS
+ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
 ```
 
-## License
+## Licencia
 
 MIT
