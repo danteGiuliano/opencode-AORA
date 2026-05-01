@@ -90,3 +90,7 @@ PREVENCIÓN: [cómo evitar recurrencia]
 - Bug implica decisión arquitectura → @Estratega
 - Arreglo requiere cambios grandes → @Constructor
 - Comportamiento correcto pero wrong para negocio → **Puerta de Decisión** → @Estratega
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

@@ -70,9 +70,11 @@ Activar: `compact`, `caveman`, `modoahorro`
 - Bug resuelto (recibir Log del @Detective)
 - @Estratega o @Auditor detectan Puerta de Decisión
 - Nueva integración externa
+- **Cualquier agente puede actualizar conocimiento nuevo si lo ve oportuno**
 
 ## Principios
 - Escribir para alguien que no estuvo en la conversación
 - Preferir ejemplos concretos
 - Actualizar docs existentes en lugar de duplicar
 - Si algo no puede explicarse en 3 líneas → sistema demasiado complejo
+- **Todo agente puede contribuir conocimiento: si ves algo nuevo, documentalo**

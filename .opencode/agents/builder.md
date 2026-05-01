@@ -54,3 +54,7 @@ ARCHIVOS: [lista]
 COMANDOS: [lista con resultados]
 PENDIENTE: [si hay]
 ```
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

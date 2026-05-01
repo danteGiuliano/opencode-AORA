@@ -77,3 +77,7 @@ init-cruise ~/Projects/mi-proyecto
 # Forzar sobrescritura
 init-cruise --apply --force
 ```
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

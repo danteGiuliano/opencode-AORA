@@ -72,3 +72,7 @@ ARCHIVOS: [lista]
 TESTS: ✅ | BUILD: ✅
 PENDIENTE: ⚠️ [si hay]
 ```
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

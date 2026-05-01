@@ -62,3 +62,7 @@ PUERTA DE DECISIÓN:
 LISTO: @Constructor T1.1 y T1.2 (paralelo)
 REQUIERE DECISIÓN: [bloqueador]
 ```
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

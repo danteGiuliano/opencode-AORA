@@ -136,3 +136,7 @@ Decisión: [qué]
 Prioridad: [dominio/implementación/híbrido]
 Siguiente paso: [si lo hay]
 ```
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**

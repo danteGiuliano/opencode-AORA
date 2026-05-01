@@ -58,3 +58,7 @@ Requiere: [producto/arquitectura/seguridad]
 - No modificar código
 - No resolver problemas encontrados
 - No aprobar sin haber leído
+
+## Actualización de Conocimiento
+
+**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**
