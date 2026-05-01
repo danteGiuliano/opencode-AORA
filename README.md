@@ -15,6 +15,12 @@ AORA es un sistema multi-agente **agnóstico del proveedor, a nivel de proyecto*
 ## Instalación
 
 ```bash
+# 1. En la raíz del proyecto
+curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
+
+# 2. Abrir OpenCode
+opencode .
+
 # 3. Configurar desde OpenCode
 @config-aora
 ```
@@ -43,7 +49,7 @@ El asistente te guía para:
 | `@debug` | Detective | Debug |
 | `@docs` | Bibliotecario | Conocimiento |
 | `@decider` | Arbitro | Conflictos |
-| `/config-aora` | ConfigAORA | Configuración |
+| `@config-aora` | ConfigAORA | Configuración |
 
 ## Modo Compact (Caveman)
 
