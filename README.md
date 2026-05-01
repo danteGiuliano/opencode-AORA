@@ -2,182 +2,94 @@
 
 > **AORA** = Agente OpenCode Río Negro Argentina
 
-Sistema multi-agente para [OpenCode](https://opencode.ai) con configuración centralizada, nombres semánticos y modelos arbitrarios.
+Multi-agent system for [OpenCode](https://opencode.ai) with centralized configuration, semantic names, and arbitrary models.
 
-Inspirado en [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) y el concepto [caveman](https://github.com/JuliusBrussee/caveman) para compresión de output.
+**Language:** [English](README-en.md) | [Español](README-es.md)
 
-## ⚠️ Instalación a Nivel de Proyecto
+---
 
-**AORA se recomienda instalar a nivel de proyecto**, no a nivel de sistema operativo.
+## Vision
 
-### Por qué a nivel de proyecto?
+AORA is a **provider-agnostic, project-level** multi-agent system. Unlike plugin-based systems that require specific models and multiple subscriptions, AORA agents are native OpenCode markdown files — portable and without vendor lock-in.
 
-- **Limpieza del SO**: No modifica archivos globales de OpenCode
-- **Portabilidad**: El proyecto tiene sus agentes y configuración incluidos
-- **Control de versiones**: Agentes y KNOWLEDGE.md se commitear junto al código
-- **Consistencia**: Todo el equipo usa la misma versión de agentes
-- **Aislamiento**: Cambios en un proyecto no afectan otros
+### Core Principles
 
-```
- proyecto/
- ├── .opencode/           ← agentes, conocimiento local
- ├── AORA.json             ← configuración del proyecto
- └── tu-código/            ← tu aplicación
-```
+- **Portable**: Markdown files, no npm packages or plugins required
+- **Provider-agnostic**: Configure models in AORA.json, prompts stay generic
+- **Project-level**: Install per-project, commit to git, team consistency
+- **Incremental**: Single subscription model, not per-agent billing
 
-### Instalación
+## Quick Start
 
 ```bash
-# En la raíz de tu proyecto
+# Install in your project root
 curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/install.sh | bash
 ```
 
-O descarga manualmente:
+## Documentation
 
-```bash
-mkdir -p .opencode/agents
+| Doc | Description |
+|-----|-------------|
+| [WORKFLOW](docs/WORKFLOW_ES.md) | Complete workflow diagram |
+| [CAVEMAN_CONFIG](docs/CAVEMAN_CONFIG.md) | Compression mode setup |
+| [README-en](README-en.md) | Full English documentation |
+| [README-es](README-es.md) | Documentación completa en español |
 
-# Descargar agentes desde GitHub
-curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/agents/ultraworker.md -o .opencode/agents/ultraworker.md
-# ... repetir para cada agente
+## Agents
 
-# Descargar AORA.json
-curl -fsSL https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/AORA.json -o AORA.json
-```
+| Agent | Semantic Name | Role |
+|-------|---------------|------|
+| `@ultrawork` | OrquestadorPrincipal | Full cycle orchestrator |
+| `@planner` | Estratega | Strategic planning |
+| `@builder` | Constructor | Full-stack implementation |
+| `@reviewer` | Auditor | Code review |
+| `@debug` | Detective | Error diagnosis |
+| `@docs` | Bibliotecario | Knowledge management |
+| `@decider` | Arbitro | Domain vs implementation conflicts |
+| `@init-cruise` | Configurador | Replicate permissions to projects |
 
-## Concepto
+## Mode Compact (Caveman)
 
-AORA define una configuración centralizada en `AORA.json` que especifica:
-- **Modelo global base** para todos los agentes
-- **Modelos especializados** (base, fast, coder, review)
-- **Configuración por agente**: temperature, permissions, semantic name
+Output compression inspired by [caveman](https://github.com/JuliusBrussee/caveman). Reduces ~65-75% tokens without losing technical accuracy.
 
-## Arquitectura
-
-```
-AORA.json (config global)
-├── global.baseModel: modelo base para todos
-├── models: modelos específicos disponibles
-├── agents: configuración individual
-│   ├── semantic: nombre semántico
-│   ├── model: qué modelo usar
-│   └── temperature: configuración específica
-└── caveman: modo ahorro con niveles lite/full/ultra
-```
-
-## Agentes y Nombres Semánticos
-
-| Agent | Nombre Semántico | Rol |
-|-------|------------------|-----|
-| `@ultrawork` | OrquestadorPrincipal | Orquestador de ciclo completo |
-| `@planner` | Estratega | Planificación estratégica |
-| `@builder` | Constructor | Implementación full-stack |
-| `@reviewer` | Auditor | Revisión de código |
-| `@debug` | Detective | Diagnóstico de errores |
-| `@docs` | Bibliotecario | Gestión de conocimiento |
-| `@decider` | Arbitro | Mediador de conflictos dominio vs implementación |
-| `@init-cruise` | Configurador | Replica permisos en proyectos |
-
-## Archivos del Sistema
-
-```
-.opencode/
-├── agents/
-│   ├── ultraworker.md    ← OrquestadorPrincipal
-│   ├── planner.md        ← Estratega
-│   ├── builder.md        ← Constructor
-│   ├── reviewer.md       ← Auditor
-│   ├── debug.md           ← Detective
-│   ├── docs.md           ← Bibliotecario
-│   ├── decider.md        ← Arbitro
-│   └── init-cruise.md    ← Configurador
-├── KNOWLEDGE.md          ← Base de conocimiento
-└── DECISIONS.md          ← Registro de decisiones
-
-AORA.json                  ← Configuración global
-docs/WORKFLOW_ES.md        ← Flujo de trabajo detallado
-```
-
-## Modo Compact (Caveman)
-
-Sistema de compresión de output inspirado en [caveman](https://github.com/JuliusBrussee/caveman). Reduce ~65-75% de tokens sin perder precisión técnica.
-
-### Configuración en AORA.json
+### Configuration in AORA.json
 
 ```json
 "caveman": {
   "enabled": true,
   "global": {
-    "enabled": false,    // true = activa para todos por defecto
-    "model": "full"       // lite | full | ultra | none
+    "enabled": false,
+    "model": "full"
   }
 }
 ```
 
-Por agente (sobrescribe el global):
+**Levels:** `lite` | `full` | `ultra` | `none`
 
-```json
-"agents": {
-  "miAgente": {
-    "cavemanLevel": "ultra"  // lite | full | ultra | none
-  }
-}
-```
-
-### Niveles
-
-| Nivel | Configuración | Descripción |
-|-------|--------------|-------------|
-| `lite` | `"cavemanLevel": "lite"` | Sin filler, gramática intacta |
-| `full` | `"cavemanLevel": "full"` | Sin artículos, fragmentos OK |
-| `ultra` | `"cavemanLevel": "ultra"` | Máxima compresión, telegráfico |
-
-### Activación por palabra clave
+### Activation
 
 ```
-compact [tarea]
-caveman [tarea]
-modoahorro [tarea]
+compact [task]
+caveman [task]
+modoahorro [task]
 ```
 
-## Uso
-
-```bash
-# Ciclo completo
-ultrawork crear módulo de pagos con Stripe
-
-# Flujo manual
-@Estratega analizar: agregar sistema de notificaciones
-@Constructor implementar T1.1 y T1.2
-@Auditor revisar src/notifications/
-@Detective diagnosticar TypeError en webhook
-@Bibliotecario registrar decisión de Stripe
-@Arbitro conflicto: dominio dice X, implementación hace Y
-init-cruise --apply  # replicar permisos en proyecto
-```
-
-## Ciclo de Trabajo
+## Architecture
 
 ```
-ANALISIS → PLANIFICACION → IMPLEMENTACION → REVISION → DOCS
-    ↓              ↓               ↓            ↓         ↓
-Orquestador  Estratega       Constructor    Auditor   Bibliotecario
-   Principal
-                 ↓
-         ¿Puerta de Decisión?
-                 ↓
-            PAUSAR → esperar decisión → continuar
+AORA.json
+├── global.baseModel
+├── models: [base, fast, coder, review]
+├── agents: [semantic, model, temperature, cavemanLevel]
+└── caveman: [enabled, global, levels, activation]
 ```
 
-## Auto-recuperación
+## Cycle
 
-Errores se reintentan automáticamente (max 3 intentos):
-1. Constructor corrige
-2. Detective analiza
-3. Escalar al usuario
+```
+ANALYSIS → PLANNING → IMPLEMENTATION → REVIEW → DOCS
+```
 
-## Base de Conocimiento
+## License
 
-Los agentes actualizan automáticamente:
-- `KNOWLEDGE.md`: patrones, bugs resueltos, integraciones
-- `DECISIONS.md`: decisiones de producto/arquitectura
+MIT
