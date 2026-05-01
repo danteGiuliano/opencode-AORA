@@ -1,32 +1,17 @@
-# Decision Gates
-> Detected by @planner, @reviewer, @debug, @ultraworker.  
-> Managed by @docs. Commit this file.
+# Decision Registry
+
+Registro de decisiones de arquitectura y producto.
+
+## Decisiones
+
+<!-- Agregar decisiones abajo con formato -->
 
 ---
 
-## Pending
+## Pendientes
 
-_No pending gates._
-
----
-
-## Resolved
-
-<!-- Format:
-### [DG-XXX] [title]
-**Status**: RESOLVED
-**Detected by**: [@agent] during [context]
-**Date detected / resolved**: [dates]
-**Description**: what needed deciding
-**Options**: A: ... → impact: ... | B: ... → impact: ...
-**Decision**: which was chosen | **Decided by**: who | **Reason**: why
-**Code impact**: affected files/modules
--->
-
-_No resolved gates yet._
+| ID | Descripción | Prioridad | Fecha Creación | Status |
+|----|-------------|-----------|----------------|--------|
+| P-001 | [pendiente] | alta/media/baja | YYYY-MM-DD | abierto/cerrado |
 
 ---
-
-## Discarded
-
-_No discarded gates._

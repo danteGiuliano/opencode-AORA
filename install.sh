@@ -51,9 +51,16 @@ else
     echo "ℹ️  AORA.json ya existe, no se sobreescribe"
 fi
 
+mkdir -p "$AORA_DIR/knowledge"
+
 # Crear archivos de conocimiento si no existen
-[ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base" > "$AORA_DIR/KNOWLEDGE.md"
-[ ! -f "$AORA_DIR/DECISIONS.md" ] && echo "# Decision Registry" > "$AORA_DIR/DECISIONS.md"
+[ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base
+
+→ Ver .opencode/knowledge/KB.json para entradas estructuradas" > "$AORA_DIR/KNOWLEDGE.md"
+
+[ ! -f "$AORA_DIR/DECISIONS.md" ] && curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/DECISIONS.md" -o "$AORA_DIR/DECISIONS.md"
+
+[ ! -f "$AORA_DIR/knowledge/KB.json" ] && echo '{"entries":[]}' > "$AORA_DIR/knowledge/KB.json"
 
 # Crear config local vacío (OpenCode auto-detecta .opencode/agents/)
 cat > "$AORA_DIR/opencode.json" << CONFIG

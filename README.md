@@ -134,12 +134,54 @@ Los agentes indexan conocimiento en `.opencode/knowledge/KB.json` con schema est
 ```json
 {
   "id": "unique-id",
-  "type": "pattern|bug|decision|integration|concept|gotcha",
-  "title": "...",
-  "summary": "...",
-  "tags": ["tech", "layer", "action"],
-  "keywords": ["exact", "terms"]
+  "type": "decision",
+  "title": "Título descriptivo",
+  "summary": "Una frase: qué es y por qué importa",
+  "content": "Explicación completa...",
+  "tags": ["tecnología", "capa", "acción"],
+  "keywords": ["término exacto", "nombre función"],
+  "context": {
+    "files": ["src/path/file.js"]
+  },
+  "meta": {
+    "created": "2026-05-01",
+    "source": "@Bibliotecario",
+    "confidence": "high"
+  }
 }
+```
+
+### Tipos de Conocimiento
+
+| Tipo | Descripción |
+|------|-------------|
+| `pattern` | Patrón de código/arquitectura repetible |
+| `bug` | Bug conocido y su solución |
+| `decision` | Decisión de arquitectura o producto |
+| `integration` | Integración con servicio externo |
+| `concept` | Concepto técnico importante |
+| `gotcha` | Algo no obvio que funcionar |
+
+### Estructura de Archivos
+
+```
+.opencode/
+├── knowledge/
+│   └── KB.json         ← Base de conocimiento estructurada
+├── DECISIONS.md        ← Log de decisiones con PENDIENTES
+└── KNOWLEDGE.md       ← Redirect a KB.json
+```
+
+### Pendientes
+
+Los pendientes se registran en `DECISIONS.md`:
+
+```markdown
+## Pendientes
+
+| ID | Descripción | Prioridad | Fecha | Status |
+|----|-------------|-----------|-------|--------|
+| P-001 | Implementar HTTPS | alta | 2026-05-01 | abierto |
 ```
 
 ## Arquitectura
