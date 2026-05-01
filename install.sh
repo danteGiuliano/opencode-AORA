@@ -55,25 +55,13 @@ fi
 [ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base" > "$AORA_DIR/KNOWLEDGE.md"
 [ ! -f "$AORA_DIR/DECISIONS.md" ] && echo "# Decision Registry" > "$AORA_DIR/DECISIONS.md"
 
+# Crear config local para agentes
+cat > "$AORA_DIR/opencode.json" << CONFIG
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "agentDirectories": ["$AORA_DIR/agents"]
+}
+CONFIG
+
 echo ""
 echo "✅ AORA instalado correctamente!"
-echo ""
-
-# Conectar con OpenCode global config
-"$AORA_DIR/setup-opencode.sh"
-echo "Estructura creada:"
-echo "  $AORA_DIR/"
-echo "  ├── agents/"
-echo "  │   ├── ultraworker.md"
-echo "  │   ├── planner.md"
-echo "  │   ├── builder.md"
-echo "  │   ├── reviewer.md"
-echo "  │   ├── debug.md"
-echo "  │   ├── docs.md"
-echo "  │   ├── decider.md"
-echo "  │   └── config-aora.md"
-echo "  ├── KNOWLEDGE.md"
-echo "  └── DECISIONS.md"
-echo "  AORA.json"
-echo ""
-echo "Usa: @Estratega, @Constructor, @Auditor, etc. en OpenCode"
