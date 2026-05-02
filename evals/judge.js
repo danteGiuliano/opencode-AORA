@@ -42,17 +42,8 @@ function loadMetrics() {
   return { agents: {}, recentTasks: [] };
 }
 
-function saveMetrics(metrics) {
-  if (!acquireLock()) {
-    console.log('WARN: Could not acquire lock for metrics.json, skipping write');
-    return;
-  }
-  try {
-    fs.writeFileSync(METRICS_PATH, JSON.stringify(metrics, null, 2));
-  } finally {
-    releaseLock();
-  }
-}
+// Note: saveMetrics is not used by judge.js - metrics are written by @calibrator agent only
+// judge.js is read-only (runCIgate reads, evaluateCase reads)
 
 function evaluateCase(caseData, output) {
   const results = {

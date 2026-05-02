@@ -32,7 +32,7 @@ async function updateAgents(force) {
   const agentFiles = [
     'ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md',
     'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md',
-    'calibrator.md', 'init-cruise.md'
+    'calibrator.md', 'init-cruise.md', 'config-aora.md'
   ];
 
   log(`\n${c.bold}📦 Actualizando agentes...${c.z}`, 'c');
@@ -105,7 +105,7 @@ async function checkUpdates() {
   log(`\n${c.bold}🔍 Verificando actualizaciones...${c.z}\n`, 'c');
   
   const localFiles = {
-    agents: ['ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md', 'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md', 'calibrator.md', 'init-cruise.md'],
+    agents: ['ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md', 'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md', 'calibrator.md', 'init-cruise.md', 'config-aora.md'],
     docs: ['docs/WORKFLOW_ES.md', 'docs/CAVEMAN_CONFIG.md'],
     structure: ['AORA.json', 'README.md', 'install.sh']
   };

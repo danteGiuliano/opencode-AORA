@@ -245,7 +245,7 @@ Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`. El sistema
   },
   "meta": {
     "created": "2026-05-01",
-    "source": "@Bibliotecario",
+    "source": "@docs",
     "confidence": "high",
     "weight": 0.8,
     "hits": 42,

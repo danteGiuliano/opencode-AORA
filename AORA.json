@@ -303,7 +303,7 @@
         "name": "CALIBRACION",
         "agents": ["calibrator"],
         "description": "Registro de metricas post-tarea - actualiza metrics.json",
-        "automatic": true
+        "automatic": false
       },
       {
         "phase": 4,

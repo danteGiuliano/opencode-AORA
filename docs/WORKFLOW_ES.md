@@ -89,7 +89,7 @@ AORA es agnóstico del provider. Los modelos se configuran según el provider ut
 
 | Agent | Nombre Semántico | Rol |
 |-------|-------------------|-----|
-| `@ultraworker` | OrquestadorPrincipal | Orchestra el ciclo completo |
+| `@ultraworker` | OrquestadorPrincipal | Orquesta el ciclo completo |
 | `@planner` | Estratega | Planificación estratégica |
 | `@queue` | QueueManager | Gestor de pool con dependencias |
 | `@launcher` | Launcher | Paralelismo real via background |
@@ -377,21 +377,21 @@ Build falla o revisión tiene 🔴 items
 ## Ejemplo de conversación
 
 ```
-Usuario: ultrawork agregar sistema de notificaciones push
+Usuario: ulw agregar sistema de notificaciones push
 
-OrquestadorPrincipal: Analizando contexto...
+@ultraworker: Analizando contexto...
   → Leyendo estructura del proyecto
   → Identificando servicios existentes
 
-OrquestadorPrincipal → @Estratega: Planificar sistema push
+@ultraworker → @planner: Planificar sistema push
 
-Estratega: Descomponiendo en tareas...
+@planner: Descomponiendo en tareas...
   T1.1: Crear servicio de notificaciones
   T1.2: Integrar con FCM/APNs
   T1.3: Crear endpoint de suscripción
   T1.4: Implementar cola de mensajes
 
-Estratega: ⚡ PUERTA DE DECISIÓN
+@planner: ⚡ PUERTA DE DECISIÓN
   ¿Usar FCM (Firebase) o APNs directamente?
 
   Opción A: Firebase Cloud Messaging
@@ -403,25 +403,25 @@ Estratega: ⚡ PUERTA DE DECISIÓN
 
 Usuario: Usemos FCM
 
-Bibliotecario: Registrando decisión en DECISIONS.md
+@docs: Registrando decisión en DECISIONS.md
 
-Constructor (T1.1 + T1.2 en paralelo):
+@builder (T1.1 + T1.2 en paralelo):
   → Creando notification-service.ts
   → Configurando Firebase SDK
 
-Constructor (T1.3 + T1.4):
+@builder (T1.3 + T1.4):
   → Creando endpoint /subscribe
   → Implementando cola con Bull
 
-Auditor: Revisando...
+@reviewer: Revisando...
   🔴 Falta validación de tokens
   🟡 Agregar retry logic
 
-Constructor: Corrigiendo 🔴
+@builder: Corrigiendo 🔴
 
-Auditor: ✅ Aprobado
+@reviewer: ✅ Aprobado
 
-Bibliotecario: Actualizando KNOWLEDGE.md
+@docs: Actualizando KNOWLEDGE.md
 
-OrquestadorPrincipal: ULTRA WORK COMPLETO ✅
+@ultraworker: ULTRA WORK COMPLETO ✅
 ```

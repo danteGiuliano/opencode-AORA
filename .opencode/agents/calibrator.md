@@ -80,14 +80,9 @@ Recalibra la base de conocimiento basandose en uso real:
 
 1. Lee `.opencode/knowledge/KB.json`
 2. Para cada entrada:
-   - Si `hits > 10 AND successRate > 0.8`:
-     - `confidence = "high"`
-     - `weight = 0.9`
-   - Si `hits > 5 AND successRate < 0.5`:
-     - `confidence = "low"`
-     - `weight = 0.3`
-- Si `failedUses > 3`:
-      - Marcar entrada para revision
+   - Si `hits > 10 AND successRate > 0.8`: confidence = "high", weight = 0.9
+   - Si `hits > 5 AND successRate < 0.5`: confidence = "low", weight = 0.3
+   - Si `failedUses > 3`: Marcar entrada para revision
 3. Ejecuta: `node .opencode/knowledge/search.js --stats` para VERIFICAR estado actual de KB (solo lectura, no modifica)
 4. Reporta cambios en DECISIONS.md
 
@@ -186,7 +181,6 @@ node .opencode/knowledge/search.js --failed "D-001"   # Registro uso no util
 Para verificar estado de KB (solo lectura):
 ```
 node .opencode/knowledge/search.js --stats
-```
 ```
 
 Esto actualiza automaticamente los contadores de uso.

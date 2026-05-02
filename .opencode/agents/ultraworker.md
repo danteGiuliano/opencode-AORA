@@ -56,7 +56,7 @@ ulw [descripcion]
 │ FASE 3.5: @calibrator → CALIBRAR            │
 │ → Registra metricas de la tarea             │
 │ → Actualiza metrics.json                   │
-│ → Automático, no requiere delegacion manual │
+│ → @ultraworker llama explicitamente         │
 └────────────────────┬────────────────────────┘
                        ↓
 ┌─────────────────────────────────────────────┐

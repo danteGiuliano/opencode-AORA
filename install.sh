@@ -61,7 +61,15 @@ mkdir -p "$AORA_DIR/knowledge"
 [ ! -f "$AORA_DIR/DECISIONS.md" ] && curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/DECISIONS.md" -o "$AORA_DIR/DECISIONS.md"
 
 # KB.json: inicializar con seed si esta vacio o no existe
-if [ ! -f "$AORA_DIR/knowledge/KB.json" ] || [ ! -s "$AORA_DIR/knowledge/KB.json" ] || [ "$(node -e "const d=require('fs').readFileSync('$AORA_DIR/knowledge/KB.json','utf8'); process.exit(JSON.parse(d).length === 0 ? 0 : 1)")" = "0" ]; then
+# Verificar si KB.json no existe, esta vacio, o tiene array vacio []
+KB_EMPTY=false
+if [ ! -f "$AORA_DIR/knowledge/KB.json" ] || [ ! -s "$AORA_DIR/knowledge/KB.json" ]; then
+    KB_EMPTY=true
+elif node -e "const d=require('fs').readFileSync('$AORA_DIR/knowledge/KB.json','utf8'); process.exit(JSON.parse(d).length===0?0:1)" 2>/dev/null; then
+    KB_EMPTY=true
+fi
+
+if [ "$KB_EMPTY" = "true" ]; then
     echo "🌱 Inicializando KB.json con seed de conocimiento..."
     curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/knowledge/kb-seed.json" -o "$AORA_DIR/knowledge/KB.json" || {
         echo '[]' > "$AORA_DIR/knowledge/KB.json"

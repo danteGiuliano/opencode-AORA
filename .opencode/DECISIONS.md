@@ -249,6 +249,53 @@ Registro de decisiones de arquitectura y producto.
 
 ---
 
+### [D-2026-007] Fourth Bug Fixes Session - Mayo 2026 Round 4
+
+**Fecha**: 2026-05-02
+**Tipo**: bug fixes
+**Detectado por**: @ultraworker
+
+**Bugs corregidos**:
+
+1. **BUG 1 - install.sh KB empty check invertida**: El `$()` capturaba stdout no exit code, y la comparación `= "0"` siempre fallaba porque stdout estaba vacío. Fix: Usar exit code directamente con `if node ... 2>/dev/null; then KB_EMPTY=true; fi`.
+
+2. **BUG 2 - ultraworker.md diagrama FASE 3.5 decia "Automático"**: El diagrama de 7 fases todavía decia "Automático, no requiere delegacion manual" contradiciendo el cuerpo. Fix: Cambiado a "@ultraworker llama explicitamente".
+
+**Inconsistencias corregidas**:
+
+1. **I1 - AORA.json automatic: true para fase 3.5**: El campo automatic: true contradecía el comportamiento explícito documentado. Fix: Cambiado a automatic: false.
+
+2. **I2 - calibrator.md doble backtick**: La seccion "Registro de Uso de KB" tenía un bloque de código triple backtick que cerraba y otro triple backtick suelto que dejaba texto como prosa. Fix: Removido el bloque extra.
+
+3. **I3 - docs.md header permisos desactualizado**: El header de identidad no mencionaba node -e que fue agregado a bashRestriction. Fix: Actualizado el header.
+
+4. **I4 - WORKFLOW_ES.md ejemplo de conversación con nombres semánticos**: El ejemplo usaba "OrquestadorPrincipal", "Estratega", "Bibliotecario", "Constructor", "Auditor". Fix: Cambiado todo a slugs (@ultraworker, @planner, @docs, @builder, @reviewer).
+
+5. **I5 - judge.js saveMetrics código muerto**: saveMetrics estaba implementada con lock pero nunca se llamaba. Design decision: judge.js es solo-lectura, calibrator escribe métricas. Fix: Comentado que saveMetrics no se usa por judge.js.
+
+6. **I6 - update.js faltaba config-aora.md**: agentFiles y localFiles agents no incluían config-aora.md. Fix: Agregado.
+
+**Menores corregidos**:
+
+1. **M1 - calibrator.md indentación rota en recalibrar KB**: La condición failedUses > 3 tenía indentación inconsistente. Fix: Simplificado a una línea por item.
+
+2. **M2 - WORKFLOW_ES.md Orchestra en español**: "Orchestra" es inglés, el resto del doc está en español. Fix: Cambiado a "Orquesta".
+
+3. **M3 - README.md @Bibliotecario en schema ejemplo**: El campo source del ejemplo usaba @Bibliotecario en lugar de @docs. Fix: Cambiado a @docs.
+
+**Archivos afectados**:
+- install.sh (BUG 1)
+- .opencode/agents/ultraworker.md (BUG 2)
+- AORA.json (I1)
+- .opencode/agents/calibrator.md (I2, M1)
+- .opencode/agents/docs.md (I3)
+- docs/WORKFLOW_ES.md (I4, M2)
+- evals/judge.js (I5)
+- .opencode/update.js (I6)
+- README.md (M3)
+
+---
+
 <!-- Agregar decisiones abajo con formato -->
 
 ---
