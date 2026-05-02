@@ -30,7 +30,7 @@ ulw Implementar sistema de autenticacion JWT con rate limiting
 
 | Agent | Semantico | Rol |
 |-------|-----------|-----|
-| `@ultrawork` | OrquestadorPrincipal | Orquestador de ciclo completo |
+| `@ultraworker` | OrquestadorPrincipal | Orquestador de ciclo completo |
 | `@planner` | Estratega | Planificación y descomposicion |
 | `@queue` | QueueManager | Gestor de pool con dependencias |
 | `@launcher` | Launcher | Paralelismo real via background |
@@ -46,7 +46,7 @@ ulw Implementar sistema de autenticacion JWT con rate limiting
 
 ## Uso de Agentes
 
-### @ultrawork — Orquestador Principal
+### @ultraworker — Orquestador Principal
 
 El agente principal. Activa el ciclo completo de trabajo.
 
@@ -110,7 +110,7 @@ Descompone tareas complejas en pasos ejecutables.
 
 ### @builder — Constructor
 
-Implementa codigo. Solo recibe tareas de `@queue` o `@ultrawork`.
+Implementa codigo. Solo recibe tareas de `@queue` o `@ultraworker`.
 
 ```bash
 @builder [T1: Crear endpoints /auth/login y /auth/register]
@@ -377,10 +377,8 @@ Sistema de compresion de output. Reduce ~65-75% tokens.
 ├── knowledge/
 │   ├── KB.json         # Base de conocimiento
 │   └── search.js       # Buscador con ranking
-├── logs/               # Logs para CI
 ├── aora-agents.json    # Registro de agentes
-├── DECISIONS.md        # Log de decisiones
-└── knowledge/
+└── DECISIONS.md        # Log de decisiones
 
 evals/
 ├── dataset.json         # Casos de prueba
@@ -393,7 +391,7 @@ evals/
 ## Seguridad
 
 > [!WARNING]
-> AORA otorga permisos de ejecucion de shell sin restricciones a los agentes `@ultrawork` y `@builder`. El template de configuracion de `AORA.json` incluye patrones de shell destructivos por diseño.
+> AORA otorga permisos de ejecucion de shell sin restricciones a los agentes `@ultraworker` y `@builder`.
 >
 > **Este sistema debe instalarse unicamente en entornos de desarrollo aislados y dedicados.**
 

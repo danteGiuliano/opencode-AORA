@@ -131,7 +131,7 @@ config-aora
 Provider: [provider]
 Modelo: [model]
 
-Para usar: @ultrawork [tarea]
+Para usar: @ultraworker [tarea]
 ```
 
 ## Restricciones

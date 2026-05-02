@@ -60,7 +60,7 @@
     {
       "id": "eval-005",
       "agent": "reviewer",
-      "task": "Revisar codigo con vulnerabilidades: hardcoded secrets y falta de validacion",
+      "task": "Revisar archivo .opencode/evals/fixtures/middleware-vulnerable.js por vulnerabilidades",
       "expected": {
         "findings": {
           "critical": 2,

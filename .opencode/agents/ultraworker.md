@@ -150,7 +150,7 @@ RIESGOS IDENTIFICADOS:
 ══════════════════════════════════════
 ```
 
-## FASE 2 — @Queue
+## FASE 2 — @queue
 
 Recibis el plan de @planner y gestionas el pool de tareas:
 
@@ -195,7 +195,7 @@ FALLOS: 0
 
 ## FASE 3 — @reviewer
 
-Cuando @Queue completa:
+Cuando @queue completa:
 
 ```
 @reviewer [Revisar implementacion de autenticacion JWT]
@@ -244,7 +244,7 @@ Solo cuando:
 - El conflicto bloquea mas de una tarea, O
 - La decision es irreversible (cambio de schema, migracion destructiva, etc.)
 
-Para conflictos menores, @Builder decide y documenta la razon.
+Para conflictos menores, @builder decide y documenta la razon.
 
 ## Auto-recuperacion
 

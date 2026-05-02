@@ -20,6 +20,11 @@ function loadDataset() {
 // judge.js is read-only for CI gate purposes
 
 function loadMetrics() {
+  if (fs.existsSync(METRICS_PATH)) {
+    return JSON.parse(fs.readFileSync(METRICS_PATH, 'utf8'));
+  }
+  return { agents: {}, recentTasks: [] };
+}
 
 function evaluateCase(caseData, output) {
   const results = {
