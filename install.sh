@@ -33,7 +33,7 @@ else
 fi
 
 # Lista de agentes a descargar
-AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "queue" "launcher" "calibrator" "init-cruise" "config-aora")
+AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "queue" "launcher" "calibrator" "config-aora")
 
 for agent in "${AGENTS[@]}"; do
     echo "  ⬇️  $agent.md"

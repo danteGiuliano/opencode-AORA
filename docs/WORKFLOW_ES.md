@@ -99,7 +99,7 @@ AORA es agnóstico del provider. Los modelos se configuran según el provider ut
 | `@docs` | Bibliotecario | Gestión de conocimiento |
 | `@decider` | Arbitro | Conflictos dominio vs implementación |
 | `@calibrator` | Calibrator | Métricas y evaluación |
-| `@init-cruise` | Configurador | Replica configuración en proyectos |
+| `@config-aora` | ConfigAORA | Configuración del sistema |
 
 ## Ciclo de Ejecución
 

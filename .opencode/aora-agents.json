@@ -1,37 +1,15 @@
 {
   "agents": {
-    "ultraworker": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "planner": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "builder": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "reviewer": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "debug": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "docs": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "decider": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "queue": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "launcher": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "calibrator": {
-      "model": "minimax/MiniMax-M2.7"
-    },
-    "config-aora": {
-      "model": "minimax/MiniMax-M2.7"
-    }
+    "ultraworker": { "model": "base" },
+    "planner": { "model": "base" },
+    "builder": { "model": "coder" },
+    "reviewer": { "model": "review" },
+    "debug": { "model": "coder" },
+    "docs": { "model": "fast" },
+    "decider": { "model": "base" },
+    "queue": { "model": "base" },
+    "launcher": { "model": "coder" },
+    "calibrator": { "model": "review" },
+    "config-aora": { "model": "base" }
   }
 }

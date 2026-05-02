@@ -32,11 +32,11 @@ async function updateAgents(force) {
   const agentFiles = [
     'ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md',
     'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md',
-    'calibrator.md', 'init-cruise.md', 'config-aora.md'
+    'calibrator.md', 'config-aora.md'
   ];
 
   log(`\n${c.bold}📦 Actualizando agentes...${c.z}`, 'c');
-  const agentsDir = path.join(__dirname, '..', 'agents');
+  const agentsDir = path.join(__dirname, 'agents');
   
   for (const file of agentFiles) {
     try {
@@ -63,7 +63,7 @@ async function updateDocs(force) {
   for (const file of docFiles) {
     try {
       const content = await fetchFile(file);
-      const localPath = path.join(__dirname, '..', '..', file);
+      const localPath = path.join(__dirname, '..', file);
       
       if (fs.existsSync(localPath) && !force) {
         log(`  ⚠️  ${file} existe, usa --force para sobrescribir`, 'y');
@@ -87,7 +87,7 @@ async function updateStructure(force) {
   for (const file of files) {
     try {
       const content = await fetchFile(file);
-      const localPath = path.join(__dirname, '..', '..', file);
+      const localPath = path.join(__dirname, '..', file);
       
       if (fs.existsSync(localPath) && !force) {
         log(`  ⚠️  ${file} existe, usa --force para sobrescribir`, 'y');
@@ -105,12 +105,12 @@ async function checkUpdates() {
   log(`\n${c.bold}🔍 Verificando actualizaciones...${c.z}\n`, 'c');
   
   const localFiles = {
-    agents: ['ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md', 'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md', 'calibrator.md', 'init-cruise.md', 'config-aora.md'],
+    agents: ['ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md', 'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md', 'calibrator.md', 'config-aora.md'],
     docs: ['docs/WORKFLOW_ES.md', 'docs/CAVEMAN_CONFIG.md'],
     structure: ['AORA.json', 'README.md', 'install.sh']
   };
 
-  const baseDir = path.join(__dirname, '..', '..');
+  const baseDir = path.join(__dirname, '..');
 
   for (const [cat, files] of Object.entries(localFiles)) {
     log(`${c.bold}${cat.toUpperCase()}:${c.z}`, 'c');

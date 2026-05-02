@@ -304,6 +304,6 @@ Registro de decisiones de arquitectura y producto.
 
 | ID | Descripción | Prioridad | Fecha Creación | Status |
 |----|-------------|-----------|----------------|--------|
-| P-001 | [pendiente] | alta/media/baja | YYYY-MM-DD | abierto/cerrado |
+| P-001 | Revisar y planificar backlog de features | media | 2026-05-01 | abierto |
 
 ---

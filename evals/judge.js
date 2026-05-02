@@ -16,24 +16,8 @@ function loadDataset() {
   return JSON.parse(fs.readFileSync(DATASET_PATH, 'utf8'));
 }
 
-function acquireLock() {
-  const lockPath = METRICS_PATH + '.lock';
-  // Non-blocking: if lock exists, someone else is writing - bail out
-  if (fs.existsSync(lockPath)) return false;
-  try {
-    fs.writeFileSync(lockPath, String(process.pid));
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function releaseLock() {
-  const lockPath = METRICS_PATH + '.lock';
-  if (fs.existsSync(lockPath)) {
-    fs.unlinkSync(lockPath);
-  }
-}
+// Note: metrics are written by @calibrator agent only
+// judge.js is read-only for CI gate purposes
 
 function loadMetrics() {
   if (fs.existsSync(METRICS_PATH)) {

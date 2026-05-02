@@ -86,7 +86,7 @@ async function setModel() {
 
   log(`\n✅ Modelo seleccionado: ${modelId}\n`, 'g');
 
-  const aoraPath = path.join(__dirname, '..', '..', 'AORA.json');
+  const aoraPath = path.join(__dirname, '..', 'AORA.json');
   
   if (!fs.existsSync(aoraPath)) {
     log('❌ AORA.json no encontrado\n', 'r');

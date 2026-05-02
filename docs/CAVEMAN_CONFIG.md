@@ -55,6 +55,9 @@
 | debug | `"full"` |
 | docs | `"ultra"` |
 | decider | `"none"` |
+| queue | `"lite"` |
+| launcher | `"full"` |
+| calibrator | `"lite"` |
 | config-aora | `"none"` |
 
 ## Ejemplo: Activar Caveman Global

@@ -18,7 +18,7 @@ decidir: [pregunta específica]
 
 ## Protocolo de resolución
 
-### Paso 1 — MAPEAR EL CONFlicto (minuscula intencional en "CONF" para matchear el protocolo)
+### Paso 1 — MAPEAR EL CONFlicto
 
 ```
 DOMINIO (lo que el sistema requiere/maneja):
