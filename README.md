@@ -314,7 +314,7 @@ node .opencode/knowledge/search.js --stats
         ↓
 @calibrator        → recalibra KB periodicamente
         ↓
-@docs FASE 5      → escribe nueva decision en KB
+@docs FASE 4     → escribe nueva decision en KB
 ```
 
 ---

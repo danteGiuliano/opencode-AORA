@@ -46,16 +46,16 @@
 
 ## Resumen de Configuración por Agente
 
-| Agente | cavemanLevel |
-|--------|--------------|
-| OrquestadorPrincipal | `"full"` |
-| Estratega | `"lite"` |
-| Constructor | `"full"` |
-| Auditor | `"lite"` |
-| Detective | `"full"` |
-| Bibliotecario | `"ultra"` |
-| Arbitro | `"none"` |
-| Configurador | `"none"` |
+| Agente (slug) | cavemanLevel |
+|--------------|--------------|
+| ultraworker | `"full"` |
+| planner | `"lite"` |
+| builder | `"full"` |
+| reviewer | `"lite"` |
+| debug | `"full"` |
+| docs | `"ultra"` |
+| decider | `"none"` |
+| config-aora | `"none"` |
 
 ## Ejemplo: Activar Caveman Global
 

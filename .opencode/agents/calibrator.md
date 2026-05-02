@@ -152,27 +152,6 @@ DECISION REGISTRADA:
 }
 ```
 
-## Prevencion de Conflictos de Escritura
-
-Cuando escribas en metrics.json, usar lock para evitar corrupcion por escritura simultanea:
-
-```bash
-# Si existe .opencode/calibrator/metrics.json.lock, esperar
-while [ -f ".opencode/calibrator/metrics.json.lock" ]; do
-    sleep 0.5
-done
-
-# Crear lock
-echo "$$" > .opencode/calibrator/metrics.json.lock
-
-# Leer, modificar, escribir metrics.json
-
-# Remover lock
-rm .opencode/calibrator/metrics.json.lock
-```
-
-El script evals/ci-gate.sh usa el mismo mecanismo. Si judge.js y calibrator corren cerca, el lock asegura que no se pierdan datos.
-
 ## Sistema de Scoring KB
 
 El scoring combina relevancia y uso:
@@ -239,19 +218,9 @@ Despues de FASE 3 (@reviewer):
 Despues de consultar KB:
 
 ```
-@calibrator kb-hit: [entry-id]
-```
-
-Si la decision de KB fue util:
-
-```
-@calibrator kb-success: [entry-id]
-```
-
-Si la decision de KB fue incorrecta o no aplico:
-
-```
-@calibrator kb-failed: [entry-id]
+node .opencode/knowledge/search.js --hit "[entry-id]"      # Registro consulta
+node .opencode/knowledge/search.js --success "[entry-id]" # Registro uso util
+node .opencode/knowledge/search.js --failed "[entry-id]"  # Registro uso no util
 ```
 
 Esto mantiene las metricas actualizadas automaticamente.

@@ -167,7 +167,7 @@
         "grep": "allow",
         "list": "allow"
       },
-      "bashRestriction": "solo: mkdir -p, cat, echo, node search.js",
+      "bashRestriction": "solo: mkdir -p, cat, echo, node search.js, node -e",
       "semantic": "Bibliotecario"
     },
     "decider": {

@@ -71,7 +71,7 @@ Si la decisión es significativa → @docs registra en DECISIONS.md
 **Tipo**: conflicto dominio vs implementación
 **Detectado por**: [@agente] durante [contexto]
 **Fecha**: [fecha]
-**Descripción**: [qué冲突]
+**Descripción**: [qué conflicto]
 **Análisis**:
   - Dominio: [qué requiere]
   - Implementación: [qué hace/propone]

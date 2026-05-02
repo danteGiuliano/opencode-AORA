@@ -198,6 +198,57 @@ Registro de decisiones de arquitectura y producto.
 
 ---
 
+### [D-2026-006] Third Bug Fixes Session - Mayo 2026 Round 3
+
+**Fecha**: 2026-05-02
+**Tipo**: bug fixes
+**Detectado por**: @ultraworker
+
+**Bugs corregidos**:
+
+1. **BUG 1 - judge.js acquireLock busy-wait**: El while síncrono bloqueaba el event loop de Node completamente. No había yield real. Fix: Reemplazado por check no-bloqueante simple - si el lock existe, retorna false inmediatamente. Lock es best-effort entre procesos Node.
+
+2. **BUG 2 - calibrator.md kb-hit residual**: La sección "Integracion con @ultraworker y @planner" al final del archivo todavía tenía @calibrator kb-hit:, kb-success:, kb-failed: (sintaxis inexistente). Fix: Actualizado a invocar node search.js directamente.
+
+3. **BUG 3 - update.js parser de args**: El parser viejo asignaba --force como valor de --all, dejando args.force undefined. Fix: Actualizado con el mismo parser iterativo de search.js y setmodel.js.
+
+**Inconsistencias corregidas**:
+
+1. **I1 - ultraworker.md checklist "automática"**: Checklist decía "FASE 3.5 automática" contradictorio con el cuerpo que dice "explicitamente llamá". Fix: Cambiado a "@ultraworker llama explícitamente".
+
+2. **I2 - WORKFLOW_ES.md flujo debug con nombres semánticos**: "@Detective", "@Estratega", "@Constructor" en el flujo de debug. Fix: Cambiado a @debug, @planner, @builder. También en self-healing loop.
+
+3. **I3 - CAVEMAN_CONFIG.md tabla con nombres semánticos**: La tabla de configuración usaba "OrquestadorPrincipal", "Constructor", etc. Fix: Cambiado a slugs (ultraworker, builder, etc).
+
+4. **I4 - README.md FASE 5**: La sección de flujo de conocimiento decía "@docs FASE 5". Fix: Cambiado a FASE 4.
+
+5. **I5 - calibrator.md bash lock vs Node lock**: Documentaba dos mecanismos de lock incompatibles (bash lock en calibrator.md + Node lock en judge.js). Fix: Removida la sección de bash lock. El lock es responsabilidad de judge.js (Node).
+
+6. **I6 - AORA.json bashRestriction para docs**: docs.md usa `node -e` pero bashRestriction no lo permitía. Fix: Agregado "node -e" a la lista de comandos permitidos.
+
+**Menores corregidos**:
+
+1. **M2 - builder.md 报告**: Carácter chino en "debug sistemático antes de报告". Fix: Cambiado a "escalar".
+
+2. **M3 - decider.md 冲突**: Template decía "[qué冲突]". Fix: Cambiado a "[qué conflicto]".
+
+3. **M4 - install.sh cat|tr ineficiente**: Usaba `cat "$KB.json" | tr -d ' '` que no maneja saltos de línea. Fix: Cambiado a `node -e` con JSON.parse para verificación robusta del array vacío.
+
+**Archivos afectados**:
+- evals/judge.js (BUG 1)
+- .opencode/agents/calibrator.md (BUG 2, I5)
+- .opencode/update.js (BUG 3)
+- .opencode/agents/ultraworker.md (I1)
+- docs/WORKFLOW_ES.md (I2)
+- docs/CAVEMAN_CONFIG.md (I3)
+- README.md (I4)
+- AORA.json (I6)
+- .opencode/agents/builder.md (M2)
+- .opencode/agents/decider.md (M3)
+- install.sh (M4)
+
+---
+
 <!-- Agregar decisiones abajo con formato -->
 
 ---

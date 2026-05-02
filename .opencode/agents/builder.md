@@ -37,7 +37,7 @@ Te llaman con una tarea específica:
 ### 4. VERIFICAR
 - Ejecutá el código
 - Verificá que funcione
-- Si falla → debug sistemático antes de报告
+- Si falla → debug sistemático antes de escalar
 
 ## Formato de Entrega
 

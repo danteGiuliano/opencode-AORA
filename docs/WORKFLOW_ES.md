@@ -178,30 +178,30 @@ AORA es agnóstico del provider. Los modelos se configuran según el provider ut
 ### Flujo Alternativo: Debug
 
 ```
-Constructor ejecuta
-        ↓
-   ¿Error persiste
-   después de 3 intentos?
-        ↓
-        SÍ
-        ↓
-   @Detective entra
-   (Diagnóstico sistemático)
-        ↓
-   ┌─────────────────────┐
-   │ 1. Reproducir        │
-   │ 2. Caveman logs      │
-   │ 3. Trazar causa raíz │
-   │ 4. Hipótesis/verif   │
-   │ 5. Mínimo arreglo    │
-   └─────────────────────┘
-        ↓
-   ¿Bug implica decisión
-   de producto?
-        ↓
-   SÍ → Puerta de Decisión
-        → @Estratega
-        → Esperar decisión
+@builder ejecuta
+         ↓
+    ¿Error persiste
+    después de 3 intentos?
+         ↓
+         SÍ
+         ↓
+    @debug entra
+    (Diagnóstico sistemático)
+         ↓
+    ┌─────────────────────┐
+    │ 1. Reproducir        │
+    │ 2. Caveman logs      │
+    │ 3. Trazar causa raíz │
+    │ 4. Hipótesis/verif   │
+    │ 5. Mínimo arreglo    │
+    └─────────────────────┘
+         ↓
+    ¿Bug implica decisión
+    de producto?
+         ↓
+    SÍ → Puerta de Decisión
+         → @planner
+         → Esperar decisión
         → Continuar
 ```
 
@@ -299,7 +299,7 @@ Agente detecta decisión pendiente
         ↓
    Usuario decide
         ↓
-   @Bibliotecario registra en DECISIONS.md
+   @docs registra en DECISIONS.md
         ↓
    Continuar ejecución
 ```
@@ -311,15 +311,15 @@ Agente detecta decisión pendiente
 ```
 Build falla o revisión tiene 🔴 items
         ↓
-   Intento 1: @Constructor corrige
+   Intento 1: @builder corrige
         ↓
    ¿Funciona? → SÍ → Continuar
         ↓ NO
-   Intento 2: @Detective analiza
+   Intento 2: @debug analiza
         ↓
    ¿Funciona? → SÍ → Continuar
         ↓ NO
-   Intento 3: @Constructor corrige con debug info
+   Intento 3: @builder corrige con debug info
         ↓
    ¿Funciona? → SÍ → Continuar
         ↓ NO

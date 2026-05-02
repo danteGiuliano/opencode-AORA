@@ -16,19 +16,16 @@ function loadDataset() {
   return JSON.parse(fs.readFileSync(DATASET_PATH, 'utf8'));
 }
 
-function acquireLock(maxWait = 10) {
+function acquireLock() {
   const lockPath = METRICS_PATH + '.lock';
-  const startTime = Date.now();
-  // Simple busy-wait with event loop yield
-  // Node is single-threaded so we just check time and let event loop breathe
-  while (fs.existsSync(lockPath)) {
-    if (Date.now() - startTime > maxWait * 1000) {
-      return false;
-    }
-    // Yield to event loop naturally - no external process needed
+  // Non-blocking: if lock exists, someone else is writing - bail out
+  if (fs.existsSync(lockPath)) return false;
+  try {
+    fs.writeFileSync(lockPath, String(process.pid));
+    return true;
+  } catch {
+    return false;
   }
-  fs.writeFileSync(lockPath, String(process.pid));
-  return true;
 }
 
 function releaseLock() {

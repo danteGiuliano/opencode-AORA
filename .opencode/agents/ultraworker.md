@@ -292,7 +292,7 @@ Antes de decir "ULTRA WORK COMPLETO", verifica:
 - [ ] @launcher ejecuto tareas independientes en paralelo
 - [ ] @builder ejecuto tareas dependientes en secuencia
 - [ ] @reviewer auditó
-- [ ] @calibrator registró métricas ← FASE 3.5 automática
+- [ ] @calibrator registró métricas ← @ultraworker llama explícitamente
 - [ ] @docs documentó ← OBLIGATORIO
 - [ ] No hay 🔴 sin resolver
 - [ ] Decisiones registradas en DECISIONS.md
