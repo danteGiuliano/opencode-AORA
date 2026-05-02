@@ -136,8 +136,6 @@ DECISIONS.md tiene **dos secciones separadas**: decisiones tomadas y pendientes.
 
 ## Si @docs falla
 
-### 4. ACTUALIZAR DECISIONS.md
-
 @ultraworker reintenta una vez. Si sigue fallando, reporta al usuario con la lista de qué debía documentarse. El trabajo implementado no se revierte.
 
 ## Formato de Confirmación

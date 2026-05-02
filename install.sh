@@ -4,7 +4,6 @@
 
 set -e
 
-AORA_REPO="https://github.com/danteGiuliano/opencode-AORA.git"
 AORA_DIR=".opencode"
 AGENTS_DIR="$AORA_DIR/agents"
 

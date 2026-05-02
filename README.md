@@ -264,18 +264,20 @@ El ranking combina relevancia y uso:
 score = relevanceScore * usageBoost * baseWeight
 
 usageBoost = 1 + log(hits + 1) * successRate
-successRate = successUses / (successUses + failedUses + 1)
+successRate = (successUses + 1) / (successUses + failedUses + 1)
 ```
 
 ### Recalibracion Automatica
 
-El agente @calibrator recalibra periodicamente:
+El sistema auto-ajusta pesos incrementalmente via `search.js` al registrar hits/exitos/fallos:
 
 | Condicion | Accion |
 |-----------|--------|
-| hits > 10 AND successRate > 0.8 | confidence: high, weight: 0.9 |
-| hits > 5 AND successRate < 0.5 | confidence: low, weight: 0.3 |
-| failedUses > 3 | Marcar para revision |
+| successUses > 10 AND successUses > failedUses * 2 | confidence: high, weight: +0.1 (max 0.95) |
+| failedUses > 3 AND failedUses > successUses | confidence: low, weight: -0.2 (min 0.1) |
+| failedUses > 3 | Marcar para revision manual |
+
+El agente @calibrator puede recalibrar masivamente con thresholds absolutos (ver calibrator.md).
 
 ### Busqueda
 

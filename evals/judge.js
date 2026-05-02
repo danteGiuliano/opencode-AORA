@@ -33,7 +33,7 @@ function evaluateCase(caseData, output) {
     details: []
   };
 
-  const expected = caseData.expected;
+  const expected = { ...(caseData.expected || {}), ...(caseData.criteria || {}) };
 
   // Evaluar segun tipo de agente
   switch (caseData.agent) {
@@ -54,6 +54,18 @@ function evaluateCase(caseData, output) {
       break;
     case 'calibrator':
       results.details = evaluateCalibrator(output, expected);
+      break;
+    case 'ultraworker':
+      results.details = evaluateUltraworker(output, expected);
+      break;
+    case 'decider':
+      results.details = evaluateDecider(output, expected);
+      break;
+    case 'debug':
+      results.details = evaluateDebug(output, expected);
+      break;
+    case 'launcher':
+      results.details = evaluateLauncher(output, expected);
       break;
     default:
       results.details.push({ check: 'agent-type', status: 'PASS', note: 'No specific evaluation' });
@@ -123,13 +135,27 @@ function evaluateReviewer(output, expected) {
 
   if (expected.findings) {
     if (expected.findings.critical !== undefined) {
-      const criticalMatch = output.match(/🔴\s*críticos.*?(\d+)/i) || output.match(/critical.*?(\d+)/i);
+      // Match the RESUMEN line format: "RESUMEN: [X] críticos, [X] advertencias, [X] correctos"
+      const criticalMatch = output.match(/RESUMEN.*?(\d+)\s*cr[ií]ticos/i) || output.match(/🔴\s*cr[ií]ticos.*?(\d+)/i) || output.match(/critical.*?(\d+)/i);
       if (criticalMatch) {
         const reported = parseInt(criticalMatch[1]);
         checks.push({
           check: 'criticalCount',
           status: reported === expected.findings.critical ? 'PASS' : 'FAIL',
           detail: `Expected ${expected.findings.critical}, got ${reported}`
+        });
+      } else {
+        checks.push({ check: 'criticalCount', status: 'FAIL', detail: 'Could not find critical count in output' });
+      }
+    }
+    if (expected.findings.warnings !== undefined) {
+      const warnMatch = output.match(/RESUMEN.*?(\d+)\s*advertencias/i) || output.match(/🟡.*?advertencias.*?(\d+)/i) || output.match(/warnings.*?(\d+)/i);
+      if (warnMatch) {
+        const reported = parseInt(warnMatch[1]);
+        checks.push({
+          check: 'warningCount',
+          status: reported === expected.findings.warnings ? 'PASS' : 'FAIL',
+          detail: `Expected ${expected.findings.warnings}, got ${reported}`
         });
       }
     }
@@ -194,6 +220,94 @@ function evaluateCalibrator(output, expected) {
   if (expected.metricsUpdated) {
     const hasUpdate = /metrics.*?actualizado|actualizando.*?metrics/i.test(output.toLowerCase());
     checks.push({ check: 'metricsUpdated', status: hasUpdate ? 'PASS' : 'FAIL' });
+  }
+
+  return checks;
+}
+
+function evaluateUltraworker(output, expected) {
+  const checks = [];
+  const lower = output.toLowerCase();
+
+  if (expected.fase0Complete) {
+    const has = /fase\s*0|contexto|analisis/i.test(lower);
+    checks.push({ check: 'fase0Complete', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.fase1Complete) {
+    const has = /fase\s*1|planner|plan/i.test(lower);
+    checks.push({ check: 'fase1Complete', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.fase2Complete) {
+    const has = /fase\s*2|queue|pool|builder/i.test(lower);
+    checks.push({ check: 'fase2Complete', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.fase3Complete) {
+    const has = /fase\s*3|reviewer|audit/i.test(lower);
+    checks.push({ check: 'fase3Complete', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.fase4Complete) {
+    const has = /fase\s*4|docs|document/i.test(lower);
+    checks.push({ check: 'fase4Complete', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.planEjecutado) {
+    const has = /implementado|completado|ULTRA WORK/i.test(output);
+    checks.push({ check: 'planEjecutado', status: has ? 'PASS' : 'FAIL' });
+  }
+
+  return checks;
+}
+
+function evaluateDecider(output, expected) {
+  const checks = [];
+  const lower = output.toLowerCase();
+
+  if (expected.decision) {
+    const hasDecision = /decisi[oó]n|decidido/i.test(lower);
+    checks.push({ check: 'decision', status: hasDecision ? 'PASS' : 'FAIL' });
+  }
+  if (expected.prioridad) {
+    const has = /prioridad|dominio|implementaci[oó]n|h[ií]brido/i.test(lower);
+    checks.push({ check: 'prioridad', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.justificacion) {
+    const has = /justificaci[oó]n|por\s+qu[eé]|raz[oó]n/i.test(lower);
+    checks.push({ check: 'justificacion', status: has ? 'PASS' : 'FAIL' });
+  }
+
+  return checks;
+}
+
+function evaluateDebug(output, expected) {
+  const checks = [];
+  const lower = output.toLowerCase();
+
+  if (expected.rootCause) {
+    const has = /causa\s+ra[ií]z|root\s*cause|origen/i.test(lower);
+    checks.push({ check: 'rootCause', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.hasSteps) {
+    const has = /paso\s*\d|step\s*\d/i.test(lower) || /\d+\.\s/.test(output);
+    checks.push({ check: 'hasSteps', status: has ? 'PASS' : 'FAIL' });
+  }
+  if (expected.hasVerification) {
+    const has = /verific|comprobar|confirmar|validar/i.test(lower);
+    checks.push({ check: 'hasVerification', status: has ? 'PASS' : 'FAIL' });
+  }
+
+  return checks;
+}
+
+function evaluateLauncher(output, expected) {
+  const checks = [];
+  const lower = output.toLowerCase();
+
+  if (expected.maxConcurrent !== undefined) {
+    const match = output.match(/paralelismo.*?(\d+)|max.*?(\d+).*?simult/i);
+    checks.push({ check: 'maxConcurrent', status: match ? 'PASS' : 'FAIL' });
+  }
+  if (expected.allLaunched) {
+    const has = /lanzad[ao]s|🚀|PID/i.test(output);
+    checks.push({ check: 'allLaunched', status: has ? 'PASS' : 'FAIL' });
   }
 
   return checks;

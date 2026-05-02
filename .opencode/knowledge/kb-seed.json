@@ -10,7 +10,7 @@
     "context": {
       "files": ["auth/", "middleware/"]
     },
-    "related": ["SEED-007", "SEED-008"],
+    "related": ["SEED-006", "SEED-007", "SEED-008"],
     "meta": {
       "created": "2026-05-01",
       "source": "@docs",
@@ -56,7 +56,7 @@
     "context": {
       "files": ["src/**/*.js", "middleware/", "controllers/"]
     },
-    "related": [],
+    "related": ["SEED-006"],
     "meta": {
       "created": "2026-05-01",
       "source": "@docs",

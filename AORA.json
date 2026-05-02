@@ -12,10 +12,10 @@
 
   "caveman": {
     "enabled": true,
-    "global": {
-      "enabled": false,
-      "model": "full"
-    },
+"global": {
+    "enabled": true,
+    "model": "full"
+  },
     "levels": {
       "lite": {
         "description": "Sin filler, gramática intacta, profesional sin fluff",

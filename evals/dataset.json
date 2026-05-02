@@ -24,12 +24,11 @@
         "hasTareasIndependientes": true,
         "hasTareasDependientes": true,
         "hasRiesgosIdentificados": true,
-        "tareasCount": 4
-      },
-      "criteria": {
+        "tareasCount": 4,
         "includesJWT": true,
         "includesRateLimiting": true
-      }
+      },
+      "criteria": {}
     },
     {
       "id": "eval-003",
@@ -120,12 +119,11 @@
       "expected": {
         "parallelismUsed": 3,
         "allCompleted": true,
-        "executionOrder": "concurrent"
-      },
-      "criteria": {
+        "executionOrder": "concurrent",
         "launcherWasCalled": true,
         "noBlockingBetweenIndependent": true
-      }
+      },
+      "criteria": {}
     },
     {
       "id": "eval-010",
@@ -192,12 +190,11 @@
       "task": "Evaluar: ultimas 10 tareas, successRate debe ser > 0.8",
       "expected": {
         "successRate": 0.8,
-        "avgCorrections": 1.5
-      },
-      "criteria": {
+        "avgCorrections": 1.5,
         "metricsUpdated": true,
         "reportGenerated": true
-      }
+      },
+      "criteria": {}
     },
     {
       "id": "eval-015",

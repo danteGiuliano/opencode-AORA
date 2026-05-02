@@ -160,6 +160,19 @@ successRate = successUses / (successUses + failedUses + 1)
 
 ### Reglas de Recalibracion
 
+El sistema tiene dos niveles de recalibracion:
+
+**Auto-ajuste incremental (search.js — automático al registrar hits/exitos/fallos):**
+
+| Condicion | Accion |
+|-----------|--------|
+| successUses > 10 AND successUses > failedUses * 2 | confidence: high, weight: +0.1 (max 0.95) |
+| failedUses > 3 AND failedUses > successUses | confidence: low, weight: -0.2 (min 0.1) |
+
+Asimetria intencional: downgrade (-0.2) es mas agresivo que upgrade (+0.1).
+
+**Recalibracion masiva (@calibrator recalibrar: KB — umbrales absolutos):**
+
 | Condicion | Accion |
 |-----------|--------|
 | hits > 10 AND successRate > 0.8 | confidence: high, weight: 0.9 |
