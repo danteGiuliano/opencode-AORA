@@ -121,6 +121,8 @@ function registerSuccess(entryId) {
   entry.meta.successUses = (entry.meta.successUses || 0) + 1;
 
   // Auto-upgrade si tiene muchas exitos
+  // Threshold: >10 successUses Y al menos 2x mas successes que failures
+  // Upgrade: weight +0.1 (mas conservative, tarda mas en mejorar)
   if (entry.meta.successUses > 10 && entry.meta.successUses > (entry.meta.failedUses || 0) * 2) {
     entry.meta.confidence = 'high';
     entry.meta.weight = Math.min(0.95, (entry.meta.weight || 0.5) + 0.1);
@@ -146,6 +148,11 @@ function registerFailed(entryId) {
   entry.meta.failedUses = (entry.meta.failedUses || 0) + 1;
 
   // Auto-downgrade si tiene muchos fallos
+  // Threshold: >3 failedUses Y mas failures que successes
+  // Downgrade: weight -0.2 (mas agresivo, entry riesgosa baja rapido)
+  // ASIMETRIA: downgrade es el doble de rapido que upgrade
+  // Una entrada necesita ~2 exitos para recuperarse de 1 fallo
+  // Esto es intencional: mejor tener una entry baja que sobreestimar una incorrecta
   if (entry.meta.failedUses > 3 && entry.meta.failedUses > (entry.meta.successUses || 0)) {
     entry.meta.confidence = 'low';
     entry.meta.weight = Math.max(0.1, (entry.meta.weight || 0.5) - 0.2);
@@ -238,9 +245,22 @@ Ejemplos:
 // Main
 function main() {
   const args = {};
-  process.argv.slice(2).forEach((v, i, a) => {
-    if (v.startsWith('--')) args[v.replace('--', '')] = a[i + 1] || true;
-  });
+  // Parse args: handle values that start with --
+  for (let i = 0; i < process.argv.length; i++) {
+    const v = process.argv[i];
+    if (v.startsWith('--')) {
+      const key = v.replace('--', '');
+      const nextArg = process.argv[i + 1];
+      // If next arg is undefined, null, or starts with --, assign true
+      // Otherwise assign the next arg (even if it starts with --)
+      if (nextArg === undefined || nextArg === null || nextArg.startsWith('--')) {
+        args[key] = true;
+      } else {
+        args[key] = nextArg;
+        i++; // Skip next arg since we consumed it
+      }
+    }
+  }
 
   if (args.help) { help(); process.exit(0); }
 

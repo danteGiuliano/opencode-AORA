@@ -8,10 +8,32 @@ const fs = require('fs');
 const path = require('path');
 
 const DATASET_PATH = path.join(__dirname, 'dataset.json');
-const METRICS_PATH = path.join(__dirname, '../.opencode/calibrator/metrics.json');
+// Use project root as base, not __dirname (which is evals/)
+const PROJECT_ROOT = path.join(__dirname, '..');
+const METRICS_PATH = path.join(PROJECT_ROOT, '.opencode', 'calibrator', 'metrics.json');
 
 function loadDataset() {
   return JSON.parse(fs.readFileSync(DATASET_PATH, 'utf8'));
+}
+
+function acquireLock(maxWait = 10) {
+  const lockPath = METRICS_PATH + '.lock';
+  const startTime = Date.now();
+  while (fs.existsSync(lockPath)) {
+    if (Date.now() - startTime > maxWait * 1000) {
+      return false;
+    }
+    const sleep = require('child_process').execSync('sleep 0.1');
+  }
+  fs.writeFileSync(lockPath, String(process.pid));
+  return true;
+}
+
+function releaseLock() {
+  const lockPath = METRICS_PATH + '.lock';
+  if (fs.existsSync(lockPath)) {
+    fs.unlinkSync(lockPath);
+  }
 }
 
 function loadMetrics() {
@@ -22,7 +44,15 @@ function loadMetrics() {
 }
 
 function saveMetrics(metrics) {
-  fs.writeFileSync(METRICS_PATH, JSON.stringify(metrics, null, 2));
+  if (!acquireLock()) {
+    console.log('WARN: Could not acquire lock for metrics.json, skipping write');
+    return;
+  }
+  try {
+    fs.writeFileSync(METRICS_PATH, JSON.stringify(metrics, null, 2));
+  } finally {
+    releaseLock();
+  }
 }
 
 function evaluateCase(caseData, output) {

@@ -113,7 +113,28 @@ ARCHIVOS RESULTANTES:
 | `🚀` | Lanzada, en ejecucion |
 | `✅` | Completada exitosamente |
 | `❌` | Falló |
-| `⏰` | Timeout |
+| `⏰` | Timeout (rate limit o colgado) |
+
+## Modo de Ejecucion — Informacion para @queue
+
+El `@launcher` te informa el modo activo:
+
+```
+MODO: SECUENCIAL
+  - AORA_PARALLEL no esta en true
+  - Tareas se ejecutan una por una
+  - Expectativas de tiempo: 3x más lento que paralelo
+
+MODO: PARALELO
+  - AORA_PARALLEL=true
+  - Tareas se ejecutan simultaneamente
+  - Expectativas de tiempo: normal (maxParallel tareas en paralelo)
+```
+
+**Como @queue:**
+- Si modo es SECUENCIAL: esperar tiempos mayores, no asumir paralelismo real
+- Si modo es PARALELO: asumir que las independientes ejecutan simultaneamente
+- En ambos modos: dependientes solo se lanzan cuando sus dependencias completan
 
 ## Manejo de Errores
 

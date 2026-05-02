@@ -33,7 +33,7 @@ else
 fi
 
 # Lista de agentes a descargar
-AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "init-cruise" "config-aora")
+AGENTS=("ultraworker" "planner" "builder" "reviewer" "debug" "docs" "decider" "queue" "launcher" "calibrator" "init-cruise" "config-aora")
 
 for agent in "${AGENTS[@]}"; do
     echo "  ⬇️  $agent.md"
@@ -60,7 +60,15 @@ mkdir -p "$AORA_DIR/knowledge"
 
 [ ! -f "$AORA_DIR/DECISIONS.md" ] && curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/DECISIONS.md" -o "$AORA_DIR/DECISIONS.md"
 
-[ ! -f "$AORA_DIR/knowledge/KB.json" ] && echo '{"entries":[]}' > "$AORA_DIR/knowledge/KB.json"
+# KB.json: inicializar con seed si esta vacio o no existe
+if [ ! -f "$AORA_DIR/knowledge/KB.json" ] || [ ! -s "$AORA_DIR/knowledge/KB.json" ] || [ "$(cat "$AORA_DIR/knowledge/KB.json" | tr -d ' ')" = "[]" ]; then
+    echo "🌱 Inicializando KB.json con seed de conocimiento..."
+    curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/knowledge/kb-seed.json" -o "$AORA_DIR/knowledge/KB.json" || {
+        echo '[]' > "$AORA_DIR/knowledge/KB.json"
+    }
+else
+    echo "ℹ️  KB.json ya existe con datos, no se sobreescribe"
+fi
 
 # Crear config local vacío (OpenCode auto-detecta .opencode/agents/)
 cat > "$AORA_DIR/opencode.json" << CONFIG

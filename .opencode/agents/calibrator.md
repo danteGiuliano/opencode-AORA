@@ -86,9 +86,9 @@ Recalibra la base de conocimiento basandose en uso real:
    - Si `hits > 5 AND successRate < 0.5`:
      - `confidence = "low"`
      - `weight = 0.3`
-   - Si `failedUses > 3`:
-     - Marcar entrada para revision
-3. Ejecuta: `node .opencode/knowledge/search.js --stats`
+- Si `failedUses > 3`:
+      - Marcar entrada para revision
+3. Ejecuta: `node .opencode/knowledge/search.js --stats` para VERIFICAR estado actual de KB (solo lectura, no modifica)
 4. Reporta cambios en DECISIONS.md
 
 ### 6. CI-GATE (para CI/CD)
@@ -151,6 +151,27 @@ DECISION REGISTRADA:
   ]
 }
 ```
+
+## Prevencion de Conflictos de Escritura
+
+Cuando escribas en metrics.json, usar lock para evitar corrupcion por escritura simultanea:
+
+```bash
+# Si existe .opencode/calibrator/metrics.json.lock, esperar
+while [ -f ".opencode/calibrator/metrics.json.lock" ]; do
+    sleep 0.5
+done
+
+# Crear lock
+echo "$$" > .opencode/calibrator/metrics.json.lock
+
+# Leer, modificar, escribir metrics.json
+
+# Remover lock
+rm .opencode/calibrator/metrics.json.lock
+```
+
+El script evals/ci-gate.sh usa el mismo mecanismo. Si judge.js y calibrator corren cerca, el lock asegura que no se pierdan datos.
 
 ## Sistema de Scoring KB
 

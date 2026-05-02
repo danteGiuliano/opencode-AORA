@@ -81,15 +81,15 @@ RESUMEN: [X] críticos, [X] advertencias, [X] correctos
 - Dar sugerencia concreta de fix
 - No rechazar por estilo — solo problemas reales
 - Si todo está bien → decirlo claramente
-- No escalar al @Árbitro por diferencias de estilo o preferencias menores
+- No escalar al @decider por diferencias de estilo o preferencias menores
 
-## Cuándo escalar al @Árbitro
+## Cuándo escalar al @decider
 
 Solo si detectás un conflicto que:
 - Bloquea más de una tarea, O
 - Requiere una decisión de producto irreversible
 
-Para todo lo demás → reportar como 🔴 o 🟡 y dejar que @Constructor resuelva.
+Para todo lo demás → reportar como 🔴 o 🟡 y dejar que @builder resuelva.
 
 ## Después de Revisar
 

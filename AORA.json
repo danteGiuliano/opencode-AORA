@@ -264,9 +264,13 @@
   "workflow": {
     "compactMode": false,
     "parallelism": {
-      "note": "Tareas independientes se ejecutan en paralelo real via @launcher",
+      "note": "Tareas independientes se ejecutan en paralelo via @launcher",
       "maxParallel": 3,
-      "mechanism": "@launcher lanza sesiones opencode en background"
+      "mechanism": "@launcher lanza sesiones opencode en background",
+      "safeMode": true,
+      "envVar": "AORA_PARALLEL",
+      "backoffSeconds": 5,
+      "maxRetries": 2
     },
     "phases": [
       {

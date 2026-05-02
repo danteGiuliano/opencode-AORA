@@ -99,14 +99,43 @@ async function setModel() {
     if (!aora.models) aora.models = {};
     if (!aora.models.base) aora.models.base = {};
     
+    // Update global baseModel
     aora.global.baseModel = modelId;
+    
+    // Update models.base to reflect the chosen model
     aora.models.base.id = modelId;
     aora.models.base.name = model;
     aora.models.base.description = `${PROVIDERS[provider].name} ${model}`;
-
+    
+    // Also update coder, review, fast to use the same model
+    // This ensures "configurar todos los modelos" actually configures all
+    if (aora.models.coder) {
+      aora.models.coder.id = modelId;
+      aora.models.coder.name = model;
+    }
+    if (aora.models.review) {
+      aora.models.review.id = modelId;
+      aora.models.review.name = model;
+    }
+    if (aora.models.fast) {
+      aora.models.fast.id = modelId;
+      aora.models.fast.name = model;
+    }
+    
+    // Also update all agent model references to "base" 
+    // so they all inherit from global.baseModel
+    const agentModelTypes = ['ultraworker', 'planner', 'builder', 'reviewer', 'debug', 'docs', 'decider', 'queue', 'launcher', 'calibrator', 'config-aora'];
+    for (const agentName of agentModelTypes) {
+      if (aora.agents && aora.agents[agentName]) {
+        aora.agents[agentName].model = 'base';
+      }
+    }
+    
     fs.writeFileSync(aoraPath, JSON.stringify(aora, null, 2));
     log('✅ AORA.json actualizado correctamente\n', 'g');
     log(`   global.baseModel: ${aora.global.baseModel}\n`, 'c');
+    log('   Todos los agentes ahora usan model: base\n', 'c');
+    log(`   models.base.id: ${aora.models.base.id}\n`, 'c');
   } catch (err) {
     log(`❌ Error actualizando AORA.json: ${err.message}\n`, 'r');
   }

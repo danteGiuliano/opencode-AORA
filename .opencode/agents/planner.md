@@ -153,4 +153,4 @@ PARA @queue:
 - SIEMPRE explorar codigo existente antes de planificar
 - Cada tarea debe poder ser implementada por @builder sin mas contexto
 - Si la tarea es muy grande → dividirla en multiples tareas mas pequenas
-- Escalar al @Arbitro solo si hay conflicto que bloquea >1 tarea o involucra decision irreversible
+- Escalar al @decider solo si hay conflicto que bloquea >1 tarea o involucra decision irreversible

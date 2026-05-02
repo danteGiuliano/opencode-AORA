@@ -59,7 +59,29 @@ KB.json es un **array JSON en la raíz** (no un objeto con `entries`). Si no exi
 echo '[]' > .opencode/knowledge/KB.json
 ```
 
-Leer el contenido actual, agregar la nueva entrada al array y reescribir el archivo completo. Cada entrada sigue este schema:
+**COMPROBACIÓN DE ID EXISTENTE — OBLIGATORIO antes de hacer push:**
+
+Antes de agregar una entrada, verificar si el ID ya existe:
+
+```bash
+# Leer KB.json actual
+KB_CONTENT=$(cat .opencode/knowledge/KB.json)
+
+# Verificar si el ID ya existe (devuelve "found" si existe)
+if echo "$KB_CONTENT" | grep -q "\"id\": \"$ID\""; then
+    echo "ID $ID ya existe en KB.json — actualizando entrada existente"
+    # Proceder a替换 (reemplazar) la entrada existente en lugar de agregar
+else
+    echo "ID $ID no existe — agregando nueva entrada"
+    # Proceder a agregar nueva entrada
+fi
+```
+
+Cuando el ID ya existe: leer el array, encontrar la entrada por ID, actualizarla en memoria, escribir todo de nuevo.
+
+Cuando el ID no existe: agregar la nueva entrada al final del array.
+
+**Nunca hacer push sin verificar primero si el ID existe.** Esto evita duplicados y pérdida de conocimiento previo.
 
 ```json
 {
@@ -75,7 +97,7 @@ Leer el contenido actual, agregar la nueva entrada al array y reescribir el arch
   },
   "meta": {
     "created": "2026-05-01",
-    "source": "@Bibliotecario",
+    "source": "@docs",
     "confidence": "high"
   }
 }

@@ -63,14 +63,15 @@
       "task": "Revisar archivo src/auth/middleware.js por vulnerabilidades",
       "expected": {
         "findings": {
-          "critical": 0,
-          "warnings": 0
+          "critical": 2,
+          "warnings": 3
         }
       },
       "criteria": {
-        "noHardcodedSecrets": true,
-        "noSQLInjection": true,
-        "noXSS": true
+        "detectaHardcodedSecrets": true,
+        "detectaSQLInjection": true,
+        "detectaXSS": true,
+        "noFalsosPositivos": true
       }
     },
     {

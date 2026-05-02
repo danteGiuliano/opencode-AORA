@@ -1,0 +1,186 @@
+[
+  {
+    "id": "SEED-001",
+    "type": "decision",
+    "title": "JWT puro vs Server-side Sessions",
+    "summary": "Para APIs stateless, JWT es preferible a sesiones server-side. Para apps con requerimiento de logout instantaneo o refresh token revocation, considerar Redis sessions.",
+    "content": "JWT ofrece stateless authentication sin almacenar estado en el servidor. Trade-offs:\n\nPROs JWT:\n- Sin necesidad de session store (Redis/db)\n- Escalabilidad horizontal mas simple\n- Mobile-friendly\n\nCONs JWT:\n- No se puede revocar facilmente (sin blacklist)\n- Payload grande en cada request\n- Si leakea la key, compromete todo el sistema\n\nGO-TO: JWT para APIs stateless standard. Usar Redis sessions si se necesita logout instantaneo o refresh token revocation.",
+    "tags": ["auth", "jwt", "sessions", "api", "security"],
+    "keywords": ["jwt", "token", "sessions", "auth", "stateless", "redis"],
+    "context": {
+      "files": ["src/auth/", "middleware/"]
+    },
+    "related": ["SEED-007", "SEED-008"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-002",
+    "type": "pattern",
+    "title": "Environment Variables para Secrets",
+    "summary": "Nunca hardcodear credenciales. Usar .env + process.env para secrets y config de entorno.",
+    "content": "REGLA: Todos los secrets, API keys, database URLs y config especifica de entorno VA en .env (o vars de entorno del sistema).\n\nPATRON:\n```javascript\n// MAL\nconst API_KEY = 'sk-1234567890abcdef';\n\n// BIEN\nconst API_KEY = process.env.API_KEY;\n```\n\nALMACENAMIENTO:\n- .env: valores locales de desarrollo (NUNCA commitear)\n- Sistema de CI/CD: vars de entorno inyectadas\n- Prod: usar secrets manager (Vault, AWS Secrets, etc.)\n\nVALIDACION: Validar que las vars requeridas existan al inicio de la app.\n```javascript\nif (!process.env.DATABASE_URL) {\n  throw new Error('DATABASE_URL environment variable is required');\n}\n```",
+    "tags": ["security", "configuration", "env", "best-practices"],
+    "keywords": ["env", "secrets", "environment", "configuration", "API_KEY", "DATABASE_URL"],
+    "context": {
+      "files": [".env", "config/", "src/index.js", "src/config/"]
+    },
+    "related": ["SEED-008"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-003",
+    "type": "pattern",
+    "title": "Async/Await Error Handling en Node.js",
+    "summary": "Siempre usar try/catch con async/await. No encadenar .then().catch() en funciones async.",
+    "content": "PATRON CORRECTO:\n```javascript\nasync function fetchData() {\n  try {\n    const result = await apiCall();\n    return result;\n  } catch (error) {\n    // Handle especifico del contexto\n    console.error('API call failed:', error.message);\n    throw error; // Re-throw si no puede recover\n  }\n}\n```\n\nPATRON INCORRECTO (evitar):\n```javascript\n// Esto puede perder errores en algunos casos\nasync function fetchData() {\n  return apiCall().then(result => result).catch(error => {\n    console.error(error);\n  });\n}\n```\n\nMIDDLEWARE EXPRESS:\n```javascript\nconst asyncHandler = (fn) => (req, res, next) => {\n  Promise.resolve(fn(req, res, next)).catch(next);\n};\n\napp.get('/route', asyncHandler(async (req, res) => {\n  const data = await fetchData();\n  res.json(data);\n}));\n```\n\nGLOBAL ERROR HANDLER: Siempre tener un middleware de error global que capture errores no manejados.",
+    "tags": ["nodejs", "async", "error-handling", "patterns", "javascript"],
+    "keywords": ["async", "await", "try-catch", "error-handling", "promise", "nodejs"],
+    "context": {
+      "files": ["src/**/*.js", "middleware/", "controllers/"]
+    },
+    "related": [],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-004",
+    "type": "gotcha",
+    "title": "CREATE INDEX antes de escribir datos",
+    "summary": "En migraciones de base de datos, crear indices BEFORE bulk data writes, no despues.",
+    "content": "GOTCHA: Los indices afectan performance de writes masivo si se crean despues.\n\nORDEN CORRECTA:\n1. Migracion de schema (create table)\n2. CREATE INDEX (vacio, rapido)\n3. Bulk data migration (los indices ya existen y se actualizan durante el insert)\n\nORDEN INCORRECTA:\n1. Migracion de schema\n2. Bulk data migration (sin index, rapido)\n3. CREATE INDEX (massive, lockea la tabla por minutos/horas)\n\nEJEMPLO:\n```sql\n-- CORRECTO: crear index antes del bulk insert\nCREATE INDEX CONCURRENTLY idx_user_email ON users(email);\n\\COPY users FROM 'data.csv' WITH (FORMAT csv);\n\n-- INCORRECTO: bulk insert primero\n\\COPY users FROM 'data.csv' WITH (FORMAT csv);\nCREATE INDEX CONCURRENTLY idx_user_email ON users(email); -- TABLE LOCK!\n```\n\nADICIONAL: Usar CONCURRENTLY en PostgreSQL para no lockear writes.",
+    "tags": ["database", "migrations", "indexes", "postgresql", "performance"],
+    "keywords": ["index", "migration", "postgresql", "bulk", "performance", "create index"],
+    "context": {
+      "files": ["migrations/", "db/", "schema.prisma"]
+    },
+    "related": ["SEED-005"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-005",
+    "type": "pattern",
+    "title": "Migrate before Deploy - Order of Operations",
+    "summary": "En deploy, siempre ejecutar migraciones ANTES de starting nueva version de la app.",
+    "content": "REGLA: Deploy en dos fases nunca falla.\n\nFASE 1: Migraciones (backward compatible)\n- Schema changes que no rompen funcionalidad existente\n- Nuevas tablas/columnas nullable\n- Indices\n\nFASE 2: App deploy\n- Nueva version que usa el schema nuevo\n\nPATRON BLUE-GREEN:\n```\n1. Run migrations against DB (old app still running)\n2. Validate migrations completed\n3. Switch traffic to new app version\n4. Old app can stay running for rollback\n```\n\nROLLBACK:\n- Si fase 2 falla: nueva version no inicia, old sigue sirviendo\n- Si fase 1 fallo: no se hizo deploy todavia, zero impact\n\nMIGRATION CHECKLIST:\n- [ ] Nueva columna es nullable o tiene default\n- [ ] No hay constraints incompatibles con old code\n- [ ] Indices creados\n- [ ] Backward compatible (old app puede correr con new schema)\n\nNUNCA HACER: Add non-nullable column sin default en tabla con datos.",
+    "tags": ["deployment", "migrations", "database", "devops", " порядок"],
+    "keywords": ["migration", "deploy", "schema", "blue-green", "rollback"],
+    "context": {
+      "files": ["migrations/", "deploy/", "scripts/"]
+    },
+    "related": ["SEED-004"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-006",
+    "type": "pattern",
+    "title": "DTO Validation Layer Pattern",
+    "summary": "Usar DTOs (Data Transfer Objects) para validar y normalizar inputs antes de pasar a la logica de negocio.",
+    "content": "PATRON DTO:\n\n1. REQUEST DTO - valida input de API:\n```javascript\nclass CreateUserDTO {\n  constructor(data) {\n    this.email = validateEmail(data.email);\n    this.name = validateString(data.name, { min: 2, max: 100 });\n    this.age = validateNumber(data.age, { min: 0, max: 150 });\n  }\n}\n```\n\n2. RESPONSE DTO - normaliza output:\n```javascript\nclass UserResponseDTO {\n  static from(user) {\n    return {\n      id: user.id,\n      email: user.email,\n      name: user.name,\n      // Excluye password, internal fields\n    };\n  }\n}\n```\n\nVALIDATION OPTIONS:\n- Joi / Yup - validation schemas\n- Zod - TypeScript-first, infer types\n- class-validator - decorators, TypeScript\n\nBENEFICIOS:\n- Fail fast en el boundary (antes de DB/ business logic)\n- Error messages claros para API consumers\n- Shape de datos consistente\n- Testeable independientemente",
+    "tags": ["validation", "dto", "api", "patterns", "architecture"],
+    "keywords": ["dto", "validation", "request", "response", "api", "schema"],
+    "context": {
+      "files": ["src/dto/", "src/validators/", "controllers/", "api/"]
+    },
+    "related": ["SEED-001", "SEED-003"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-007",
+    "type": "gotcha",
+    "title": "Rate Limiting en Auth Endpoints",
+    "summary": "Auth endpoints (/login, /register, /password-reset) son objetivos de brute force. Siempre agregar rate limiting especifico.",
+    "content": "GOTCHA: Rate limiting general puede no ser suficiente para auth.\n\nPOR QUe:\n- Login attempts son predictibles (POST a /auth/login)\n- Ataques Targeted: un IP probeando muchas cuentas vs muchas IPs probeando una cuenta\n- Password spray: pocas attempts por cuenta, muchas cuentas\n\nPATRON RECOMENDADO:\n```javascript\n// Rate limiter especifico para auth\nconst authRateLimiter = rateLimit({\n  windowMs: 15 * 60 * 1000, // 15 min\n  max: 5, // 5 intentos por window\n  message: 'Too many login attempts',\n  // Skip successful logins del count\n  skipSuccessfulRequests: true,\n  // Validar contra abuse de diferentes accounts\n  keyGenerator: (req) => req.ip + ':' + req.body.email\n});\n\napp.post('/auth/login', authRateLimiter, authController);\n```\n\nLAYERS DE DEFENSA:\n1. Rate limit por IP (general, 100 req/min)\n2. Rate limit por IP+email (auth especifico, 5 intent/15min)\n3. CAPTCHA tras 3 intentos fallidos\n4. Account lock tras 10 intentos fallidos (enviar email al owner)\n\nMONITOREAR:\n- Log de intentos fallidos\n- Alertar si > threshold en short window\n- Considerar bloquear IPs con patrones suspicious",
+    "tags": ["security", "auth", "rate-limiting", "api", "brute-force"],
+    "keywords": ["rate-limit", "auth", "login", "brute-force", "security", "ddos"],
+    "context": {
+      "files": ["middleware/auth/", "routes/auth/", "src/auth/"]
+    },
+    "related": ["SEED-001", "SEED-002"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  },
+  {
+    "id": "SEED-008",
+    "type": "gotcha",
+    "title": "Gitignore debe incluir .env y archivos de config local",
+    "summary": "El .gitignore debe incluir .env y cualquier archivo con secrets o config de entorno local.",
+    "content": "GOTCHA: Un .env commiteado es una catastrophica security breach.\n\nMINIMO .GITIGNORE:\n```\n# Environment\n.env\n.env.local\n.env.*.local\n!.env.example\n\n# IDE\n.idea/\n.vscode/\n*.swp\n\n# OS\n.DS_Store\nThumbs.db\n\n# Logs\n*.log\nnpm-debug.log*\n\n# Node\nnode_modules/\nnpm-debug.log*\n\n# Build\ndist/\nbuild/\nout/\n```\n\nIMPORTANTE:\n- .env NUNCA se commitea (ni siquiera .env.example con valores reales)\n- Crear .env.example con keys vacias como template\n- Si ya se commiteo un .env: ROTAR keys inmediatamente, es compromete\n\nCHECK PRE-PUSH:\n```bash\ngit diff --cached --name-only | grep -E '^\\.env'\n# Si sale algo, revisar antes de push\n```\n\nHOOK PRE-PUSH (opcional):\n```bash\n#!/bin/bash\nif git diff --cached --name-only | grep -q '\\.env'; then\n  echo 'ERROR: .env files in commit'\n  exit 1\nfi\n```",
+    "tags": ["git", "security", "env", "best-practices", "gotcha"],
+    "keywords": ["gitignore", "env", "secrets", "security", ".env"],
+    "context": {
+      "files": [".gitignore", ".env", ".env.example"]
+    },
+    "related": ["SEED-002"],
+    "meta": {
+      "created": "2026-05-01",
+      "source": "@docs",
+      "confidence": "medium",
+      "weight": 0.5,
+      "hits": 0,
+      "lastUsed": null,
+      "successUses": 0,
+      "failedUses": 0
+    }
+  }
+]

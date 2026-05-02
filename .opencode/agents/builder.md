@@ -83,13 +83,13 @@ Algo no funciona:
 | Quiere validación | → @reviewer |
 | Patrón nuevo a documentar | → @docs |
 
-## Si @Auditor reporta 🔴
+## Si @reviewer reporta 🔴
 
 Corrigí según el feedback:
 
 ```
 @builder [CORRECCIÓN P1: el middleware no valida tokens expirados]
-  - @Auditor dijo: línea 42 no checkea exp del JWT
+  - @reviewer dijo: línea 42 no checkea exp del JWT
   - Arreglar: agregar verificación de expiry en el middleware
 ```
 

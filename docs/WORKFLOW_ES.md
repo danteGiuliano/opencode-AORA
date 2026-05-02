@@ -89,13 +89,16 @@ AORA es agnóstico del provider. Los modelos se configuran según el provider ut
 
 | Agent | Nombre Semántico | Rol |
 |-------|-------------------|-----|
-| `@ultraworker` | OrquestadorPrincipal | Orquesta el ciclo completo |
+| `@ultraworker` | OrquestadorPrincipal | Orchestra el ciclo completo |
 | `@planner` | Estratega | Planificación estratégica |
+| `@queue` | QueueManager | Gestor de pool con dependencias |
+| `@launcher` | Launcher | Paralelismo real via background |
 | `@builder` | Constructor | Implementación full-stack |
 | `@reviewer` | Auditor | Revisión de código |
 | `@debug` | Detective | Diagnóstico de errores |
 | `@docs` | Bibliotecario | Gestión de conocimiento |
 | `@decider` | Arbitro | Conflictos dominio vs implementación |
+| `@calibrator` | Calibrator | Métricas y evaluación |
 | `@init-cruise` | Configurador | Replica configuración en proyectos |
 
 ## Ciclo de Ejecución
@@ -108,62 +111,68 @@ AORA es agnóstico del provider. Los modelos se configuran según el provider ut
 │  OrquestadorPrincipal analiza el contexto y entiende         │
 │  el alcance de la tarea                                      │
 └──────────────────────────────────────────────────────────────┘
-                              ↓
+                               ↓
 ┌──────────────────────────────────────────────────────────────┐
 │                  FASE 1: PLANIFICACIÓN                        │
 │  Estratega descompone en tareas atómicas                    │
 │  Identifica dependencias y puertas de decisión              │
 └──────────────────────────────────────────────────────────────┘
-                              ↓
-                    ┌─────────────────┐
-                    │ ¿Puerta de      │
-                    │ Decisión?       │
-                    └────────┬────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              ↓                             ↓
-        SÍ → PAUSAR                    NO → CONTINUAR
-        Esperar decisión               ↓
-        del usuario                    ↓
-                             ┌────────────────────────────────┐
-                             │    FASE 2: IMPLEMENTACIÓN     │
-                             │    PARALELA                    │
-                             │    Constructor T1.1            │
-                             │    Constructor T1.2 (parallel)│
-                             └────────────────────────────────┘
-                                           ↓
-                             ┌────────────────────────────────┐
-                             │    PUNTO DE SINCRONIZACIÓN    │
-                             │    Verificar integración      │
-                             └────────────────────────────────┘
-                                           ↓
+                               ↓
+                     ┌─────────────────┐
+                     │ ¿Puerta de      │
+                     │ Decisión?       │
+                     └────────┬────────┘
+                              │
+               ┌──────────────┴──────────────┐
+               ↓                             ↓
+         SÍ → PAUSAR                    NO → CONTINUAR
+         Esperar decisión               ↓
+         del usuario                    ↓
+                              ┌────────────────────────────────┐
+                              │    FASE 2: GESTIÓN DE POOL     │
+                              │    @queue recibe plan          │
+                              │    @launcher lanza indep.      │
+                              │    @builder ejecuta dep.       │
+                              └────────────────────────────────┘
+                                            ↓
+                              ┌────────────────────────────────┐
+                              │    PUNTO DE SINCRONIZACIÓN    │
+                              │    Verificar integración      │
+                              └────────────────────────────────┘
+                                            ↓
 ┌──────────────────────────────────────────────────────────────┐
 │                       FASE 3: REVISIÓN                        │
-│  Auditor analiza el código implementado                      │
+│  Auditor (@reviewer) analiza el código implementado          │
 │  Reporte estructurado 🔴🟡🟢                                │
 └──────────────────────────────────────────────────────────────┘
-                              ↓
-                    ┌─────────────────┐
-                    │ ¿Hay 🔴 items?  │
-                    └────────┬────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              ↓                             ↓
-        SÍ → Corregir                  NO → CONTINUAR
-        (hasta 3 intentos)                ↓
-        ↓                                ↓
-   ¿Persiste?                      ┌────────────────────────────────┐
-        ↓                          │    FASE 4: DOCUMENTACIÓN       │
-        ↓                          │    Bibliotecario actualiza     │
-   Escalar al usuario              │    KNOWLEDGE.md + DECISIONS.md│
-                                   └────────────────────────────────┘
-                                              ↓
-                                   ┌────────────────────────────────┐
-                                   │    VERIFICACIÓN FINAL          │
-                                   │    Tests pasan + Build limpio  │
-                                   └────────────────────────────────┘
-                                              ↓
-                                          COMPLETO ✅
+                               ↓
+                     ┌─────────────────┐
+                     │ ¿Hay 🔴 items?  │
+                     └────────┬────────┘
+                              │
+               ┌──────────────┴──────────────┐
+               ↓                             ↓
+         SÍ → Corregir                  NO → CONTINUAR
+         (hasta 3 intentos)                ↓
+         ↓                                ↓
+    ¿Persiste?                      ┌────────────────────────────────┐
+         ↓                          │    FASE 3.5: CALIBRACIÓN       │
+         ↓                          │    @calibrator registra metricas│
+    Escalar al usuario              │    Actualiza metrics.json     │
+                                    └────────────────────────────────┘
+                                               ↓
+                                    ┌────────────────────────────────┐
+                                    │    FASE 4: DOCUMENTACIÓN       │
+                                    │    Bibliotecario actualiza     │
+                                    │    KB.json + DECISIONS.md      │
+                                    └────────────────────────────────┘
+                                               ↓
+                                    ┌────────────────────────────────┐
+                                    │    VERIFICACIÓN FINAL          │
+                                    │    Tests pasan + Build limpio  │
+                                    └────────────────────────────────┘
+                                               ↓
+                                           COMPLETO ✅
 ```
 
 ### Flujo Alternativo: Debug

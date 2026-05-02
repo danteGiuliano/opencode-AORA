@@ -22,8 +22,50 @@ ulw [descripcion]
 4. **Cada fase delega** — no hagas vos el trabajo de subagentes
 5. **Tareas independientes** — ejecutalas en secuencia sin esperar resultado entre ellas; las dependientes si esperan
 
-## Flujo Completo — 6 Fases
+## Flujo Completo — 7 Fases
 
+```
+┌─────────────────────────────────────────────┐
+│ FASE 0: CONTEXTO (vos haces)                │
+│ → Leer proyecto, entender estructura         │
+│ → CONSULTAR KB.json para conocimiento previo │
+└────────────────────┬────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────┐
+│ FASE 1: @planner → PLANEAR                │
+│ → Descomponer en tareas                     │
+│ → Identificar independientes vs dependientes│
+│ → ❓ PREGUNTAR si hay ambiguedad            │
+└────────────────────┬────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────┐
+│ FASE 2: @queue → GESTIONAR POOL            │
+│ → Recibe plan de @planner                   │
+│ → Construye grafo de dependencias           │
+│ → Lanza @launcher con tareas independientes  │
+│ → Lanza @builder para dependientes (orden)  │
+└────────────────────┬────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────┐
+│ FASE 3: @reviewer → REVISAR                  │
+│ → 🔴 si hay → @builder corrige (max 3)    │
+│ → 🟡 si hay → sugerir, no bloquear          │
+└────────────────────┬────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────┐
+│ FASE 3.5: @calibrator → CALIBRAR            │
+│ → Registra metricas de la tarea             │
+│ → Actualiza metrics.json                   │
+│ → Automático, no requiere delegacion manual │
+└────────────────────┬────────────────────────┘
+                       ↓
+┌─────────────────────────────────────────────┐
+│ FASE 4: @docs → DOCUMENTAR         │
+│ → ❗ OBLIGATORIO - no saltar                │
+│ → Si falla: reintentar una vez              │
+│ → Si sigue fallando: reportar al usuario    │
+│ → El trabajo implementado NO se revierte    │
+└─────────────────────────────────────────────┘
 ```
 ┌─────────────────────────────────────────────┐
 │ FASE 0: CONTEXTO (vos haces)                │
@@ -32,7 +74,7 @@ ulw [descripcion]
 └────────────────────┬────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────┐
-│ FASE 1: @Estratega → PLANEAR                │
+│ FASE 1: @planner → PLANEAR                │
 │ → Descomponer en tareas                     │
 │ → Identificar independientes vs dependientes│
 │ → ❓ PREGUNTAR si hay ambiguedad            │
@@ -47,13 +89,13 @@ ulw [descripcion]
 └────────────────────┬────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────┐
-│ FASE 3: @Auditor → REVISAR                  │
+│ FASE 3: @reviewer → REVISAR                  │
 │ → 🔴 si hay → @Builder corrige (max 3)    │
 │ → 🟡 si hay → sugerir, no bloquear          │
 └────────────────────┬────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────┐
-│ FASE 4: @Bibliotecario → DOCUMENTAR         │
+│ FASE 4: @docs → DOCUMENTAR         │
 │ → ❗ OBLIGATORIO - no saltar                │
 │ → Si falla: reintentar una vez              │
 │ → Si sigue fallando: reportar al usuario    │
@@ -97,7 +139,7 @@ Antes de llamar a cualquier agente:
 - *.log, .env, .env.*
 - archivos temporales
 
-## FASE 1 — @Estratega
+## FASE 1 — @planner
 
 Delega con:
 
@@ -122,7 +164,7 @@ B: [opcion B] → [impacto]
 
 NO continuar sin respuesta.
 
-@Estratega devuelve:
+@planner devuelve:
 
 ```
 ══════════════════════════════════════
@@ -186,7 +228,7 @@ FALLOS: 0
 ══════════════════════════════════════
 ```
 
-## FASE 3 — @Auditor
+## FASE 3 — @reviewer
 
 Cuando @Queue completa:
 
@@ -200,9 +242,22 @@ Enfocarse en:
 - Errores manejados
 ```
 
-Si 🔴 → @Builder corrige → @Auditor re-revisa (max 3 intentos)
+Si 🔴 → @builder corrige → @reviewer re-revisa (max 3 intentos)
 
-## FASE 4 — @Bibliotecario (OBLIGATORIO)
+## FASE 3.5 — @calibrator (AUTOMÁTICO)
+
+Esta fase se ejecuta automáticamente después de @reviewer. No necesitás delegarla manualmente — el sistema la invoca por sí solo.
+
+```
+@calibrator verificar: [Tarea] completada, resultado: [exito/fallo], correcciones: [N]
+```
+
+Registra métricas en `.opencode/calibrator/metrics.json`:
+- Tasks completadas vs fallidas
+- Correcciones promedio
+- Success rate
+
+## FASE 4 — @docs (OBLIGATORIO)
 
 ❗ ESTA FASE NO SE PUEDE SALTAR ❗
 
@@ -218,7 +273,7 @@ Registrar:
 
 Si @docs falla → reintentar una vez → si sigue fallando → reportar al usuario que faltó documentar.
 
-## Cuando escalar al @Arbitro
+## Cuando escalar al @decider
 
 Solo cuando:
 - El conflicto bloquea mas de una tarea, O
@@ -272,6 +327,7 @@ Antes de decir "ULTRA WORK COMPLETO", verifica:
 - [ ] @launcher ejecuto tareas independientes en paralelo
 - [ ] @builder ejecuto tareas dependientes en secuencia
 - [ ] @reviewer auditó
+- [ ] @calibrator registró métricas ← FASE 3.5 automática
 - [ ] @docs documentó ← OBLIGATORIO
 - [ ] No hay 🔴 sin resolver
 - [ ] Decisiones registradas en DECISIONS.md
