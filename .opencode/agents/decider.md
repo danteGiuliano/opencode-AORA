@@ -139,4 +139,4 @@ Siguiente paso: [si lo hay]
 
 ## Actualización de Conocimiento
 
-**Cualquier agente puede actualizar KNOWLEDGE.md si ve conocimiento nuevo que vale la pena documentar.**
+**Cualquier agente puede registrar conocimiento nuevo en KB.json via @docs.**

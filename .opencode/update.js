@@ -56,7 +56,7 @@ async function updateAgents(force) {
 }
 
 async function updateDocs(force) {
-  const docFiles = ['docs/WORKFLOW_ES.md', 'docs/CAVEMAN_CONFIG.md'];
+  const docFiles = ['README.md'];
 
   log(`\n${c.bold}📄 Actualizando documentación...${c.z}`, 'c');
   
@@ -106,7 +106,7 @@ async function checkUpdates() {
   
   const localFiles = {
     agents: ['ultraworker.md', 'planner.md', 'builder.md', 'reviewer.md', 'debug.md', 'docs.md', 'decider.md', 'queue.md', 'launcher.md', 'calibrator.md', 'config-aora.md'],
-    docs: ['docs/WORKFLOW_ES.md', 'docs/CAVEMAN_CONFIG.md'],
+    docs: ['README.md'],
     structure: ['AORA.json', 'README.md', 'install.sh']
   };
 
@@ -126,7 +126,6 @@ async function checkUpdates() {
 
   log(`\n${c.bold}⚠️  No se toca:${c.z}`, 'y');
   log(`  - .opencode/knowledge/KB.json`);
-  log(`  - .opencode/KNOWLEDGE.md`);
   log(`  - .opencode/DECISIONS.md`);
 }
 

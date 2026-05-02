@@ -47,7 +47,7 @@ Cuando el usuario pide actualizar:
 ```
 ¿Querés actualizar?
   [1] Agentes (ultraworker, planner, etc)
-  [2] Documentación (WORKFLOW, CAVEMAN_CONFIG)
+  [2] Documentación (README)
   [3] Todo
   [4] Solo verificar estado
 
@@ -55,9 +55,8 @@ Cuando el usuario pide actualizar:
 ```
 
 Descargás desde GitHub y reemplazás los archivos. **No tocás:**
-- `.opencode/knowledge/KB.json`
-- `.opencode/KNOWLEDGE.md`
-- `.opencode/DECISIONS.md`
+  - `.opencode/knowledge/KB.json`
+  - `.opencode/DECISIONS.md`
 
 ### 3. Verificar Instalación
 
@@ -139,4 +138,4 @@ Para usar: @ultrawork [tarea]
 - No modificar archivos fuera del proyecto
 - Solo actualizar AORA.json y agentes
 - No pedir API keys
-- Preservar KB.json, KNOWLEDGE.md, DECISIONS.md
+- Preservar KB.json, DECISIONS.md

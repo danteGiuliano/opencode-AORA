@@ -8,7 +8,7 @@
     "tags": ["auth", "jwt", "sessions", "api", "security"],
     "keywords": ["jwt", "token", "sessions", "auth", "stateless", "redis"],
     "context": {
-      "files": ["src/auth/", "middleware/"]
+      "files": ["auth/", "middleware/"]
     },
     "related": ["SEED-007", "SEED-008"],
     "meta": {
@@ -146,7 +146,7 @@
     "tags": ["security", "auth", "rate-limiting", "api", "brute-force"],
     "keywords": ["rate-limit", "auth", "login", "brute-force", "security", "ddos"],
     "context": {
-      "files": ["middleware/auth/", "routes/auth/", "src/auth/"]
+      "files": ["middleware/auth/", "routes/auth/"]
     },
     "related": ["SEED-001", "SEED-002"],
     "meta": {

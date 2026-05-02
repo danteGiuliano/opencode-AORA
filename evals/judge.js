@@ -20,14 +20,6 @@ function loadDataset() {
 // judge.js is read-only for CI gate purposes
 
 function loadMetrics() {
-  if (fs.existsSync(METRICS_PATH)) {
-    return JSON.parse(fs.readFileSync(METRICS_PATH, 'utf8'));
-  }
-  return { agents: {}, recentTasks: [] };
-}
-
-// Note: saveMetrics is not used by judge.js - metrics are written by @calibrator agent only
-// judge.js is read-only (runCIgate reads, evaluateCase reads)
 
 function evaluateCase(caseData, output) {
   const results = {

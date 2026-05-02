@@ -241,7 +241,7 @@ Los agentes comparten conocimiento via `.opencode/knowledge/KB.json`. El sistema
   "tags": ["auth", "api", "security"],
   "keywords": ["jwt", "token", "sessions"],
   "context": {
-    "files": ["src/auth/"]
+    "files": ["auth/", "middleware/"]
   },
   "meta": {
     "created": "2026-05-01",
@@ -380,7 +380,7 @@ Sistema de compresion de output. Reduce ~65-75% tokens.
 ├── logs/               # Logs para CI
 ├── aora-agents.json    # Registro de agentes
 ├── DECISIONS.md        # Log de decisiones
-└── KNOWLEDGE.md        # Redirect
+└── knowledge/
 
 evals/
 ├── dataset.json         # Casos de prueba

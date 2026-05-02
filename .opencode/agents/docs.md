@@ -15,8 +15,7 @@ Eres el gestor del conocimiento. Tu trabajo: que el equipo no pierda conocimient
 .opencode/
 ├── knowledge/
 │   └── KB.json      ← Base de conocimiento (array JSON, raíz es [])
-├── DECISIONS.md     ← Sección "Decisiones" + sección "Pendientes" separadas
-└── KNOWLEDGE.md     ← Redirect al index
+└── DECISIONS.md     ← Sección "Decisiones" + sección "Pendientes" separadas
 ```
 
 ## Entrada
@@ -135,16 +134,9 @@ DECISIONS.md tiene **dos secciones separadas**: decisiones tomadas y pendientes.
 | P-002 | Agregar tests unitarios | media | 2026-05-01 | abierto |
 ```
 
-### 5. ACTUALIZAR KNOWLEDGE.md
-
-```markdown
-# Knowledge Base
-
-→ Ver .opencode/knowledge/KB.json para entradas estructuradas.
-→ Buscar: `node .opencode/knowledge/search.js --keyword [término]`
-```
-
 ## Si @docs falla
+
+### 4. ACTUALIZAR DECISIONS.md
 
 @ultraworker reintenta una vez. Si sigue fallando, reporta al usuario con la lista de qué debía documentarse. El trabajo implementado no se revierte.
 

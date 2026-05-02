@@ -54,10 +54,6 @@ fi
 mkdir -p "$AORA_DIR/knowledge"
 
 # Crear archivos de conocimiento si no existen
-[ ! -f "$AORA_DIR/KNOWLEDGE.md" ] && echo "# Knowledge Base
-
-→ Ver .opencode/knowledge/KB.json para entradas estructuradas" > "$AORA_DIR/KNOWLEDGE.md"
-
 [ ! -f "$AORA_DIR/DECISIONS.md" ] && curl -sf "https://raw.githubusercontent.com/danteGiuliano/opencode-AORA/main/.opencode/DECISIONS.md" -o "$AORA_DIR/DECISIONS.md"
 
 # KB.json: inicializar con seed si esta vacio o no existe

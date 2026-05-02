@@ -60,7 +60,7 @@
     {
       "id": "eval-005",
       "agent": "reviewer",
-      "task": "Revisar archivo src/auth/middleware.js por vulnerabilidades",
+      "task": "Revisar codigo con vulnerabilidades: hardcoded secrets y falta de validacion",
       "expected": {
         "findings": {
           "critical": 2,
