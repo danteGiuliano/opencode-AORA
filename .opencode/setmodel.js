@@ -146,9 +146,20 @@ async function setModel() {
 
 async function main() {
   const args = {};
-  process.argv.slice(2).forEach((v, i, a) => {
-    if (v.startsWith('--')) args[v.replace('--', '')] = a[i + 1] || true;
-  });
+  // Parse args: handle values that start with --
+  for (let i = 0; i < process.argv.length; i++) {
+    const v = process.argv[i];
+    if (v.startsWith('--')) {
+      const key = v.replace('--', '');
+      const nextArg = process.argv[i + 1];
+      if (nextArg === undefined || nextArg === null || nextArg.startsWith('--')) {
+        args[key] = true;
+      } else {
+        args[key] = nextArg;
+        i++;
+      }
+    }
+  }
 
   if (args.help) {
     log(`

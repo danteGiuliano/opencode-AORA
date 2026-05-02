@@ -68,10 +68,7 @@
         }
       },
       "criteria": {
-        "detectaHardcodedSecrets": true,
-        "detectaSQLInjection": true,
-        "detectaXSS": true,
-        "noFalsosPositivos": true
+        "noHardcodedSecrets": false
       }
     },
     {

@@ -1,6 +1,8 @@
 # Knowledge Log
-> Managed by @docs. Update when closing each significant task.  
+> Managed by @docs. Update when closing each significant task.
 > Commit this file — your whole team benefits.
+
+> **Nota**: KB.json en el repo está vacío por diseño. Durante `install.sh`, KB.json se inicializa con kb-seed.json que contiene 8 entradas útiles para cold start. No editable manualmente.
 
 ---
 

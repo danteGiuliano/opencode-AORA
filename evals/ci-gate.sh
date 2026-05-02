@@ -5,21 +5,22 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EVALS_DIR="$SCRIPT_DIR/evals"
+# SCRIPT_DIR is evals/ since ci-gate.sh lives there
+JUDGE_PATH="$SCRIPT_DIR/judge.js"
 
 echo "🔍 AORA CI Gate"
 echo "================"
 
 # 1. Verificar que juez existe
-if [ ! -f "$EVALS_DIR/judge.js" ]; then
-    echo "❌ Error: judge.js no encontrado"
+if [ ! -f "$JUDGE_PATH" ]; then
+    echo "❌ Error: judge.js no encontrado en $JUDGE_PATH"
     exit 1
 fi
 
 # 2. Ejecutar CI gate via judge
 echo ""
 echo "📊 Evaluando metricas de agentes..."
-node "$EVALS_DIR/judge.js" ci-gate
+node "$JUDGE_PATH" ci-gate
 EXIT_CODE=$?
 
 # 3. Interpretar resultado

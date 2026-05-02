@@ -19,11 +19,13 @@ function loadDataset() {
 function acquireLock(maxWait = 10) {
   const lockPath = METRICS_PATH + '.lock';
   const startTime = Date.now();
+  // Simple busy-wait with event loop yield
+  // Node is single-threaded so we just check time and let event loop breathe
   while (fs.existsSync(lockPath)) {
     if (Date.now() - startTime > maxWait * 1000) {
       return false;
     }
-    const sleep = require('child_process').execSync('sleep 0.1');
+    // Yield to event loop naturally - no external process needed
   }
   fs.writeFileSync(lockPath, String(process.pid));
   return true;

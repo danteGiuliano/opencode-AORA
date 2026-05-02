@@ -199,9 +199,15 @@ successRate = successUses / (successUses + failedUses + 1)
 Cuando consultes la KB:
 
 ```
-@calibrator kb-hit: D-001    # Registro que se consulto D-001
-@calibrator kb-success: D-001  # Registro que D-001 fue util
-@calibrator kb-failed: D-001   # Registro que D-001 no fue util
+node .opencode/knowledge/search.js --hit "D-001"      # Registro consulta
+node .opencode/knowledge/search.js --success "D-001" # Registro uso util
+node .opencode/knowledge/search.js --failed "D-001"   # Registro uso no util
+```
+
+Para verificar estado de KB (solo lectura):
+```
+node .opencode/knowledge/search.js --stats
+```
 ```
 
 Esto actualiza automaticamente los contadores de uso.

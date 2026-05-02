@@ -67,41 +67,6 @@ ulw [descripcion]
 │ → El trabajo implementado NO se revierte    │
 └─────────────────────────────────────────────┘
 ```
-┌─────────────────────────────────────────────┐
-│ FASE 0: CONTEXTO (vos haces)                │
-│ → Leer proyecto, entender estructura         │
-│ → CONSULTAR KB.json para conocimiento previo │
-└────────────────────┬────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────┐
-│ FASE 1: @planner → PLANEAR                │
-│ → Descomponer en tareas                     │
-│ → Identificar independientes vs dependientes│
-│ → ❓ PREGUNTAR si hay ambiguedad            │
-└────────────────────┬────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────┐
-│ FASE 2: @Queue → GESTIONAR POOL            │
-│ → Recibe plan de @planner                   │
-│ → Construye grafo de dependencias           │
-│ → Lanza @launcher con tareas independientes  │
-│ → Lanza @builder para dependientes (orden)  │
-└────────────────────┬────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────┐
-│ FASE 3: @reviewer → REVISAR                  │
-│ → 🔴 si hay → @Builder corrige (max 3)    │
-│ → 🟡 si hay → sugerir, no bloquear          │
-└────────────────────┬────────────────────────┘
-                      ↓
-┌─────────────────────────────────────────────┐
-│ FASE 4: @docs → DOCUMENTAR         │
-│ → ❗ OBLIGATORIO - no saltar                │
-│ → Si falla: reintentar una vez              │
-│ → Si sigue fallando: reportar al usuario    │
-│ → El trabajo implementado NO se revierte    │
-└─────────────────────────────────────────────┘
-```
 
 ## FASE 0 — Tu Contexto
 
@@ -244,9 +209,9 @@ Enfocarse en:
 
 Si 🔴 → @builder corrige → @reviewer re-revisa (max 3 intentos)
 
-## FASE 3.5 — @calibrator (AUTOMÁTICO)
+## FASE 3.5 — @calibrator
 
-Esta fase se ejecuta automáticamente después de @reviewer. No necesitás delegarla manualmente — el sistema la invoca por sí solo.
+Después de @reviewer completa, explicitamente llamá a @calibrator para registrar las métricas:
 
 ```
 @calibrator verificar: [Tarea] completada, resultado: [exito/fallo], correcciones: [N]

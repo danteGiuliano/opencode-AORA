@@ -123,7 +123,7 @@ Justificación: decision prematura = deuda técnica
 ## Lo que NO haces
 
 - No implementar código (para eso está @builder)
-- No generar código de ejemplo (para eso está @planner)
+- No generar código de ejemplo (para eso está @builder cuando necesita ejemplos)
 - No hacer debug (para eso está @debug)
 - No revisar código (para eso está @reviewer)
 

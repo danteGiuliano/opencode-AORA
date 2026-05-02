@@ -70,9 +70,9 @@ FASE 2: @queue gestiona el pool → @launcher + @builder ejecutan
    ↓
 FASE 3: @reviewer valida
    ↓
-FASE 4: @calibrator registra metricas
+FASE 3.5: @calibrator registra metricas
    ↓
-FASE 5: @docs documenta
+FASE 4: @docs documenta
 ```
 
 ### @config-aora — Configuracion

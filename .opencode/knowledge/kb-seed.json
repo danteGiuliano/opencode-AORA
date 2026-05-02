@@ -97,7 +97,7 @@
     "title": "Migrate before Deploy - Order of Operations",
     "summary": "En deploy, siempre ejecutar migraciones ANTES de starting nueva version de la app.",
     "content": "REGLA: Deploy en dos fases nunca falla.\n\nFASE 1: Migraciones (backward compatible)\n- Schema changes que no rompen funcionalidad existente\n- Nuevas tablas/columnas nullable\n- Indices\n\nFASE 2: App deploy\n- Nueva version que usa el schema nuevo\n\nPATRON BLUE-GREEN:\n```\n1. Run migrations against DB (old app still running)\n2. Validate migrations completed\n3. Switch traffic to new app version\n4. Old app can stay running for rollback\n```\n\nROLLBACK:\n- Si fase 2 falla: nueva version no inicia, old sigue sirviendo\n- Si fase 1 fallo: no se hizo deploy todavia, zero impact\n\nMIGRATION CHECKLIST:\n- [ ] Nueva columna es nullable o tiene default\n- [ ] No hay constraints incompatibles con old code\n- [ ] Indices creados\n- [ ] Backward compatible (old app puede correr con new schema)\n\nNUNCA HACER: Add non-nullable column sin default en tabla con datos.",
-    "tags": ["deployment", "migrations", "database", "devops", " порядок"],
+    "tags": ["deployment", "migrations", "database", "devops", "order"],
     "keywords": ["migration", "deploy", "schema", "blue-green", "rollback"],
     "context": {
       "files": ["migrations/", "deploy/", "scripts/"]

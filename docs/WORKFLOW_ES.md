@@ -365,12 +365,14 @@ Build falla o revisión tiene 🔴 items
 
 | Agent | Activation | Cuándo usarlo |
 |-------|-------------|---------------|
-| `@OrquestadorPrincipal` | `ultrawork [task]` | Tareas complejas needing ciclo completo |
-| `@Estratega` | `@planner` | Análisis y planificación |
-| `@Constructor` | `@builder` | Implementación de código |
-| `@Auditor` | `@reviewer` | Revisión de código |
-| `@Detective` | `@debug` | Diagnóstico de errores |
-| `@Bibliotecario` | `@docs` | Documentación y conocimiento |
+| `@ultraworker` | `ultrawork [task]` | Tareas complejas needing ciclo completo |
+| `@planner` | `@planner` | Análisis y planificación |
+| `@builder` | `@builder` | Implementación de código |
+| `@reviewer` | `@reviewer` | Revisión de código |
+| `@debug` | `@debug` | Diagnóstico de errores |
+| `@docs` | `@docs` | Documentación y conocimiento |
+| `@decider` | `@decider` | Conflictos de arquitectura |
+| `@calibrator` | `@calibrator` | Métricas y evaluación |
 
 ## Ejemplo de conversación
 

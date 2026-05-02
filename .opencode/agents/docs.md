@@ -61,21 +61,25 @@ echo '[]' > .opencode/knowledge/KB.json
 
 **COMPROBACIÓN DE ID EXISTENTE — OBLIGATORIO antes de hacer push:**
 
-Antes de agregar una entrada, verificar si el ID ya existe:
+Antes de agregar una entrada, verificar si el ID ya existe usando node para parsear JSON de forma confiable:
 
 ```bash
-# Leer KB.json actual
-KB_CONTENT=$(cat .opencode/knowledge/KB.json)
+# Verificar si el ID ya existe
+ID_EXISTS=$(node -e "
+  const kb = JSON.parse(require('fs').readFileSync('.opencode/knowledge/KB.json', 'utf8'));
+  console.log(kb.some(e => e.id === '$ID') ? 'found' : 'not_found');
+")
 
-# Verificar si el ID ya existe (devuelve "found" si existe)
-if echo "$KB_CONTENT" | grep -q "\"id\": \"$ID\""; then
+if [ "$ID_EXISTS" = "found" ]; then
     echo "ID $ID ya existe en KB.json — actualizando entrada existente"
-    # Proceder a替换 (reemplazar) la entrada existente en lugar de agregar
+    # Proceder a reemplazar la entrada existente en lugar de agregar
 else
     echo "ID $ID no existe — agregando nueva entrada"
     # Proceder a agregar nueva entrada
 fi
 ```
+
+Este método parsea el JSON correctamente sin falsos positivos por formatting o caracteres especiales.
 
 Cuando el ID ya existe: leer el array, encontrar la entrada por ID, actualizarla en memoria, escribir todo de nuevo.
 

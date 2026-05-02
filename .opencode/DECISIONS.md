@@ -142,6 +142,62 @@ Registro de decisiones de arquitectura y producto.
 
 ---
 
+### [D-2026-005] Second Bug Fixes Session - Mayo 2026 Round 2
+
+**Fecha**: 2026-05-02
+**Tipo**: bug fixes
+**Detectado por**: @ultraworker
+
+**Bugs corregidos**:
+
+1. **BUG 1 - ultraworker.md diagrama duplicado**: El archivo tenía dos diagramas ASCII completos (7 fases + 5 fases). El segundo estaba fuera del bloque de código (`` ``` `` mal cerrado). Fix: Eliminé el diagrama duplicado de 5 fases.
+
+2. **BUG 2 - judge.js acquireLock rompía en Windows**: Usaba `require('child_process').execSync('sleep 0.1')` en un busy-wait loop. `sleep` no existe en Windows. Fix: Removí el sleep externo, el loop ahora solo usa Date.now() checking.
+
+3. **BUG 3 - ci-gate.sh EVALS_DIR apuntaba a evals/evals/**: ci-gate.sh vive en evals/, entonces SCRIPT_DIR=evals/ y EVALS_DIR="$SCRIPT_DIR/evals"=evals/evals/. Fix: Cambié a JUDGE_PATH="$SCRIPT_DIR/judge.js" directamente.
+
+4. **BUG 4 - docs.md grep para verificar IDs**: Usaba `grep -q "\"id\": \"$ID\""` que puede tener falsos positivos con formatting JSON variable o IDs en content. Fix: Cambié a `node -e` con JSON.parse para verificación confiable.
+
+**Inconsistencias corregidas**:
+
+1. **INC 1 - ci-gate.sh sin lock**: El lock de Node en judge.js y el lock bash documentado en calibrator.md son mecanismos distintos. Decisión: el lock de Node es suficiente para protect writes dentro del mismo proceso Node. Bash scripts que leen no necesitan lock.
+
+2. **INC 2 - WORKFLOW_ES.md tabla de activación**: Usaba nombres semánticos (@OrquestadorPrincipal, @Estratega) en la columna Agent. Fix: Cambiado a slugs (@ultraworker, @planner).
+
+3. **INC 3 - README.md fases 4 y 5**: Decía FASE 4 @calibrator y FASE 5 @docs. El sistema real tiene FASE 3.5 y FASE 4. Fix: Actualizado a FASE 3.5 y FASE 4.
+
+4. **INC 4 - decider.md código de ejemplo asignado a @planner**: Decía "No generar código de ejemplo (para eso está @planner)" pero @planner no genera código. Fix: Cambiado a @builder.
+
+5. **INC 5 - SEED-005 tag en cirílico**: `["deployment", "migrations", "database", "devops", " порядок"]` - " порядок" es ruso. Fix: Cambiado a "order".
+
+6. **INC 6 - ultraworker.md FASE 3.5 "automática"**: Decía "el sistema la invoca por sí solo" pero OpenCode no tiene triggers automáticos. Fix: Cambiado a explicación correcta de que se llama explícitamente después de @reviewer.
+
+7. **INC 7 - setmodel.js parser viejo**: main() usaba el parser con bug de args que empiezan con --. Fix: Actualizado con el mismo parser corregido que tiene search.js.
+
+**Menores corregidos**:
+
+1. **MENOR 1 - KNOWLEDGE.md**: No explicaba por qué KB.json está vacío en el repo. Fix: Agregué nota sobre kb-seed.json + install.sh.
+
+2. **MENOR 2 - calibrator.md sintaxis inexistente**: "@calibrator kb-hit:" no existe como protocolo. Fix: Cambiado a invocar node search.js directamente.
+
+3. **MENOR 3 - eval-005 criteria no implementados**: dataset.json tenía criteria detectaSQLInjection, detectaXSS pero judge.js solo esperaba noHardcodedSecrets. Fix: Simplifiqué criteria a solo noHardcodedSecrets que judge.js ya implementa.
+
+**Archivos afectados**:
+- ultraworker.md (BUG 1, INC 6)
+- evals/judge.js (BUG 2)
+- evals/ci-gate.sh (BUG 3)
+- docs.md (BUG 4)
+- docs/WORKFLOW_ES.md (INC 2)
+- README.md (INC 3)
+- decider.md (INC 4)
+- kb-seed.json (INC 5)
+- setmodel.js (INC 7)
+- calibrator.md (MENOR 2)
+- KNOWLEDGE.md (MENOR 1)
+- evals/dataset.json (MENOR 3)
+
+---
+
 <!-- Agregar decisiones abajo con formato -->
 
 ---
