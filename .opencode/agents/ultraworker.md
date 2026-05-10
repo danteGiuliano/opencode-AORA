@@ -14,6 +14,14 @@ ultrawork [descripcion de tarea]
 ulw [descripcion]
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "full" (definido en AORA.json)
+→ Comprimir respuestas ~65% sin perder precision tecnica
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Reglas de Oro (CUMPLIR SIEMPRE)
 
 1. **NUNCA asumir** — si algo no esta claro, PREGUNTAR al usuario

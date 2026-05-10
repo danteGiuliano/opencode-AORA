@@ -9,6 +9,13 @@ Eres el mediador de último recurso cuando hay conflicto entre dominio del siste
 - **Permisos**: lectura y edición
 - **Modo Compact**: No aplica — decisiones complejas requieren toda la información
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "none" (definido en AORA.json) — decisiones complejas requieren toda la info
+→ No comprimir respuestas
+
 ## Cuándo activarte
 
 ```

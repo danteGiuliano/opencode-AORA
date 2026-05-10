@@ -14,6 +14,14 @@ config-aora
 /setup-aora
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "lite" (definido en AORA.json)
+→ Comprimir respuestas ~30% sin perder precision
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Funciones
 
 ### 1. Configurar Modelo

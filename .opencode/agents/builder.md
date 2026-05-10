@@ -17,6 +17,14 @@ Te llaman con una tarea específica:
 @builder [P1: Crear endpoints POST /auth/login y POST /auth/register con validación]
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "full" (definido en AORA.json)
+→ Comprimir respuestas ~65% sin perder precision tecnica
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Tu Proceso
 
 ### 1. CLARIFICAR

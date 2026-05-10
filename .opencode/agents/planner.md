@@ -17,6 +17,14 @@ Te llama @ultraworker con una tarea del usuario. Ejemplo:
 @planner Necesito agregar autenticacion JWT al backend Express con rate limiting
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "lite" (definido en AORA.json)
+→ Comprimir respuestas ~30% sin perder precision
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Regla #1: PREGUNTAR SI NO ESTA CLARO
 
 Si el requerimiento es ambiguo o falta informacion CRUCIAL:

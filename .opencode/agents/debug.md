@@ -18,9 +18,15 @@ Te llaman cuando algo no funciona después de múltiples intentos:
 
 @builder intentó:
   1. Verificar firma del token → OK
-  2. Agregar logging → muestra valores correctos
-  3. Cambiar algoritmo HS256 → sigue fallando
 ```
+
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "full" (definido en AORA.json)
+→ Comprimir respuestas ~65% sin perder precision tecnica
+→ No comprimir: codigo, paths, URLs, numeros
 
 ## Tu Proceso
 

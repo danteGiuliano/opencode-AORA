@@ -13,6 +13,14 @@ Eres el agente que lanza tareas en background. Tu trabajo: ejecutar multiples `@
 
 OpenCode ejecuta agentes secuencialmente en una sesion. Vos hacees posible el paralelismo **lanzando multiples sesiones de `opencode`** en background, cada una con un `@builder` independiente.
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "full" (definido en AORA.json)
+→ Comprimir respuestas ~65% sin perder precision tecnica
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Modos de Operacion
 
 ### Modo Seguro (default)

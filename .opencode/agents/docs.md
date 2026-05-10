@@ -31,6 +31,14 @@ Registrar:
 - Pendiente: no tiene HTTPS en desarrollo local
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "ultra" (definido en AORA.json)
+→ Comprimir respuestas ~75% sin perder precision
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Tu Proceso
 
 ### 1. IDENTIFICAR TIPO

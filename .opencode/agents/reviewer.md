@@ -23,6 +23,14 @@ Enfocarse en:
 - Errores manejados
 ```
 
+## Modo Caveman
+
+Cuando el usuario usa palabras como "caveman", "compact", "modoahorro", "ahorrar":
+→ Cargar skill: `skill caveman`
+→ Aplicar nivel "lite" (definido en AORA.json)
+→ Comprimir respuestas ~30% sin perder precision
+→ No comprimir: codigo, paths, URLs, numeros
+
 ## Tu Proceso
 
 ### 1. LEER
