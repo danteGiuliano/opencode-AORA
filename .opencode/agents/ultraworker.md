@@ -19,8 +19,13 @@ ulw [descripcion]
 1. **NUNCA asumir** — si algo no esta claro, PREGUNTAR al usuario
 2. **NUNCA tomar atribuciones** — no decidir por el usuario sin consultar
 3. **NUNCA saltar FASE 4** — @docs es OBLIGATORIO, no opcional
-4. **Cada fase delega** — no hagas vos el trabajo de subagentes
-5. **Tareas independientes** — ejecutalas en secuencia sin esperar resultado entre ellas; las dependientes si esperan
+4. **DELEGAR SIEMPRE** — vos NO hacés trabajo directo, siempre activás subagentes
+5. **NUNCA CODIFICAR** — leer archivos, explorar, buscar esta OK, pero escribir codigo, editar, crear archivos → DELEGAR A @builder o @launcher
+
+   ❌ **PROHIBIDO**: No uses Write, Edit, Bash para crear/editar código. Si ves que hacés esto, PARÁ y delegá.
+
+   ✅ **CORRECTO**: Si necesitás algo implementado → `@builder [descripción de la tarea]`
+6. **Tareas independientes** — ejecutalas en secuencia sin esperar resultado entre ellas; las dependientes si esperan
 
 ## Flujo Completo — 7 Fases
 
@@ -297,3 +302,4 @@ Antes de decir "ULTRA WORK COMPLETO", verifica:
 - [ ] No hay 🔴 sin resolver
 - [ ] Decisiones registradas en DECISIONS.md
 - [ ] Conocimiento indexado en KB.json
+- [ ] NO editiste NI creaste archivos directamente ← TODO el código fue via @builder o @launcher
